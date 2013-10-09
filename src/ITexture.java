@@ -45,17 +45,18 @@ public interface ITexture
 	// Stretch the texture on each axis.
 	public void SetScale(float x, float y);
 	
-	// Offset the texture origin (use in conjunction with SetRotation)
+	// Offset the texture origin (use in conjunction with SetRotation).
+	// Range: [0.0,1.0] on each axis, with the origin at the bottom-left corner.
 	public void SetOrigin(float x, float y);
 	
-	// Rotate the texture by (r) radians
+	// Rotate the texture by (r) radians.
 	public void SetRotation(float r);
 	
-	// Make the texture transparent (0.0 = fully invisible, 1.0 = fully opaque)
+	// Make the texture transparent (0.0 = fully invisible, 1.0 = fully opaque).
 	public void SetAlpha(float a);
 	
 	// Blend a color with the texture (color range [0,1]).
-	// Strength is how much to blend [0,1], where the final color = texture*(1-strength) + color*(strength)
+	// Strength is how much to blend [0,1], where the final color = texture*(1-strength) + color*(strength).
 	public void SetBlendColor(float r, float g, float b, float strength);
 	
 	

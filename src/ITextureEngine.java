@@ -20,7 +20,7 @@ public interface ITextureEngine
 {
 	// Initializes the display window and graphics libraries.
 	// Exception is thrown on failure.
-	public void	Init(IGameEngine system);
+	public void	Init(IGameEngine system) throws Exception;
 	
 	// De-initialize class and clean up resources. 
 	// Some libraries require manual resource management (OpenGL), which Java's GC can't take care of.

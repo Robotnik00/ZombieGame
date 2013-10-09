@@ -86,23 +86,11 @@ public class GameEngine implements IGameEngine
 	{
 		// init members
 		
-		// init LWJGL, setup window
-		SetupOpenGLDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
+		// setup window w/LWJGL, init opengl
+		SetupDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
 		
-		// init ITextureEngine
-		InitOpenGLTextureEngine();
-		
-		// init IAudioEngine, fall back to null audio if openal fails
-		try 
-		{
-			InitOpenALAudioEngine();
-		}
-		catch (Exception e)
-		{
-			LogMessage(e.getMessage());
-			LogMessage("Falling back to NullAudioEngine");
-			InitNullAudioEngine();
-		}
+		// init audio
+		SetupAudio();
 		
 		// start initial gamestate
 		ChangeGameState(new TestState());
@@ -250,7 +238,7 @@ public class GameEngine implements IGameEngine
 	//
 	
 	// Initialize LWJGL and create a display w/ opengl 3.2 context
-	protected void	SetupOpenGLDisplay(int width, int height) throws Exception
+	protected void	SetupDisplay(int width, int height) throws Exception
 	{
 		LogMessage("SetupDisplay");
 		
@@ -270,24 +258,30 @@ public class GameEngine implements IGameEngine
 		LogMessage("SetupDisplay: Testing OpenGL, got version: " + 
 				glGetInteger(GL_MAJOR_VERSION) + "." + glGetInteger(GL_MINOR_VERSION));
 		
-	}
-	
-	protected void 	InitOpenGLTextureEngine() throws Exception
-	{
-		textureEngine_ = new GLTextureEngine();
+		// opengl texture engine
+		textureEngine_ = new GLTextureEngine(width,height);
 		textureEngine_.Init(this);
 	}
 	
 	protected void	ShutdownDisplay()
 	{
 		LogMessage("ShutdownDisplay");
+		textureEngine_.Quit();
 		Display.destroy();
 	}
 	
-	
-	protected void	SetupOpenAL() throws Exception
+	protected void	SetupAudio() throws Exception
 	{
-		//
+		try 
+		{
+			InitOpenALAudioEngine();
+		}
+		catch (Exception e)
+		{
+			LogMessage(e.getMessage());
+			LogMessage("Falling back to NullAudioEngine.");
+			InitNullAudioEngine();
+		}
 	}
 	
 	protected void 	InitOpenALAudioEngine() throws Exception
@@ -298,10 +292,14 @@ public class GameEngine implements IGameEngine
 	protected void 	InitNullAudioEngine()
 	{
 		audioEngine_ = new NullAudioEngine();
-		audioEngine_.Init();
+		audioEngine_.Init(this);
 	}
 	
-	
+	protected void	ShutdownAudio()
+	{
+		LogMessage("ShutdownAudio");
+		audioEngine_.Quit();
+	}
 }
 
 

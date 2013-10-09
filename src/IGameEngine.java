@@ -59,8 +59,15 @@ public interface IGameEngine
 	// Input
 	//
 	
+	// Return mouse coordinates within the window in pixels, with (0,0) located at the bottom-left corner.
 	public int GetMouseX();
 	public int GetMouseY();
 	
-	public boolean	IsKeyPressed(int key);
+	// Returns the mouse buttons pressed/released this frame;
+	// positive values indicate pressed buttons, negative values are released buttons.
+	public int[] GetMouseEvents();
+	
+	// Returns the keys pressed/released this frame;
+	// positive key values indicate pressed keys, negative values are released keys.
+	public int[] GetKeyEvents();
 }

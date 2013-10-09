@@ -38,12 +38,13 @@ public class GLTextureEngine implements ITextureEngine
 	// ITextureEngine interface methods
 	//
 	
-	public void	Init(IGameEngine system)
+	public void	Init(IGameEngine system) throws Exception
 	{
 		system_ = system;
 		system_.LogMessage("GLTextureEngine::Init");
 		
 		// init gl resources
+		SetupShaders();
 	}
 	
 	public void	Quit()
@@ -67,13 +68,15 @@ public class GLTextureEngine implements ITextureEngine
 	protected int			displayWidth_;
 	protected int			displayHeight_;
 	
+	protected int			shaderProgramId_;
+	
 	
 	
 	//
 	// protected methods
 	//
 	
-	protected void	SetupShaders()
+	protected void	SetupShaders() throws Exception
 	{
 		String VertexShader = 
 			
@@ -118,6 +121,74 @@ public class GLTextureEngine implements ITextureEngine
 			"	gl_FragColor = texture2D(uTexSampler, vTexCoord);	\n" +
 			
 			"}														\n";
+		
+		//
+	}
+	
+	protected int	CreateShaderProgram(String vertShader, String fragShader) throws Exception
+	{
+		int vertexShaderId;
+		int fragmentShaderId;
+		int programId;
+		int logLength;
+		String programLog;
+		
+		vertexShaderId = CreateShaderObject(vertShader, GL_VERTEX_SHADER);
+		fragmentShaderId = CreateShaderObject(fragShader, GL_FRAGMENT_SHADER);
+		
+		programId = glCreateProgram();
+		
+		if (programId == 0)
+		{
+			glDeleteShader(vertexShaderId);
+			glDeleteShader(fragmentShaderId);
+			throw new Exception("GLTextureEngine::CreateShaderProgram: Failed to create shader program.");
+		}
+		
+		glAttachShader(programId, vertexShaderId);
+		glAttachShader(programId, fragmentShaderId);
+		
+		glLinkProgram(programId);
+		
+		if (glGetProgrami(programId, GL_LINK_STATUS) == GL_FALSE)
+		{
+			logLength = glGetProgrami(programId, GL_INFO_LOG_LENGTH);
+			programLog = glGetProgramInfoLog(programId, logLength);
+			
+			throw new Exception(
+					"GLTextureEngine::CreateShaderProgram: Failed to link program: "+programLog);
+		}
+		
+		return programId;
+	}
+	
+	protected int	CreateShaderObject(String source, int type) throws Exception
+	{
+		int shaderId;
+		int logLength;
+		String shaderLog;
+		
+		shaderId = glCreateShader(type);
+		
+		if (shaderId == 0)
+		{
+			throw new Exception(
+				"GLTextureEngine::CreateShaderObject: Failed to create shader ("+type+").");
+		}
+		
+		glShaderSource(shaderId, source);
+		glCompileShader(shaderId);
+		
+		if (glGetShaderi(shaderId, GL_COMPILE_STATUS) == GL_FALSE)
+		{
+			logLength = glGetShaderi(shaderId, GL_INFO_LOG_LENGTH);
+			shaderLog = glGetShaderInfoLog(shaderId, logLength);
+			
+			throw new Exception(
+				"GLTextureEngine::CreateShaderObject: Failed to compile shader ("+type+"): "+shaderLog);
+		}
+		
+		return shaderId;
 	}
 }
 
