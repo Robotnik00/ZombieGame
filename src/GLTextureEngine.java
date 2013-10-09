@@ -8,6 +8,13 @@
  */
 
 // imports
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL31.*;
+import static org.lwjgl.opengl.GL32.*;
 
 
 
@@ -18,9 +25,11 @@
 
 public class GLTextureEngine implements ITextureEngine
 {
-	public GLTextureEngine()
+	public GLTextureEngine(int displayWidth, int displayHeight)
 	{
 		system_ = null;
+		displayWidth_ = displayWidth;
+		displayHeight_ = displayHeight;
 	}
 	
 	
@@ -55,6 +64,9 @@ public class GLTextureEngine implements ITextureEngine
 	
 	protected IGameEngine	system_;
 	
+	protected int			displayWidth_;
+	protected int			displayHeight_;
+	
 	
 	
 	//
@@ -69,7 +81,7 @@ public class GLTextureEngine implements ITextureEngine
 			"attribute vec2 aVertPos;			\n" +	// vertex position
 			"uniform mat4	uModel;				\n" +	// model transformation matrix (rotate+scale sprite)
 			"uniform mat4	uView;				\n" +	// view transformation (move into camera space)
-			"uniform mat4	uPer;				\n" +	// perspective transformation (orthographic for 2d)
+			"uniform mat4	uPerspective;		\n" +	// perspective transformation (orthographic for 2d)
 			
 			// texture coordinate variables
 			"attribute vec2 aTexCoord;			\n" +	// texture coordinate
@@ -82,7 +94,7 @@ public class GLTextureEngine implements ITextureEngine
 			"void main() {																\n" +
 			
 				// Transform the vertex position (model,view,perspective), assign to output
-			"	gl_Position = uPer * uView * uModel * vec4(aVertPos, 0.0, 1.0);			\n" +
+			"	gl_Position = uPerspective * uView * uModel * vec4(aVertPos, 0.0, 1.0);	\n" +
 				
 				// Transform the texture coordinates for drawing part of a texture
 			"	vTexCoord = vec2( uTexModel * vec4(aTexCoord, 0.0, 1.0) );				\n" +

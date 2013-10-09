@@ -15,7 +15,7 @@ public class NullAudioEngine implements IAudioEngine
 	public void	Init(IGameEngine system)
 	{
 		system_ = system;
-		system_.LogMessage("NullAudioEngine::Init);
+		system_.LogMessage("NullAudioEngine::Init");
 	}
 	
 	public void	Quit()
@@ -25,7 +25,7 @@ public class NullAudioEngine implements IAudioEngine
 	
 	public ISound LoadSound(String filename)
 	{
-		//
+		return new NullSound();
 	}
 	
 	//
