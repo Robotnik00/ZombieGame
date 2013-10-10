@@ -63,7 +63,7 @@ public class GameEngine implements IGameEngine
 	// Static methods
 	//
 	
-	public static void Main(String[] args)
+	public static void main(String[] args)
 	{
 		try
 		{
@@ -93,7 +93,7 @@ public class GameEngine implements IGameEngine
 		SetupAudio();
 		
 		// start initial gamestate
-		ChangeGameState(new TestState());
+		ChangeGameState(new StartGame());
 		
 		// run the game loop
 		GameLoop();
@@ -222,7 +222,7 @@ public class GameEngine implements IGameEngine
 	protected IAudioEngine		audioEngine_;
 	
 	protected IGameState		currentState_;
-	protected boolean			runGame_;
+	protected boolean			runGame_=true;
 	
 	protected int				framesPerTick_;
 	
@@ -299,6 +299,38 @@ public class GameEngine implements IGameEngine
 	{
 		LogMessage("ShutdownAudio");
 		audioEngine_.Quit();
+	}
+
+
+
+	@Override
+	public int GetMouseX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public int GetMouseY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public int[] GetMouseEvents() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public int[] GetKeyEvents() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 
