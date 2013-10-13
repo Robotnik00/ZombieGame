@@ -1,5 +1,8 @@
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.lwjgl.util.vector.Matrix3f;
+import org.lwjgl.util.vector.Vector2f;
+
 
 // I think this is how I do this... 
 // This is the state when the user actually starts playing the game, not when the user 
@@ -8,6 +11,7 @@ public class StartGame implements IGameState
 {
 	public StartGame()
 	{
+		
 		gameObjs = new CopyOnWriteArrayList<GameObject>();
 		GameObject obj1 = new GameObject();
 		GameObject obj2 = new GameObject();
@@ -19,17 +23,23 @@ public class StartGame implements IGameState
 		
 		
 		
-		obj1.setRotation((float)Math.PI/2); // test rotation
-		obj2.setRotation((float)Math.PI/2); 
+		obj1.rotate((float)Math.PI/4); // test rotation
+		obj2.rotate((float)Math.PI/2); 
 	
 		obj1.normalizeRotationMatrix();
 		obj2.normalizeRotationMatrix();
 		
 		System.out.printf("\n---------------testing transforms---------------\n");
-		System.out.printf("obj1: \n%s\n", obj1.getGlobalTransform().toString());
+		System.out.printf("obj1: \n%s\n", obj1.getLocalTransform().toString());
 		System.out.printf("obj2: \n%s", obj2.getGlobalTransform().toString());
 		System.out.printf("---------------testing transforms---------------\n\n");
 		
+		
+
+		PhysicsObject obj3 = new PhysicsObject();
+		gameObjs.add(obj3);
+		obj3.applyForce(new Vector2f(1,0));
+		obj3.applyTorque(.1f);
 	}
 	@Override
 	public void Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game) {
@@ -37,7 +47,7 @@ public class StartGame implements IGameState
 		this.gfx  = gfx;
 		this.snd  = snd;
 		this.game = game;
-		game.EndGameLoop(); // quits immediately.
+		//game.EndGameLoop(); // quits immediately.
 	}
 
 	@Override
@@ -50,11 +60,15 @@ public class StartGame implements IGameState
 	@Override
 	public void Update() {
 		// TODO Auto-generated method stub]
+
+		notifyCollisions();
 		
 		for(int i = 0; i < gameObjs.size(); i++)
 		{
-			gameObjs.get(i).update(1/25); // 25 fps?
+			gameObjs.get(i).update((float)1/25); // 25 fps?
+			System.out.printf("%d:\n%s\n", i, gameObjs.get(i).getGlobalTransform().toString());
 		}
+		
 	}
 
 	@Override
@@ -66,6 +80,11 @@ public class StartGame implements IGameState
 		}
 	}
 
+	// will notify all objects that are colliding with each other
+	public void notifyCollisions()
+	{
+	}
+	
 	ITextureEngine	gfx;
 	IAudioEngine	snd;
 	IGameEngine		game;

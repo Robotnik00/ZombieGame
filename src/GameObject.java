@@ -1,5 +1,6 @@
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Matrix2f;
 import org.lwjgl.util.vector.Matrix3f;
 
@@ -11,29 +12,21 @@ import org.lwjgl.util.vector.Matrix3f;
 // display not working yet, but math seems to work.
 public class GameObject 
 {
-
 	public GameObject()
 	{
 		// set up default tranformation matrix (loc: 0,0 rot: 0)
 		transform = new Matrix3f();
 		transform.setIdentity();
 		
-		
 		parent = null;
 		children = new CopyOnWriteArrayList<GameObject>();
-		texture = null;
+		texture = null; // no default texture
+		boundingBox = new Rectangle();
 	}
 	
 	// updates the obj and its children's position
 	public void update(float deltaT)
 	{
-		if(texture != null)
-		{
-			// need to think about this.
-//			texture.SetPos(getGlobalX(), getGlobalY());
-//			texture.SetRotation(r);
-//			texture.SetScale(sx, sy);
-		}
 		updateChildren(deltaT);
 		updateThis(deltaT);
 	}
@@ -56,8 +49,17 @@ public class GameObject
 	// draws this object and its children
 	public void draw()
 	{
-		drawChildren();
+		if(texture != null)
+		{
+			// need to think about this.
+			float x = getGlobalX();
+			float y = getGlobalY();			
+			texture.SetPos(x/640, y/480);
+			//texture.SetRotation((float)Math.atan2(y, x)); // not right. ill do it later.
+			texture.SetScale(1, 1); // for now...
+		}
 		drawThis();
+		drawChildren();
 	}
 	// draw children
 	protected void drawChildren()
@@ -91,6 +93,10 @@ public class GameObject
 	public void setParent(GameObject parent)
 	{
 		this.parent = parent;
+	}
+	public GameObject getParent()
+	{
+		return this.parent;
 	}
 	// removes this from the parent
 	public void removeParent()
@@ -150,7 +156,7 @@ public class GameObject
 	{
 		return transform.m20;
 	}
-	// get x relative to parent
+	// get y relative to parent
 	public float getLocalY()
 	{
 		return transform.m21;
@@ -173,7 +179,7 @@ public class GameObject
 		return clonedTransform;
 	}
 	
-	// gets location relative to the 'Universe' origin
+	// gets rotation relative to the 'Universe' origin
 	public Matrix2f getGlobalRotationMatrix()
 	{
 		Matrix2f rotMat = getLocalRotationMatrix();
@@ -201,7 +207,7 @@ public class GameObject
 	// gets x relative to 'Universe'
 	public float getGlobalX()
 	{
-		return getGlobalTransform().m02;
+		return getGlobalTransform().m20;
 	}
 	// gets y relatice to 'Universe'
 	public float getGlobalY()
@@ -219,6 +225,7 @@ public class GameObject
 		rotMat.m11 = (float)Math.cos(angle);
 		Matrix2f.mul(rotMat, getLocalRotationMatrix(), rotMat);
 		setRotationMatrix(rotMat);
+		normalizeRotationMatrix();
 	}
 	// translate object by (x,y)
 	public void translate(float x, float y)
@@ -239,7 +246,61 @@ public class GameObject
 		rotMat.m11 /= determinate;
 		setRotationMatrix(rotMat);
 	}
+	public void setBoundingBox(Rectangle box)
+	{
+		boundingBox = box;
+	}
+	public Rectangle getBoundingBox()
+	{
+		return boundingBox;
+	}
+	// checks if this object is a child of obj
+	public boolean isChildOf(GameObject obj)
+	{
+		if(obj == parent)
+		{
+			return true;
+		}
+		else if(parent == null)
+		{
+			return false;
+		}
+		return parent.isChildOf(obj); // is obj parent of parent?
+	}
 	
+	// this will be called in the update loop if this is colliding with obj
+	public void processCollision(GameObject obj)
+	{
+		if(!isChildOf(obj)) // if object is colliding with a parent of itself than do nothing
+		{
+			processChildrenCollisions(obj);
+			processThisCollision(obj);
+		}
+	}
+	// process all of the children's collisions
+	protected void processChildrenCollisions(GameObject obj)
+	{
+		for(int i = 0; i < children.size(); i++)
+		{
+			children.get(i).processCollision(obj);
+		}
+	}
+	// process this object's collision 
+	protected void processThisCollision(GameObject obj)
+	{
+		
+	}
+	// used to check if an object is colliding with another object
+	// an object is colliding with another object if any of its children's boundingBox 
+	// intersects with any of obj's children's bounding box
+	protected boolean isCollidingWith(GameObject obj)
+	{
+		
+		return false;
+	}
+	
+	
+	Rectangle boundingBox;
 	
 	// transformation matrix for 2d transformations
 	Matrix3f transform; // location/orientation/scale of obj relative to parent
@@ -253,4 +314,5 @@ public class GameObject
 	
 	// children of this object
 	CopyOnWriteArrayList<GameObject> children;
+	
 }
