@@ -1,8 +1,16 @@
+
+
+package GameObjects;
+
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Matrix2f;
 import org.lwjgl.util.vector.Matrix3f;
+
+import TextureEngine.GLTexture;
+
+
 
 // other objects in the game can extend from this. 
 // Example1: Cat could extend this to load a texture of a Cat

@@ -18,6 +18,9 @@
  *	These are the functions that each gamestate is allowed to use to control the overall program.
  */
 
+package Engine;
+
+import GameStates.IGameState;
 
 public interface IGameEngine
 {

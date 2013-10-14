@@ -1,3 +1,7 @@
+
+package GameObjects;
+
+
 import org.lwjgl.util.vector.Vector2f;
 
 // this class is a GameObject that updates its position based on

@@ -14,6 +14,10 @@
 /*	IAudioEngine
  * 
  */
+package AudioEngine;
+
+import Engine.IGameEngine;
+
 
 public interface IAudioEngine
 {

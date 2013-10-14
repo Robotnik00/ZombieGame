@@ -17,6 +17,7 @@
  *
  *	These are created and returned by an ITextureEngine, which actually manages OpenGL resources.
  */
+package TextureEngine;
 
 public class GLTexture implements ITexture
 {

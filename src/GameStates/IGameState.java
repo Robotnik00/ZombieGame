@@ -31,6 +31,11 @@
  * 	be able to separate drawing and update logic, and interpolate inbetween frames for smoother animation on faster
  * 	computers.
  */
+package GameStates;
+
+import AudioEngine.IAudioEngine;
+import Engine.IGameEngine;
+import TextureEngine.ITextureEngine;
 
 public interface IGameState
 {

@@ -14,6 +14,8 @@
 /*	ISound
  * 
  */
+package AudioEngine;
+
 
 public interface ISound
 {

@@ -6,6 +6,7 @@
  * 	GameEngine.java
  * 		Main game controller object implementation.	
  */
+package Engine;
 
 import java.util.*;
 import java.text.*;
@@ -16,6 +17,13 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
+
+import AudioEngine.IAudioEngine;
+import AudioEngine.NullAudioEngine;
+import GameStates.IGameState;
+import GameStates.StartGame;
+import TextureEngine.GLTextureEngine;
+import TextureEngine.ITextureEngine;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -30,6 +38,7 @@ import static org.lwjgl.opengl.GL32.*;
  * 	The actual game controller object implementation. This class creates and initializes resource systems (texture and
  * 	audio engines), the display itself, and manages gamestates.
  */
+
 
 public class GameEngine implements IGameEngine
 {
@@ -302,7 +311,14 @@ public class GameEngine implements IGameEngine
 	protected void 	InitNullAudioEngine()
 	{
 		audioEngine_ = new NullAudioEngine();
-		audioEngine_.Init(this);
+		try 
+		{
+			audioEngine_.Init(this);
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	protected void	ShutdownAudio()

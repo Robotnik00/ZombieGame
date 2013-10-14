@@ -9,6 +9,12 @@
 
 // imports
 
+package GameStates;
+
+import AudioEngine.IAudioEngine;
+import Engine.IGameEngine;
+import TextureEngine.ITextureEngine;
+
 public class TestState implements IGameState
 {
 	public TestState()

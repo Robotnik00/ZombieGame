@@ -16,6 +16,10 @@
  * 	Interface to a texture resource management class. 
  */
 
+package TextureEngine;
+
+import Engine.IGameEngine;
+
 public interface ITextureEngine
 {
 	// Initializes the display window and graphics libraries.

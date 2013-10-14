@@ -23,6 +23,8 @@
  *	right/top edge. Rotations are specified in radians.
  */
 
+package TextureEngine;
+
 public interface ITexture
 {
 	// Texture information

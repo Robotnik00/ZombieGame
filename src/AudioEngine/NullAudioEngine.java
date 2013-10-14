@@ -9,6 +9,10 @@
  */
 
 // imports
+package AudioEngine;
+
+import Engine.IGameEngine;
+
 
 public class NullAudioEngine implements IAudioEngine
 {
@@ -32,5 +36,6 @@ public class NullAudioEngine implements IAudioEngine
 	//
 	//
 	
-	protected IGameEngine	system_;	
+	protected IGameEngine	system_;
+
 }
