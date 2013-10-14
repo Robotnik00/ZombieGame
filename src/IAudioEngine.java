@@ -17,7 +17,7 @@
 
 public interface IAudioEngine
 {
-	public void		Init(IGameEngine system);
+	public void		Init(IGameEngine system) throws Exception;
 	public void		Quit();
 	public ISound	LoadSound(String filename);
 }
