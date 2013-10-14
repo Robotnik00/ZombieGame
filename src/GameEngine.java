@@ -205,6 +205,16 @@ public class GameEngine implements IGameEngine
 		System.out.println("[" + sf.format(date) + "] " + message);
 	}
 	
+	public int	GetScreenWidth()
+	{
+		return SCREEN_WIDTH;
+	}
+	
+	public int	GetScreenHeight()
+	{
+		return SCREEN_HEIGHT;
+	}
+	
 	// time
 	
 	public long	GetTime()

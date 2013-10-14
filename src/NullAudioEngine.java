@@ -12,7 +12,7 @@
 
 public class NullAudioEngine implements IAudioEngine
 {
-	public void	Init(IGameEngine system)
+	public void	Init(IGameEngine system) throws Exception
 	{
 		system_ = system;
 		system_.LogMessage("NullAudioEngine::Init");

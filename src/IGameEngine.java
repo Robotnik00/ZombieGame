@@ -48,6 +48,10 @@ public interface IGameEngine
 	// Log a text message to the standard output stream, with an added timestamp
 	public void	LogMessage(String message);
 	
+	// screen size in pixels
+	public int	GetScreenWidth();
+	public int	GetScreenHeight();
+	
 	//
 	// Time
 	//
