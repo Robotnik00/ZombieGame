@@ -1,12 +1,12 @@
 package ObjectControllers;
 
-import Engine.IGameEngine;
 import GameObjects.PhysicsObject;
+import GameStates.IGameState;
 
 // an abstract class for controlling PhysicsObjects
 public abstract class ObjectController 
 {
-	public ObjectController(PhysicsObject obj, IGameEngine eng)
+	public ObjectController(PhysicsObject obj, IGameState eng)
 	{
 		this.obj = obj;
 		this.eng = eng;
@@ -16,5 +16,5 @@ public abstract class ObjectController
 	public abstract void controlObject();
 	
 	PhysicsObject obj; 
-	IGameEngine eng; 
+	IGameState eng; 
 }
