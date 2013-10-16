@@ -138,7 +138,7 @@ public class GameEngine implements IGameEngine
 	
 		while (runGame_)// && !Display.isCloseRequested())
 		{
-			LogMessage("Loop");
+			//LogMessage("Loop");
 			
 			// Is the display requesting to be closed?
 			if (Display.isCloseRequested() == true)
@@ -160,7 +160,7 @@ public class GameEngine implements IGameEngine
 				// update
 				currentState_.Update();
 				updates++;
-				LogMessage("Update");
+				//LogMessage("Update");
 				
 				// update frame rate counter
 				framesPerTick_ = frames;
@@ -179,9 +179,11 @@ public class GameEngine implements IGameEngine
 			// use this value to interpolate graphics between frames
 			frameDelta = (float)(GetTime() + TICK_LENGTH - next_tick) / (float)TICK_LENGTH;
 			currentState_.Draw(frameDelta);
-			Display.update();
 			frames++;
-			LogMessage("Draw");
+			//LogMessage("Draw");
+			
+			// swap buffers, update the screen, update LWJGL
+			Display.update();
 		}
 	}
 	
