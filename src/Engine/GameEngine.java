@@ -10,6 +10,7 @@ package Engine;
 
 import java.util.*;
 import java.text.*;
+//import java.util.ArrayList;
 
 import org.lwjgl.Sys;
 import org.lwjgl.LWJGLException;
@@ -17,6 +18,8 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.input.Keyboard;
 
 import AudioEngine.IAudioEngine;
 import AudioEngine.NullAudioEngine;
@@ -231,6 +234,81 @@ public class GameEngine implements IGameEngine
 		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
 	
+	// input
+	
+	@Override
+	public int GetMouseX() {
+		// TODO Auto-generated method stub
+		return Mouse.getX();
+	}
+
+	@Override
+	public int GetMouseY() {
+		// TODO Auto-generated method stub
+		return Mouse.getY();
+	}
+
+	@Override
+	public int[] GetMouseEvents() 
+	{
+		// can't use native data types on containers, that would be too simple.
+		ArrayList<Integer> events = new ArrayList<Integer>();
+		
+		while (Mouse.next())
+		{
+			// pressed = positive button id
+			// released = negative button id
+			// add 1 because 0 is neither +/-
+			
+			if (Mouse.getEventButtonState())	// pressed
+			{	
+				events.add(Mouse.getEventButton()+1);
+			}
+			else // released
+			{
+				events.add(-(Mouse.getEventButton()+1));
+			}
+		}
+		
+		// pack button events into array
+		int[] buttons = new int [events.size()];
+		
+		for (int i=0; i < events.size(); i++)
+		{
+			buttons[i] = events.get(i);
+		}
+		
+		return buttons;
+	}
+
+	@Override
+	public int[] GetKeyEvents() 
+	{
+		ArrayList<Integer> events = new ArrayList<Integer>();
+		
+		while (Keyboard.next())
+		{
+			if (Keyboard.getEventKeyState())	// pressed
+			{
+				// pressed = positive id
+				// released = negative id
+				
+				events.add(Keyboard.getEventKey());
+			}
+			else // released
+			{
+				events.add(-Keyboard.getEventKey());
+			}
+		}
+		
+		// pack button events into array
+		int[] buttons = new int [events.size()];
+		
+		for (int i=0; i < events.size(); i++)
+			buttons[i] = events.get(i);
+		
+		return buttons;
+	}
 	
 	
 	//
@@ -329,35 +407,7 @@ public class GameEngine implements IGameEngine
 
 
 
-	@Override
-	public int GetMouseX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-
-
-	@Override
-	public int GetMouseY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-
-	@Override
-	public int[] GetMouseEvents() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	@Override
-	public int[] GetKeyEvents() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
 
 
