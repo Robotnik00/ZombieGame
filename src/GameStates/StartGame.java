@@ -62,7 +62,7 @@ public class StartGame implements IGameState
 		GameObject obj1 = new GameObject();
 		universe.addChild(obj1);
 		
-		Physics physics = new Physics(obj1, game, (float)1/25);
+		Physics physics = new Physics(obj1, /*game,*/ (float)1/25);
 		
 		obj1.addAction(physics);
 		
