@@ -8,10 +8,10 @@ import GameObjects.GameObject;
 // makes a GameObject behave like a PhysicsObject. This is a better way to do it.
 public class Physics implements Action
 {
-	public Physics(GameObject obj, IGameEngine eng, float deltaT)
+	// takes in a deltaT so that if the update rate changes objects will still move at same speed
+	public Physics(GameObject obj, float deltaT)
 	{
 		this.obj = obj;
-		this.eng = eng;
 		this.deltaT = deltaT;		
 		translationalVelocity = new Vector2f();
 		rotationalVelocity = 0;
@@ -107,7 +107,6 @@ public class Physics implements Action
 	float frictionConstant = 1;
 	float rotationalFrictionConstant = 1;
 	GameObject obj;
-	IGameEngine eng;
 	
 	float deltaT;
 	
