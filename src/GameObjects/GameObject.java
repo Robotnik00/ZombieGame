@@ -38,7 +38,7 @@ public class GameObject
 	// updates the obj and its children's position
 	public void update()
 	{
-		System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
+		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
 		for(int i = 0; i < actions.size(); i++)
 		{
 			actions.get(i).performAction();
