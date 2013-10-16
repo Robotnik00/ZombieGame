@@ -1,4 +1,3 @@
-// not using anymore. use Physics in Package Actions
 
 package GameObjects;
 
