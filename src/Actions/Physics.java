@@ -1,38 +1,33 @@
-
-package GameObjects;
-
+package Actions;
 
 import org.lwjgl.util.vector.Vector2f;
 
-// this class is a GameObject that updates its position based on
-// forces, velocity, and friction.
-// note: 1. somewhat tested, but needs to be tested more once display works.
-//     	 2. collisions not implemented yet, cause im still thinking about them.
+import Engine.IGameEngine;
+import GameObjects.GameObject;
 
-@Deprecated // love doing this
-public class PhysicsObject extends GameObject
+// makes a GameObject behave like a PhysicsObject. This is a better way to do it.
+public class Physics implements Action
 {
-	public PhysicsObject()
+	public Physics(GameObject obj, IGameEngine eng, float deltaT)
 	{
-		super();
+		this.obj = obj;
+		this.eng = eng;
+		this.deltaT = deltaT;		
 		translationalVelocity = new Vector2f();
 		rotationalVelocity = 0;
 		appliedForce = new Vector2f();
 		appliedTorque = 0;
 		
 	}
-	
-	// updates the object's position based on velocity and applied force.
-	/*@Override
-	protected void updateThis(float deltaT)
-	{
-		// rotational stuff
+	@Override
+	public void performAction() 
+	{		
 		float frictionTorque = rotationalVelocity * rotationalFrictionConstant;
 		float effectiveTorque = appliedTorque - frictionTorque;
 		float deltaRotVel = effectiveTorque / momentOfInertia * deltaT;
 		rotationalVelocity += deltaRotVel;
 		float deltaAngle = rotationalVelocity * deltaT;
-		rotate(deltaAngle);
+		obj.rotate(deltaAngle);
 		//
 		
 		// translational stuff
@@ -47,10 +42,9 @@ public class PhysicsObject extends GameObject
 		Vector2f.add(deltaV, translationalVelocity, translationalVelocity);
 		Vector2f deltaX = new Vector2f(translationalVelocity);
 		deltaX.scale(deltaT);
-		this.translate(deltaX.x, deltaX.y);
-		//
-	}*/
-	
+		obj.translate(deltaX.x, deltaX.y);
+		
+	}
 	public void setAppliedForce(Vector2f force)
 	{
 		this.appliedForce = force;
@@ -101,12 +95,6 @@ public class PhysicsObject extends GameObject
 		return appliedTorque;
 	}
 	
-	@Override 
-	protected void processThisCollision(GameObject obj)
-	{
-		// still thinking of best way to do this.
-	}
-	
 	Vector2f translationalVelocity;
 	Vector2f appliedForce;
 	
@@ -118,4 +106,9 @@ public class PhysicsObject extends GameObject
 	
 	float frictionConstant = 1;
 	float rotationalFrictionConstant = 1;
+	GameObject obj;
+	IGameEngine eng;
+	
+	float deltaT;
+	
 }

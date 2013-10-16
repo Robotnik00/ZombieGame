@@ -1,14 +1,15 @@
-
+// not using anymore. use Physics in Package Actions
 
 package GameObjects;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
 
 import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Matrix2f;
 import org.lwjgl.util.vector.Matrix3f;
 
-import TextureEngine.GLTexture;
+import Actions.Action;
+import TextureEngine.ITexture;
 
 
 
@@ -22,34 +23,41 @@ public class GameObject
 {
 	public GameObject()
 	{
-		// set up default tranformation matrix (loc: 0,0 rot: 0)
+		// set up default transformation matrix (loc: 0,0 rot: 0)
 		transform = new Matrix3f();
 		transform.setIdentity();
 		
+		actions = new ArrayList<Action>();
+		
 		parent = null;
-		children = new CopyOnWriteArrayList<GameObject>();
+		children = new ArrayList<GameObject>();
 		texture = null; // no default texture
 		boundingBox = new Rectangle();
 	}
 	
 	// updates the obj and its children's position
-	public void update(float deltaT)
+	public void update()
 	{
-		updateChildren(deltaT);
-		updateThis(deltaT);
+		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
+		for(int i = 0; i < actions.size(); i++)
+		{
+			actions.get(i).performAction();
+		}
+		updateChildren();
+		updateThis();
 	}
 	
 	// update children's position
-	protected void updateChildren(float deltaT)
+	protected void updateChildren()
 	{
 		for(int i = 0; i < children.size(); i++)
 		{
-			children.get(i).update(deltaT);
+			children.get(i).update();
 		}
 	}
 	
 	// decides how to update the position of the object
-	protected void updateThis(float deltaT)
+	protected void updateThis()
 	{
 		
 	}
@@ -306,6 +314,14 @@ public class GameObject
 		
 		return false;
 	}
+	public void addAction(Action action)
+	{
+		actions.add(action);
+	}
+	public void removeAction(Action action)
+	{
+		actions.remove(action);
+	}
 	
 	
 	Rectangle boundingBox;
@@ -315,12 +331,13 @@ public class GameObject
 	
 	
 	// I think this is used to draw objects...
-	GLTexture texture;
+	ITexture texture;
 	
 	// parent of this object
 	GameObject parent;
 	
 	// children of this object
-	CopyOnWriteArrayList<GameObject> children;
+	ArrayList<Action> actions;
+	ArrayList<GameObject> children;
 	
 }
