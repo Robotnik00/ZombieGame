@@ -179,6 +179,7 @@ public class GameEngine implements IGameEngine
 			// use this value to interpolate graphics between frames
 			frameDelta = (float)(GetTime() + TICK_LENGTH - next_tick) / (float)TICK_LENGTH;
 			currentState_.Draw(frameDelta);
+			Display.update();
 			frames++;
 			LogMessage("Draw");
 		}
