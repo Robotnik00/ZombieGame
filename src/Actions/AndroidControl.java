@@ -3,7 +3,7 @@ package Actions;
 import Engine.IGameEngine;
 import GameObjects.GameObject;
 
-public class AndroidControl extends Physics
+public class AndroidControl extends PhysicsObjectController
 {
 
 	public AndroidControl(GameObject obj, IGameEngine eng, float deltaT) 
