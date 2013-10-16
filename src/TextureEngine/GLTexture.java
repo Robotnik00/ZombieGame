@@ -7,6 +7,8 @@
  * 		OpenGL texture display class	
  */
 
+package TextureEngine;
+
 // imports
 
 
@@ -17,11 +19,48 @@
  *
  *	These are created and returned by an ITextureEngine, which actually manages OpenGL resources.
  */
-package TextureEngine;
+
 
 public class GLTexture implements ITexture
 {
-	public GLTexture() {}
+	// lots of gl information must be passed
+	public GLTexture(
+			int width, int height,							// texture name
+			String name,									// resource name
+			int textureId,									// texture id
+			int quadBufferId, int quadIndexBufferId,		// vertex buffer objects
+			int shaderProgramId, 							// shader program
+			int attribPosition, /*int attribTexCoord,*/ 	// shader attribute arrays for position
+			int uModel, int uView, int uPerspective,		// position transformation matrix uniforms (mat3)
+			int uTexModel, 									// texture transformation matrix uniform (mat3)
+			int uSampler,									// texture sampler2d uniform		
+			int uAlphaMul, int uBlendColor, int uBlendMul) 	// alpha and blending functions, and blend color
+	{
+		width_ 	= width;
+		height_ = height;
+		name_ 	= name;
+		
+		textureId_ 	= textureId;
+		
+		quadBufferId_ 		= quadBufferId;
+		quadIndexBufferId_ 	= quadIndexBufferId;
+		
+		shaderProgramId_ 	= shaderProgramId;
+		attribPosition_ 	= attribPosition;
+		uModel_				= uModel;
+		uView_				= uView;
+		uPerspective_		= uPerspective;
+		uTexModel_			= uTexModel;
+		uSampler_			= uSampler;
+		uAlphaMul_			= uAlphaMul;
+		uBlendColor_		= uBlendColor;
+		uBlendMul_			= uBlendMul;
+	}
+	
+	public String	GetTextureName()
+		{return name_;}
+	public int		GetTextureId()
+		{return textureId_;}
 	
 	//
 	// interface methods
@@ -60,22 +99,35 @@ public class GLTexture implements ITexture
 	//
 	
 	// texture information
-	protected int	width_, height_;
+	protected int			width_, height_;
+	protected String		name_;
 	
-	// GL information
-	protected int	textureId_;
-	// other texture stuff? VBOs, index array, etc.
-	protected int	shaderId_;
-	// shader variables/uniforms
+	// texture
+	protected int			textureId_;
+	// buffers
+	protected int			quadBufferId_;
+	protected int			quadIndexBufferId_;
+	// shader variables
+	protected int			shaderProgramId_;
+	protected int			attribPosition_;
+	protected int			attribTexCoord_;
+	protected int			uModel_;
+	protected int			uView_;
+	protected int			uPerspective_;
+	protected int			uTexModel_;
+	protected int			uSampler_;
+	protected int			uAlphaMul_;
+	protected int			uBlendColor_;
+	protected int			uBlendMul_;
 	
 	// drawing parameters
-	protected float	x_, y_;
-	protected float	u1_, v1_, u2_, v2_;
-	protected float sx_, sy_;
-	protected float ox_, oy_;
-	protected float rad_;
-	protected float a_;
-	protected float strength_, r_, g_, b_;
+	protected float			x_, y_;
+	protected float			u1_, v1_, u2_, v2_;
+	protected float 		sx_, sy_;
+	protected float 		ox_, oy_;
+	protected float 		rad_;
+	protected float 		a_;
+	protected float 		strength_, r_, g_, b_;
 	
 	//
 	// protected methods

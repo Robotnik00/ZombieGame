@@ -32,6 +32,7 @@ public interface ITextureEngine
 	
 	// Load a texture from a file.
 	//	filename	- name of file
-	//	colorkey	- Transparent color of the texture.
+	//	colorkey	- Transparent color of the texture
+	// Colorkey is specified in BGRA format, with B=least sig. 8 bits.
 	public ITexture	LoadTexture(String filename, int colorkey);
 }

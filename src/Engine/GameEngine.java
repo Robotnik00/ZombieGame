@@ -10,7 +10,6 @@ package Engine;
 
 import java.util.*;
 import java.text.*;
-//import java.util.ArrayList;
 
 import org.lwjgl.Sys;
 import org.lwjgl.LWJGLException;
@@ -25,11 +24,10 @@ import AudioEngine.IAudioEngine;
 import AudioEngine.NullAudioEngine;
 import GameStates.IGameState;
 import GameStates.StartGame;
+import GameStates.TestState;
 import TextureEngine.GLTextureEngine;
 import TextureEngine.ITextureEngine;
-
 import static org.lwjgl.opengl.GL11.*;
-
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL32.*;
@@ -97,6 +95,16 @@ public class GameEngine implements IGameEngine
 	public GameEngine(String[] args) throws Exception
 	{
 		// init members
+		textureEngine_		=null;
+		audioEngine_		=null;
+		currentState_		=null;
+		runGame_			=true;
+		framesPerTick_		=0;
+		displayWidth_		=0;
+		displayHeight_		=0;
+		
+		// copy arguments
+		arguments_ = args;
 		
 		// setup window w/LWJGL, init opengl
 		SetupDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -104,15 +112,18 @@ public class GameEngine implements IGameEngine
 		// init audio
 		SetupAudio();
 		
+		// other stuff
+		Mouse.create();
+		Keyboard.create();
+		
 		// start initial gamestate
-		ChangeGameState(new StartGame());
+		ChangeGameState(new TestState());
 		
 		// run the game loop
 		GameLoop();
 		
 		// clean up resources (tex, audio, etc)
-		textureEngine_.Quit();
-		audioEngine_.Quit();
+		ShutdownAudio();
 		ShutdownDisplay();
 	}
 	
@@ -125,8 +136,18 @@ public class GameEngine implements IGameEngine
 		long next_tick = GetTime();
 		IGameState thisState = null;
 	
-		while (runGame_)
+		while (runGame_)// && !Display.isCloseRequested())
 		{
+			LogMessage("Loop");
+			
+			// Is the display requesting to be closed?
+			if (Display.isCloseRequested() == true)
+			{
+				LogMessage("GameEngine::GameLoop: Display close requested, ending game loop.\n");
+				EndGameLoop();
+				return;
+			}
+			
 			// Keep track of the current state at the start of the tick, to check for state changes later.
 			// ChangeGameState does not call the new state Update, 
 			// so if the current state changes during this tick, a frame should not be drawn.
@@ -139,6 +160,7 @@ public class GameEngine implements IGameEngine
 				// update
 				currentState_.Update();
 				updates++;
+				LogMessage("Update");
 				
 				// update frame rate counter
 				framesPerTick_ = frames;
@@ -158,6 +180,7 @@ public class GameEngine implements IGameEngine
 			frameDelta = (float)(GetTime() + TICK_LENGTH - next_tick) / (float)TICK_LENGTH;
 			currentState_.Draw(frameDelta);
 			frames++;
+			LogMessage("Draw");
 		}
 	}
 	
@@ -169,6 +192,8 @@ public class GameEngine implements IGameEngine
 	
 	public void	ChangeGameState(IGameState state)
 	{
+		LogMessage("GameEngine::ChangeGameState: Switching contexts...");
+		
 		// stop the old state
 		if (currentState_ != null)
 			currentState_.Quit();
@@ -176,6 +201,8 @@ public class GameEngine implements IGameEngine
 		// initialize and store the new one
 		state.Init(textureEngine_, audioEngine_, this);
 		currentState_ = state;
+		
+		LogMessage("GameEngine::ChangeGameState: Done.");
 	}
 	
 	public void	EndGameLoop()
@@ -355,6 +382,9 @@ public class GameEngine implements IGameEngine
 		LogMessage("SetupDisplay: Testing OpenGL, got version: " + 
 				glGetInteger(GL_MAJOR_VERSION) + "." + glGetInteger(GL_MINOR_VERSION));
 		
+		// set the viewport to cover the screen area
+		glViewport(0,0,width,height);
+		
 		// opengl texture engine
 		textureEngine_ = new GLTextureEngine(width,height);
 		textureEngine_.Init(this);
@@ -366,6 +396,7 @@ public class GameEngine implements IGameEngine
 		textureEngine_.Quit();
 		Display.destroy();
 	}
+	
 	
 	protected void	SetupAudio() throws Exception
 	{
@@ -404,9 +435,6 @@ public class GameEngine implements IGameEngine
 		LogMessage("ShutdownAudio");
 		audioEngine_.Quit();
 	}
-
-
-
 
 }
 
