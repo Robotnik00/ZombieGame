@@ -15,9 +15,9 @@ import GameObjects.GameObject;
 public class PCControl extends PhysicsObjectController
 {
 
-	public PCControl(GameObject obj, IGameEngine eng, float deltaT) 
+	public PCControl(GameObject obj, IGameEngine eng) 
 	{
-		super(obj, eng, deltaT);
+		super(obj, eng);
 		// TODO Auto-generated constructor stub
 	}
 

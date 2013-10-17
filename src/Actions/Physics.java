@@ -2,26 +2,36 @@ package Actions;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import Engine.GameEngine;
 import Engine.IGameEngine;
 import GameObjects.GameObject;
+import GameStates.IGameState;
 
 // makes a GameObject behave like a PhysicsObject. This is a better way to do it.
 public class Physics implements Action
 {
 	// takes in a deltaT so that if the update rate changes objects will still move at same speed
-	public Physics(GameObject obj, float deltaT)
+	public Physics(GameObject obj, IGameEngine eng)
 	{
 		this.obj = obj;
-		this.deltaT = deltaT;		
 		translationalVelocity = new Vector2f();
 		rotationalVelocity = 0;
 		appliedForce = new Vector2f();
 		appliedTorque = 0;
+
+		this.eng = eng;
 		
+		deltaT = (float)1/25;
 	}
 	@Override
 	public void performAction() 
 	{		
+		//if(eng instanceof GameEngine) // blah
+		//{
+		//		deltaT = (float)(1/((GameEngine)this.eng).GetFrameRate());
+		//}
+		
+		
 		float frictionTorque = rotationalVelocity * rotationalFrictionConstant;
 		float effectiveTorque = appliedTorque - frictionTorque;
 		float deltaRotVel = effectiveTorque / momentOfInertia * deltaT;
@@ -110,4 +120,5 @@ public class Physics implements Action
 	
 	float deltaT;
 	
+	IGameEngine eng;
 }

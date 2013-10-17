@@ -7,7 +7,7 @@ public class AIControl extends PhysicsObjectController
 {
 
 	public AIControl(GameObject obj, IGameEngine eng, float deltaT) {
-		super(obj, eng, deltaT);
+		super(obj, eng);
 		// TODO Auto-generated constructor stub
 	}
 

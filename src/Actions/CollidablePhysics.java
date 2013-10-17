@@ -1,13 +1,14 @@
 package Actions;
 
+import Engine.IGameEngine;
 import GameObjects.GameObject;
 
 public class CollidablePhysics extends Physics
 {
 
-	public CollidablePhysics(GameObject obj, float deltaT) 
+	public CollidablePhysics(GameObject obj, IGameEngine eng) 
 	{
-		super(obj, deltaT);
+		super(obj, eng);
 		// TODO Auto-generated constructor stub
 	}
 	

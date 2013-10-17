@@ -5,6 +5,7 @@ package GameStates;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import Actions.PCControl;
 import Actions.Physics;
 import AudioEngine.IAudioEngine;
 import Engine.IGameEngine;
@@ -62,11 +63,12 @@ public class StartGame implements IGameState
 		GameObject obj1 = new GameObject();
 		universe.addChild(obj1);
 		
-		Physics physics = new Physics(obj1, /*game,*/ (float)1/25);
+		// hmmm game.GetFrameRate returns 0. 
+		// needs update frequency so when update freq changes
+		// objects still move at same speed
+		PCControl control = new PCControl(obj1, game);
 		
-		obj1.addAction(physics);
-		
-		physics.applyForce(new Vector2f(1,0));
+		obj1.addAction(control);
 	}
 	
 	ITextureEngine	gfx;
