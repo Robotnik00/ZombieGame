@@ -28,7 +28,8 @@ public class Physics implements Action
 	{		
 		//if(eng instanceof GameEngine) // blah
 		//{
-		//		deltaT = (float)(1/((GameEngine)this.eng).GetFrameRate());
+				//deltaT = (float)1/((GameEngine)this.eng).GetFrameRate();
+				//System.out.printf("%f\n", deltaT);
 		//}
 		
 		

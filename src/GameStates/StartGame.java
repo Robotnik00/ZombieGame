@@ -63,7 +63,7 @@ public class StartGame implements IGameState
 		GameObject obj1 = new GameObject();
 		universe.addChild(obj1);
 		
-		// hmmm game.GetFrameRate returns 0. 
+		// hmmm game.GetFrameRate returns draw update freq
 		// needs update frequency so when update freq changes
 		// objects still move at same speed
 		PCControl control = new PCControl(obj1, game);
