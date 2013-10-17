@@ -322,6 +322,22 @@ public class GameObject
 		actions.remove(action);
 	}
 	
+	// gets global transform that if multiplied by this global transform will result in obj's glb transform
+	public Matrix3f getRelativeTransform(GameObject obj)
+	{
+		Matrix3f glbtranthis = getGlobalTransform();
+		Matrix3f glbtranobj  = obj.getGlobalTransform();
+		
+		
+		Matrix3f transform = new Matrix3f();
+		
+		glbtranthis.invert();
+		
+		Matrix3f.mul(glbtranthis, glbtranobj, transform);
+				
+		return transform;
+	}
+	
 	
 	Rectangle boundingBox;
 	
