@@ -21,7 +21,7 @@ public class Physics implements Action
 
 		this.eng = eng;
 		
-		deltaT = (float)1/25;
+		deltaT = (float)1/25; 
 	}
 	@Override
 	public void performAction() 
