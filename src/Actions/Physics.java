@@ -20,7 +20,6 @@ public class Physics implements Action
 		appliedTorque = 0;
 
 		this.eng = eng;
-		
 		deltaT = (float)1/25; 
 	}
 	@Override
@@ -28,8 +27,11 @@ public class Physics implements Action
 	{		
 		//if(eng instanceof GameEngine) // blah
 		//{
-				//deltaT = (float)1/((GameEngine)this.eng).GetFrameRate();
-				//System.out.printf("%f\n", deltaT);
+		//		float tdeltaT =(float)((GameEngine)this.eng).GetFrameRate();
+		//		if(tdeltaT > 0)
+		//		{
+		//			deltaT = 1/tdeltaT;
+		//		}
 		//}
 		
 		
@@ -112,7 +114,7 @@ public class Physics implements Action
 	float appliedTorque;
 	float rotationalVelocity;
 	
-	float mass = 1;
+	float mass = .1f;
 	float momentOfInertia = 1;
 	
 	float frictionConstant = 1;

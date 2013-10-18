@@ -3,8 +3,10 @@ package GameStates;
 
 
 
+import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Vector2f;
 
+import Actions.CollidablePhysics;
 import Actions.PCControl;
 import Actions.Physics;
 import AudioEngine.IAudioEngine;
@@ -15,6 +17,8 @@ import TextureEngine.ITextureEngine;
 
 /// example of making a scene. Contains a single object moving to the right
 
+
+// sets up a test for collision detection. 
 public class StartGame implements IGameState
 {
 	public StartGame()
@@ -44,7 +48,6 @@ public class StartGame implements IGameState
 	public void Update() {
 		// TODO Auto-generated method stub]
 		universe.update();
-		
 	}
 
 	@Override
@@ -55,18 +58,38 @@ public class StartGame implements IGameState
 	public void notifyCollisions()
 	{
 	}
-	
+
+	// sets up an enviroment with to collidable objects
 	public void buildUniverse()
 	{
 		universe = new GameObject();
 		
-		GameObject obj1 = new GameObject();
+		obj1 = new GameObject();
+		obj1.setCollidable(true); // only objects at the root of a subtree of collidable things are actually set collidable
+		obj1.translate(-25, 0); // object location
+		obj1.setBoundingBox(new Rectangle(0,0,5,5)); // bounding box
+		obj1.setProxemityBounds(new Rectangle(0,0,20,10)); // "bigger" bounding box
 		universe.addChild(obj1);
+		
+		
+		obj2 = new GameObject();
+		obj2.setCollidable(true);
+		obj2.setBoundingBox(new Rectangle(0,0,5,5));
+		obj2.setProxemityBounds(new Rectangle(0,0,5,5));
+		universe.addChild(obj2);
+		
+		
+		obj3 = new GameObject();
+		obj3.setBoundingBox(new Rectangle(0,0,5,5));
+		obj3.setProxemityBounds(new Rectangle(0,0,5,5));
+		obj1.addChild(obj3);
+		obj3.translate(10, 0);
+		
 		
 		// hmmm game.GetFrameRate returns draw update freq
 		// needs update frequency so when update freq changes
 		// objects still move at same speed
-		PCControl control = new PCControl(obj1, game);
+		PCControl control = new PCControl(obj1, universe, game);
 		
 		obj1.addAction(control);
 	}
@@ -76,6 +99,7 @@ public class StartGame implements IGameState
 	IGameEngine		game;
 	
 	ITexture test;
+	GameObject obj1, obj2, obj3;
 	
 	GameObject universe;
 	

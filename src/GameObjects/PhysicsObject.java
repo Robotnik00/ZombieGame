@@ -1,3 +1,4 @@
+// not using anymore. use Physics in Package Actions
 
 package GameObjects;
 
@@ -101,11 +102,6 @@ public class PhysicsObject extends GameObject
 		return appliedTorque;
 	}
 	
-	@Override 
-	protected void processThisCollision(GameObject obj)
-	{
-		// still thinking of best way to do this.
-	}
 	
 	Vector2f translationalVelocity;
 	Vector2f appliedForce;

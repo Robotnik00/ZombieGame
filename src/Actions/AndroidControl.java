@@ -6,9 +6,9 @@ import GameObjects.GameObject;
 public class AndroidControl extends PhysicsObjectController
 {
 
-	public AndroidControl(GameObject obj, IGameEngine eng, float deltaT) 
+	public AndroidControl(GameObject obj, GameObject universe, IGameEngine eng, float deltaT) 
 	{
-		super(obj, eng);
+		super(obj, universe, eng);
 		// TODO Auto-generated constructor stub
 	}
 

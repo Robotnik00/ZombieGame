@@ -15,9 +15,9 @@ import GameObjects.GameObject;
 public class PCControl extends PhysicsObjectController
 {
 
-	public PCControl(GameObject obj, IGameEngine eng) 
+	public PCControl(GameObject obj, GameObject universe, IGameEngine eng) 
 	{
-		super(obj, eng); 
+		super(obj, universe, eng); 
 		// TODO Auto-generated constructor stub
 	}
 
@@ -29,6 +29,7 @@ public class PCControl extends PhysicsObjectController
 		processKeyEvents();
 		processMouseEvents();
 	}
+	// prob should make an event queue for this
 	public void processKeyEvents()
 	{
 		int keyEvents[] = eng.GetKeyEvents();

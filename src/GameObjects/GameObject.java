@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Matrix2f;
 import org.lwjgl.util.vector.Matrix3f;
+import org.w3c.dom.css.Rect;
+
+import com.sun.corba.se.impl.activation.ORBD;
 
 import Actions.Action;
+import Geometry.OrientedBoundingBox;
 import TextureEngine.ITexture;
 
 
@@ -31,13 +35,28 @@ public class GameObject
 		parent = null;
 		children = new ArrayList<GameObject>();
 		texture = null; // no default texture
-		boundingBox = new Rectangle();
+		proxemity = null;
+		
+		boundingBox = null;
+		
+		collidingObjects = new ArrayList<GameObject>();
 	}
 	
 	// updates the obj and its children's position
 	public void update()
 	{
-		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
+		//boundingBox.transform(getGlobalTransform());
+		
+		float x = getGlobalX();
+		float y = getGlobalY();
+		
+		if(boundingBox != null && proxemity != null)
+		{
+			boundingBox.setLocation((int)x, (int)y);
+			proxemity.setLocation((int)x, (int)y);
+		}
+		
+		System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
 		for(int i = 0; i < actions.size(); i++)
 		{
 			actions.get(i).performAction();
@@ -260,6 +279,7 @@ public class GameObject
 		rotMat.m10 /= determinate;
 		rotMat.m11 /= determinate;
 		setRotationMatrix(rotMat);
+		
 	}
 	public void setBoundingBox(Rectangle box)
 	{
@@ -268,6 +288,14 @@ public class GameObject
 	public Rectangle getBoundingBox()
 	{
 		return boundingBox;
+	}
+	public void setProxemityBounds(Rectangle bounds)
+	{
+		this.proxemity = bounds;
+	}
+	public Rectangle getProxemityBounds()
+	{
+		return proxemity;
 	}
 	// checks if this object is a child of obj
 	public boolean isChildOf(GameObject obj)
@@ -283,36 +311,7 @@ public class GameObject
 		return parent.isChildOf(obj); // is obj parent of parent?
 	}
 	
-	// this will be called in the update loop if this is colliding with obj
-	public void processCollision(GameObject obj)
-	{
-		if(!isChildOf(obj)) // if object is colliding with a parent of itself than do nothing
-		{
-			processChildrenCollisions(obj);
-			processThisCollision(obj);
-		}
-	}
-	// process all of the children's collisions
-	protected void processChildrenCollisions(GameObject obj)
-	{
-		for(int i = 0; i < children.size(); i++)
-		{
-			children.get(i).processCollision(obj);
-		}
-	}
-	// process this object's collision 
-	protected void processThisCollision(GameObject obj)
-	{
-		
-	}
-	// used to check if an object is colliding with another object
-	// an object is colliding with another object if any of its children's boundingBox 
-	// intersects with any of obj's children's bounding box
-	protected boolean isCollidingWith(GameObject obj)
-	{
-		
-		return false;
-	}
+
 	public void addAction(Action action)
 	{
 		actions.add(action);
@@ -322,11 +321,26 @@ public class GameObject
 		actions.remove(action);
 	}
 	
-	// gets global transform that if multiplied by this global transform will result in obj's glb transform
-	public Matrix3f getRelativeTransform(GameObject obj)
+	public ArrayList<GameObject> getChildren()
+	{
+		return children;
+	}
+	public void setCollidable(boolean collidable)
+	{
+		this.collidable = collidable;
+	}
+	public boolean getCollidable()
+	{
+		return collidable;
+	}
+	// gets transform that if multiplied by this transform will result in obj's transform
+	// relative to wrt's coordinate space.
+	// basicly difference in orientation and location of this object to obj with respect to wrt
+	public Matrix3f getRelativeTransform(GameObject obj, GameObject wrt)
 	{
 		Matrix3f glbtranthis = getGlobalTransform();
 		Matrix3f glbtranobj  = obj.getGlobalTransform();
+		Matrix3f glbtranwrt  = wrt.getGlobalTransform();
 		
 		
 		Matrix3f transform = new Matrix3f();
@@ -334,12 +348,21 @@ public class GameObject
 		glbtranthis.invert();
 		
 		Matrix3f.mul(glbtranthis, glbtranobj, transform);
+		
+		transform.invert();
+		
+		Matrix3f.mul(transform, glbtranwrt, transform);
 				
 		return transform;
 	}
 	
 	
-	Rectangle boundingBox;
+	
+	
+	
+	
+	Rectangle proxemity; // if no objects in this area than don't process any children unless it is null
+	Rectangle boundingBox; // if object in this area notify a collision
 	
 	// transformation matrix for 2d transformations
 	Matrix3f transform; // location/orientation/scale of obj relative to parent
@@ -355,4 +378,10 @@ public class GameObject
 	ArrayList<Action> actions;
 	ArrayList<GameObject> children;
 	
+	ArrayList<GameObject> collidingObjects;
+	
+	public static int E_COLLISION = 1;
+	public static int E_PROXEMITY = 2;
+	
+	boolean collidable = false;
 }
