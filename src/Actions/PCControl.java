@@ -5,6 +5,8 @@ import org.lwjgl.util.vector.Vector2f;
 
 import Engine.IGameEngine;
 import GameObjects.GameObject;
+import InputCallbacks.KeyEventListener;
+import InputCallbacks.MouseEventListener;
 
 // should allow for basic wasd movement. no mouse yet. 
 // right now it just adds forces in different directions according to keypresses.
@@ -12,7 +14,7 @@ import GameObjects.GameObject;
 // if only one key is pressed(will fix later). Just testing user input and 
 // adding actions to GameObjects. 
 
-public class PCControl extends PhysicsObjectController
+public class PCControl extends PhysicsObjectController implements KeyEventListener, MouseEventListener
 {
 
 	public PCControl(GameObject obj, GameObject universe, IGameEngine eng) 
@@ -27,7 +29,6 @@ public class PCControl extends PhysicsObjectController
 		super.performAction();
 		
 		processKeyEvents();
-		processMouseEvents();
 	}
 	// prob should make an event queue for this
 	public void processKeyEvents()
@@ -46,7 +47,7 @@ public class PCControl extends PhysicsObjectController
 		}
 	}
 	
-	
+	@Override
 	public void keyPressed(int keyPressed)
 	{
 		if(keyPressed == FORWARD_KEY)
@@ -71,7 +72,7 @@ public class PCControl extends PhysicsObjectController
 		}
 		
 	}
-	
+	@Override
 	public void keyReleased(int keyReleased)
 	{
 		if(keyReleased == FORWARD_KEY)
@@ -95,13 +96,18 @@ public class PCControl extends PhysicsObjectController
 			// not sure yet
 		}
 	}
-	 
-	public void processMouseEvents()
-	{
+	@Override
+	public void buttonPressed(int event) {
+		// TODO Auto-generated method stub
 		
 	}
-	
 
+	@Override
+	public void buttonReleased(int event) {
+		// TODO Auto-generated method stub
+		
+	}
+	 
 	int FORWARD_KEY = Keyboard.KEY_W;
 	int REVERSE_KEY = Keyboard.KEY_S;
 	int LEFT_KEY    = Keyboard.KEY_A;
@@ -109,4 +115,6 @@ public class PCControl extends PhysicsObjectController
 	int ACTION_KEY  = Keyboard.KEY_E;
 	
 	float forceScale = 1; // amount of force to apply
+
+
 }
