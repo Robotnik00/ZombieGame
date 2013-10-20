@@ -47,16 +47,16 @@ public class GameObject
 	{
 		//boundingBox.transform(getGlobalTransform());
 		
-		float x = getGlobalX();
-		float y = getGlobalY();
 		
 		if(boundingBox != null && proxemity != null)
 		{
+			float x = getGlobalX();
+			float y = getGlobalY();
 			boundingBox.setLocation((int)x, (int)y);
 			proxemity.setLocation((int)x, (int)y);
 		}
 		
-		System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
+		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
 		for(int i = 0; i < actions.size(); i++)
 		{
 			actions.get(i).performAction();
