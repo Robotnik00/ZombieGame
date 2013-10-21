@@ -115,7 +115,8 @@ public class GameEngine implements IGameEngine
 		Keyboard.create();
 		
 		// start initial gamestate
-		ChangeGameState(new TestState());
+		//ChangeGameState(new TestState());
+		ChangeGameState(new StartGame());
 		
 		// run the game loop
 		GameLoop();
@@ -268,10 +269,6 @@ public class GameEngine implements IGameEngine
 				return;
 			}
 			
-			// update keyboard and mouse events
-			PumpKeyboardEvents();
-			PumpMouseEvents();
-			
 			// Keep track of the current state at the start of the tick, to check for state changes later.
 			// ChangeGameState does not call the new state Update, 
 			// so if the current state changes during this tick, a frame should not be drawn.
@@ -281,6 +278,10 @@ public class GameEngine implements IGameEngine
 			
 			while (GetTime() > next_tick && updates < MAX_FRAMESKIP)
 			{
+				// update keyboard and mouse events
+				PumpKeyboardEvents();
+				PumpMouseEvents();
+				
 				// update
 				currentState_.Update();
 				updates++;
@@ -330,11 +331,23 @@ public class GameEngine implements IGameEngine
 			}
 		}
 		
+		// don't create an empty array
+		if (events.size() == 0)
+		{
+			events.add(Keyboard.KEY_NONE);
+		}
+		
 		// pack button events into array
 		lastKeyEvents_ = new int [events.size()];
+		//LogMessage("PumpKeyboardEvents: " + events.size() + " events.");
 		
 		for (int i=0; i < events.size(); i++)
+		{
 			lastKeyEvents_[i] = events.get(i);
+			
+			//if (lastKeyEvents_[i] > 0)
+			//	LogMessage("PumpKeyboardEvents: Event " + i + " = " + lastKeyEvents_[i]);
+		}
 	}
 	
 	protected void	PumpMouseEvents()

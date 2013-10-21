@@ -66,7 +66,7 @@ public class StartGame implements IGameState
 		
 		obj1 = new GameObject();
 		obj1.setCollidable(true); // only objects at the root of a subtree of collidable things are actually set collidable
-		obj1.translate(-25, 0); // object location
+		obj1.translate(-0.25f, 0); // object location
 		obj1.setBoundingBox(new Rectangle(0,0,5,5)); // bounding box
 		obj1.setProxemityBounds(new Rectangle(0,0,20,10)); // "bigger" bounding box
 		universe.addChild(obj1);

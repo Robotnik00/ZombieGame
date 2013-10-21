@@ -16,6 +16,8 @@ import Engine.IGameEngine;
 import TextureEngine.ITextureEngine;
 import TextureEngine.ITexture;
 
+import org.lwjgl.input.*;
+
 
 
 public class TestState implements IGameState
@@ -55,8 +57,32 @@ public class TestState implements IGameState
 	public void	Update()
 	{
 		// move toward the mouse
-		x_ = game_.GetMouseX();
-		y_ = game_.GetMouseY();
+		//x_ = game_.GetMouseX();
+		//y_ = game_.GetMouseY();
+		
+		int[] keys = game_.GetKeyEvents();
+		
+		for (int i=0; i < keys.length; i++)
+		{
+			switch (keys[i])
+			{
+			case Keyboard.KEY_W:	moveUp_ = true;			break;
+			case -Keyboard.KEY_W:	moveUp_ = false;		break;
+			case Keyboard.KEY_S:	moveDown_ = true;		break;
+			case -Keyboard.KEY_S:	moveDown_ = false;		break;
+			case Keyboard.KEY_A:	moveLeft_ = true;		break;
+			case -Keyboard.KEY_A:	moveLeft_ = false;		break;
+			case Keyboard.KEY_D:	moveRight_ = true;		break;
+			case -Keyboard.KEY_D:	moveRight_ = false;		break;
+			}
+		}
+		
+		// move
+		float moveSpeed = 0.05f;
+		if (moveUp_)	y_ += moveSpeed;
+		if (moveDown_)	y_ -= moveSpeed;
+		if (moveLeft_)	x_ -= moveSpeed;
+		if (moveRight_)	x_ += moveSpeed;
 	}
 	
 	public void	Draw(float delta)
@@ -70,10 +96,10 @@ public class TestState implements IGameState
 		image_.Draw();
 		
 		// another is drawn at the origin
-		image_.SetScale(0.25f, 0.25f);
-		image_.SetOrigin(-0.5f, -0.5f);
-		image_.SetPos(0.0f, 0.0f);
-		image_.Draw();
+		//image_.SetScale(0.25f, 0.25f);
+		//image_.SetOrigin(-0.5f, -0.5f);
+		//image_.SetPos(0.0f, 0.0f);
+		//image_.Draw();
 	}
 	
 	
@@ -90,6 +116,11 @@ public class TestState implements IGameState
 	
 	protected float				x_,y_;
 	protected float				vx_,vy_;
+	
+	protected boolean			moveUp_;
+	protected boolean			moveDown_;
+	protected boolean			moveLeft_;
+	protected boolean			moveRight_;
 }
 
 
