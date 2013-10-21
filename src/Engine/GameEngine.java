@@ -200,15 +200,15 @@ public class GameEngine implements IGameEngine
 	// input
 	
 	@Override
-	public int GetMouseX()
+	public float GetMouseX()
 	{
-		return Mouse.getX();
+		return lastMousePosition_[0];
 	}
 
 	@Override
-	public int GetMouseY() 
+	public float GetMouseY() 
 	{
-		return Mouse.getY();
+		return lastMousePosition_[1];
 	}
 
 	@Override
@@ -238,6 +238,7 @@ public class GameEngine implements IGameEngine
 	
 	protected String[]			arguments_;
 	
+	protected float[]			lastMousePosition_;
 	protected int[]				lastMouseEvents_;
 	protected int[]				lastKeyEvents_;
 	
@@ -363,6 +364,9 @@ public class GameEngine implements IGameEngine
 		{
 			lastMouseEvents_[i] = events.get(i);
 		}
+		
+		// mouse coordinates
+		lastMousePosition_ = textureEngine_.ScaleWindowCoordinates(Mouse.getX(), Mouse.getY());
 	}
 	
 	// Initialize LWJGL and create a display w/ opengl 3.2 context
@@ -389,8 +393,7 @@ public class GameEngine implements IGameEngine
 		
 		textureEngine_.SetClearColor(0.0f, 0.5f, 1.0f);
 		textureEngine_.SetDrawingArea(0, 0, width, height);
-		textureEngine_.SetOrthoPerspective(-1.0f, 1.0f, 1.0f, -1.0f);
-		//textureEngine_.SetOrthoPerspective(0.0f, 640.0f, 480.0f, 0.0f);
+		textureEngine_.SetOrthoPerspective(-1.0f, 1.0f, -1.0f, 1.0f);
 		
 		textureEngine_.ClearScreen();
 	}

@@ -66,9 +66,9 @@ public interface IGameEngine
 	// Input
 	//
 	
-	// Return mouse coordinates within the window in pixels, with (0,0) located at the bottom-left corner.
-	public int GetMouseX();
-	public int GetMouseY();
+	// Return mouse coordinates scaled by the drawing perspective.
+	public float GetMouseX();
+	public float GetMouseY();
 	
 	// Returns the mouse buttons pressed/released this frame;
 	// positive values indicate pressed buttons, negative values are released buttons.

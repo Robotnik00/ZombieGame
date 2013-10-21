@@ -117,14 +117,14 @@ public class GLTexture implements ITexture
 		// setup model transformation (scaling, rotation, offset)
 		Matrix4f modelT = new Matrix4f();
 		modelT.setIdentity();
-		modelT.translate(new Vector2f(ox_,oy_));
-		
+
 		// adjust for screen aspect ratio (scale vertically)
 		float scale = (float)gfx_.GetScreenWidth() / (float)gfx_.GetScreenHeight();
-		modelT.scale(new Vector3f(1.0f,scale,1.0f));
+		modelT.scale(new Vector3f(sx_,sy_*scale,1.0f));
 		
-		modelT.scale(new Vector3f(sx_,sy_,1.0f));
 		modelT.rotate(rad_, new Vector3f(0.0f, 0.0f, 1.0f));
+		modelT.translate(new Vector2f(ox_,oy_));
+		
 		modelT.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uModel_, false, matrixBuffer_);
 		

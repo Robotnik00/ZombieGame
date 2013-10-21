@@ -59,6 +59,11 @@ public class GLTextureEngine implements ITextureEngine
 		perspectiveT_.setIdentity();
 		
 		textures_		= new ArrayList<GLTexture>();
+		
+		perLeft 		= -1.0f;
+		perRight 		= 1.0f;
+		perBottom 		= -1.0f;
+		perTop 			= 1.0f;
 	}
 	
 	public void	DrawTexture()
@@ -146,7 +151,7 @@ public class GLTextureEngine implements ITextureEngine
 		glViewport(x,y,w,h);
 	}
 	
-	public void	SetOrthoPerspective(float left, float right, float top, float bottom)
+	public void	SetOrthoPerspective(float left, float right, float bottom, float top)
 	{
 		float near = 1.0f;
 		float far = -1.0f;
@@ -163,6 +168,11 @@ public class GLTextureEngine implements ITextureEngine
 		p.m03 = 0;			p.m13 = 0;			p.m23 = 0;			p.m33 = 1.0f;
 		
 		perspectiveT_ = p;
+		
+		perLeft = left;
+		perRight = right;
+		perBottom = bottom;
+		perTop = top;
 	}
 	
 	// drawing stuff goes here
@@ -290,7 +300,15 @@ public class GLTextureEngine implements ITextureEngine
 		return gltex;
 	}
 	
-	
+	public float[] ScaleWindowCoordinates(int x, int y)
+	{
+		float sx = ((float)x / displayWidth_) * (perRight - perLeft) + perLeft;
+		float sy = ((float)y / displayHeight_) * (perTop - perBottom) + perBottom;
+		float[] result = new float[2];
+		result[0] = sx;
+		result[1] = sy;
+		return result;
+	}
 	
 	//
 	// protected members
@@ -300,6 +318,12 @@ public class GLTextureEngine implements ITextureEngine
 	
 	protected int			displayWidth_;
 	protected int			displayHeight_;
+	
+	// drawing perspective
+	protected float			perLeft;
+	protected float			perRight;
+	protected float			perBottom;
+	protected float			perTop;
 	
 	protected ArrayList<GLTexture>	textures_;
 	

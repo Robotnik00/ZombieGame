@@ -47,7 +47,7 @@ public interface ITextureEngine
 	// Establish the screen coordinate system for 2d drawing operations.
 	//	left,right,top,down	- the coordinate value representing this edge of the screen.
 	// By default, OpenGL assigns -1.0 to the left/bottom edges, and 1.0 to the right/top.
-	public void	SetOrthoPerspective(float left, float right, float top, float bottom);
+	public void	SetOrthoPerspective(float left, float right, float bottom, float top);
 
 	// basic drawing operations
 //	public void SetDrawColor(float r, float g, float b);
@@ -66,4 +66,12 @@ public interface ITextureEngine
 	//	colorkey	- Transparent color of the texture
 	// Colorkey is specified in BGRA format, with B=least sig. 8 bits.
 	public ITexture	LoadTexture(String filename, int colorkey);
+	
+	
+	//
+	// utility functions
+	//
+	
+	// Apply drawing perspective transformations to window coordinates (in pixels).
+	public float[] ScaleWindowCoordinates(int x, int y);
 }
