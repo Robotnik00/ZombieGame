@@ -214,63 +214,13 @@ public class GameEngine implements IGameEngine
 	@Override
 	public int[] GetMouseEvents() 
 	{
-		// can't use native data types on containers, that would be too simple.
-		ArrayList<Integer> events = new ArrayList<Integer>();
-		
-		while (Mouse.next())
-		{
-			// pressed = positive button id
-			// released = negative button id
-			// add 1 because 0 is neither +/-
-			
-			if (Mouse.getEventButtonState())	// pressed
-			{	
-				events.add(Mouse.getEventButton()+1);
-			}
-			else // released
-			{
-				events.add(-(Mouse.getEventButton()+1));
-			}
-		}
-		
-		// pack button events into array
-		int[] buttons = new int [events.size()];
-		
-		for (int i=0; i < events.size(); i++)
-		{
-			buttons[i] = events.get(i);
-		}
-		
-		return buttons;
+		return lastMouseEvents_;
 	}
 
 	@Override
 	public int[] GetKeyEvents() 
 	{
-		ArrayList<Integer> events = new ArrayList<Integer>();
-		
-		while (Keyboard.next())
-		{
-			if (Keyboard.getEventKeyState())	// pressed
-			{
-				// pressed = positive id
-				// released = negative id
-				
-				events.add(Keyboard.getEventKey());
-			}
-			else // released
-			{
-				events.add(-Keyboard.getEventKey());
-			}
-		}
-		
-		// pack button events into array
-		int[] buttons = new int [events.size()];
-		
-		for (int i=0; i < events.size(); i++)
-			buttons[i] = events.get(i);
-		
-		return buttons;
+		return lastKeyEvents_;
 	}
 	
 	
@@ -287,6 +237,9 @@ public class GameEngine implements IGameEngine
 	protected int				framesPerTick_;
 	
 	protected String[]			arguments_;
+	
+	protected int[]				lastMouseEvents_;
+	protected int[]				lastKeyEvents_;
 	
 	
 	
@@ -313,6 +266,10 @@ public class GameEngine implements IGameEngine
 				EndGameLoop();
 				return;
 			}
+			
+			// update keyboard and mouse events
+			PumpKeyboardEvents();
+			PumpMouseEvents();
 			
 			// Keep track of the current state at the start of the tick, to check for state changes later.
 			// ChangeGameState does not call the new state Update, 
@@ -350,6 +307,61 @@ public class GameEngine implements IGameEngine
 			
 			// swap buffers, update the screen, update LWJGL
 			Display.update();
+		}
+	}
+	
+	protected void	PumpKeyboardEvents()
+	{
+		ArrayList<Integer> events = new ArrayList<Integer>();
+		
+		while (Keyboard.next())
+		{
+			if (Keyboard.getEventKeyState())	// pressed
+			{
+				// pressed = positive id
+				// released = negative id
+				
+				events.add(Keyboard.getEventKey());
+			}
+			else // released
+			{
+				events.add(-Keyboard.getEventKey());
+			}
+		}
+		
+		// pack button events into array
+		lastKeyEvents_ = new int [events.size()];
+		
+		for (int i=0; i < events.size(); i++)
+			lastKeyEvents_[i] = events.get(i);
+	}
+	
+	protected void	PumpMouseEvents()
+	{
+		// can't use native data types on containers, that would be too simple.
+		ArrayList<Integer> events = new ArrayList<Integer>();
+		
+		while (Mouse.next())
+		{
+			// pressed = positive button id
+			// released = negative button id
+			// add 1 because 0 is neither +/-
+			if (Mouse.getEventButtonState())	// pressed
+			{	
+				events.add(Mouse.getEventButton()+1);
+			}
+			else // released
+			{
+				events.add(-(Mouse.getEventButton()+1));
+			}
+		}
+		
+		// pack button events into array
+		lastMouseEvents_ = new int [events.size()];
+		
+		for (int i=0; i < events.size(); i++)
+		{
+			lastMouseEvents_[i] = events.get(i);
 		}
 	}
 	

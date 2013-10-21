@@ -119,8 +119,9 @@ public class GLTexture implements ITexture
 		modelT.setIdentity();
 		modelT.translate(new Vector2f(ox_,oy_));
 		
-		// automatically scale from perspective size to pixel size?
-		//modelT.scale(new Vector3f((float)width_,(float)height_,1.0f));
+		// adjust for screen aspect ratio (scale vertically)
+		float scale = (float)gfx_.GetScreenWidth() / (float)gfx_.GetScreenHeight();
+		modelT.scale(new Vector3f(1.0f,scale,1.0f));
 		
 		modelT.scale(new Vector3f(sx_,sy_,1.0f));
 		modelT.rotate(rad_, new Vector3f(0.0f, 0.0f, 1.0f));

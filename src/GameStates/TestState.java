@@ -56,6 +56,7 @@ public class TestState implements IGameState
 		gfx_.ClearScreen();
 		
 		image_.SetPos(-0.5f, -0.5f);
+		image_.SetScale(0.25f, 0.25f);
 		image_.Draw();
 	}
 	
