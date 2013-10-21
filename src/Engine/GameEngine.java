@@ -115,8 +115,8 @@ public class GameEngine implements IGameEngine
 		Keyboard.create();
 		
 		// start initial gamestate
-		//ChangeGameState(new TestState());
-		ChangeGameState(new StartGame());
+		ChangeGameState(new TestState());
+		//ChangeGameState(new StartGame());
 		
 		// run the game loop
 		GameLoop();
@@ -191,6 +191,11 @@ public class GameEngine implements IGameEngine
 		System.out.println("[" + sf.format(date) + "] " + message);
 	}
 		
+	public void	SetWindowTitle(String str)
+	{
+		Display.setTitle(str);
+	}
+	
 	// time
 	
 	public long	GetTime()

@@ -55,6 +55,9 @@ public interface IGameEngine
 	// Log a text message to the standard output stream, with an added timestamp
 	public void	LogMessage(String message);
 	
+	// Set the window title text
+	public void	SetWindowTitle(String str);
+	
 	//
 	// Time
 	//

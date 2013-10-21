@@ -56,10 +56,11 @@ public class TestState implements IGameState
 		
 	public void	Update()
 	{
-		// move toward the mouse
-		//x_ = game_.GetMouseX();
-		//y_ = game_.GetMouseY();
+		// move
+		x_ += vx_; vx_ = 0;
+		y_ += vy_; vy_ = 0;
 		
+		// read input, determine movement vector for this frame
 		int[] keys = game_.GetKeyEvents();
 		
 		for (int i=0; i < keys.length; i++)
@@ -74,15 +75,23 @@ public class TestState implements IGameState
 			case -Keyboard.KEY_A:	moveLeft_ = false;		break;
 			case Keyboard.KEY_D:	moveRight_ = true;		break;
 			case -Keyboard.KEY_D:	moveRight_ = false;		break;
+			
+			case Keyboard.KEY_ESCAPE:	
+				game_.EndGameLoop();
+				break;
 			}
 		}
 		
 		// move
 		float moveSpeed = 0.05f;
-		if (moveUp_)	y_ += moveSpeed;
-		if (moveDown_)	y_ -= moveSpeed;
-		if (moveLeft_)	x_ -= moveSpeed;
-		if (moveRight_)	x_ += moveSpeed;
+		if (moveUp_)	vy_ += moveSpeed;
+		if (moveDown_)	vy_ += -moveSpeed;
+		if (moveLeft_)	vx_ += -moveSpeed;
+		if (moveRight_)	vx_ += moveSpeed;
+		
+		// display the frame rate
+		game_.SetWindowTitle("FPS: "+game_.GetFrameRate());
+		
 	}
 	
 	public void	Draw(float delta)
@@ -92,14 +101,15 @@ public class TestState implements IGameState
 		// have one move with the mouse
 		image_.SetScale(0.25f, 0.25f);
 		image_.SetOrigin(-0.5f, -0.5f);
-		image_.SetPos(x_, y_);
+		image_.SetPos(x_ + vx_*delta, y_ + vy_*delta);
 		image_.Draw();
 		
-		// another is drawn at the origin
-		//image_.SetScale(0.25f, 0.25f);
-		//image_.SetOrigin(-0.5f, -0.5f);
-		//image_.SetPos(0.0f, 0.0f);
-		//image_.Draw();
+		// another is drawn at the origin, and rotates toward the cursor
+		image_.SetScale(0.25f, 0.25f);
+		image_.SetOrigin(-0.5f, -0.5f);
+		image_.SetRotation((float)Math.atan2(y_ + vy_*delta, x_ + vx_*delta));
+		image_.SetPos(0.0f, 0.0f);
+		image_.Draw();
 	}
 	
 	
