@@ -100,8 +100,6 @@ public class GameEngine implements IGameEngine
 		currentState_		=null;
 		runGame_			=true;
 		framesPerTick_		=0;
-		displayWidth_		=0;
-		displayHeight_		=0;
 		
 		// copy arguments
 		arguments_ = args;
@@ -125,66 +123,6 @@ public class GameEngine implements IGameEngine
 		// clean up resources (tex, audio, etc)
 		ShutdownAudio();
 		ShutdownDisplay();
-	}
-	
-	//
-	public void	GameLoop()
-	{
-		int updates = 0;
-		int frames = 0;
-		float frameDelta = 0.0f;
-		long next_tick = GetTime();
-		IGameState thisState = null;
-	
-		while (runGame_)// && !Display.isCloseRequested())
-		{
-			//LogMessage("Loop");
-			
-			// Is the display requesting to be closed?
-			if (Display.isCloseRequested() == true)
-			{
-				LogMessage("GameEngine::GameLoop: Display close requested, ending game loop.\n");
-				EndGameLoop();
-				return;
-			}
-			
-			// Keep track of the current state at the start of the tick, to check for state changes later.
-			// ChangeGameState does not call the new state Update, 
-			// so if the current state changes during this tick, a frame should not be drawn.
-			thisState = currentState_;
-			
-			updates = 0;
-			
-			while (GetTime() > next_tick && updates < MAX_FRAMESKIP)
-			{
-				// update
-				currentState_.Update();
-				updates++;
-				//LogMessage("Update");
-				
-				// update frame rate counter
-				framesPerTick_ = frames;
-				frames = 0;
-				
-				// when is the next update due? if the last update took too long, the loop will iterate again
-				next_tick += TICK_LENGTH;
-			}
-			
-			// skip frame updates this tick if the state was changed;
-			// the new state has not been updated, and the old state will not be able to draw at this point
-			if (thisState != currentState_)
-				continue;
-			
-			// express the current time as a fraction of a tick,
-			// use this value to interpolate graphics between frames
-			frameDelta = (float)(GetTime() + TICK_LENGTH - next_tick) / (float)TICK_LENGTH;
-			currentState_.Draw(frameDelta);
-			frames++;
-			//LogMessage("Draw");
-			
-			// swap buffers, update the screen, update LWJGL
-			Display.update();
-		}
 	}
 	
 	
@@ -216,6 +154,11 @@ public class GameEngine implements IGameEngine
 	
 	// information
 	
+	public int	GetTickFrequency()
+	{
+		return TICKS_PER_SECOND;
+	}
+	
 	public int	GetFrameRate()
 	{
 		// scale up frames per tick to frames per second
@@ -246,17 +189,7 @@ public class GameEngine implements IGameEngine
 		SimpleDateFormat sf = new SimpleDateFormat("HH:mm:ss");
 		System.out.println("[" + sf.format(date) + "] " + message);
 	}
-	
-	public int	GetScreenWidth()
-	{
-		return SCREEN_WIDTH;
-	}
-	
-	public int	GetScreenHeight()
-	{
-		return SCREEN_HEIGHT;
-	}
-	
+		
 	// time
 	
 	public long	GetTime()
@@ -267,14 +200,14 @@ public class GameEngine implements IGameEngine
 	// input
 	
 	@Override
-	public int GetMouseX() {
-		// TODO Auto-generated method stub
+	public int GetMouseX()
+	{
 		return Mouse.getX();
 	}
 
 	@Override
-	public int GetMouseY() {
-		// TODO Auto-generated method stub
+	public int GetMouseY() 
+	{
 		return Mouse.getY();
 	}
 
@@ -353,9 +286,6 @@ public class GameEngine implements IGameEngine
 	
 	protected int				framesPerTick_;
 	
-	protected int				displayWidth_;
-	protected int				displayHeight_;
-	
 	protected String[]			arguments_;
 	
 	
@@ -363,6 +293,65 @@ public class GameEngine implements IGameEngine
 	//
 	// protected methods
 	//
+	
+	protected void	GameLoop()
+	{
+		int updates = 0;
+		int frames = 0;
+		float frameDelta = 0.0f;
+		long next_tick = GetTime();
+		IGameState thisState = null;
+	
+		while (runGame_)// && !Display.isCloseRequested())
+		{
+			//LogMessage("Loop");
+			
+			// Is the display requesting to be closed?
+			if (Display.isCloseRequested() == true)
+			{
+				LogMessage("GameEngine::GameLoop: Display close requested, ending game loop.\n");
+				EndGameLoop();
+				return;
+			}
+			
+			// Keep track of the current state at the start of the tick, to check for state changes later.
+			// ChangeGameState does not call the new state Update, 
+			// so if the current state changes during this tick, a frame should not be drawn.
+			thisState = currentState_;
+			
+			updates = 0;
+			
+			while (GetTime() > next_tick && updates < MAX_FRAMESKIP)
+			{
+				// update
+				currentState_.Update();
+				updates++;
+				//LogMessage("Update");
+				
+				// update frame rate counter
+				framesPerTick_ = frames;
+				frames = 0;
+				
+				// when is the next update due? if the last update took too long, the loop will iterate again
+				next_tick += TICK_LENGTH;
+			}
+			
+			// skip frame updates this tick if the state was changed;
+			// the new state has not been updated, and the old state will not be able to draw at this point
+			if (thisState != currentState_)
+				continue;
+			
+			// express the current time as a fraction of a tick,
+			// use this value to interpolate graphics between frames
+			frameDelta = (float)(GetTime() + TICK_LENGTH - next_tick) / (float)TICK_LENGTH;
+			currentState_.Draw(frameDelta);
+			frames++;
+			//LogMessage("Draw");
+			
+			// swap buffers, update the screen, update LWJGL
+			Display.update();
+		}
+	}
 	
 	// Initialize LWJGL and create a display w/ opengl 3.2 context
 	protected void	SetupDisplay(int width, int height) throws Exception
@@ -374,9 +363,6 @@ public class GameEngine implements IGameEngine
 			.withForwardCompatible(true)
 			.withProfileCore(true);
 		
-		displayWidth_ = width;
-		displayHeight_ = height;
-		
 		// try
 		Display.setDisplayMode(new DisplayMode(width, height));
 		Display.setTitle(GAME_TITLE);
@@ -385,12 +371,16 @@ public class GameEngine implements IGameEngine
 		LogMessage("SetupDisplay: Testing OpenGL, got version: " + 
 				glGetInteger(GL_MAJOR_VERSION) + "." + glGetInteger(GL_MINOR_VERSION));
 		
-		// set the viewport to cover the screen area
-		glViewport(0,0,width,height);
-		
 		// opengl texture engine
-		textureEngine_ = new GLTextureEngine(width,height);
-		textureEngine_.Init(this);
+		textureEngine_ = new GLTextureEngine();
+		textureEngine_.Init(this,width,height);
+		
+		textureEngine_.SetClearColor(0.0f, 0.5f, 1.0f);
+		textureEngine_.SetDrawingArea(0, 0, width, height);
+		textureEngine_.SetOrthoPerspective(-1.0f, 1.0f, 1.0f, -1.0f);
+		//textureEngine_.SetOrthoPerspective(0.0f, 640.0f, 480.0f, 0.0f);
+		
+		textureEngine_.ClearScreen();
 	}
 	
 	protected void	ShutdownDisplay()
@@ -399,7 +389,6 @@ public class GameEngine implements IGameEngine
 		textureEngine_.Quit();
 		Display.destroy();
 	}
-	
 	
 	protected void	SetupAudio() throws Exception
 	{

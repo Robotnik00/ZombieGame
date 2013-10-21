@@ -39,7 +39,11 @@ public interface IGameEngine
 	// information
 	//
 	
+	// Returns the number of gamestate update calls performed in one second.
+	public int	GetTickFrequency();
+	
 	// Returns the estimated frames per second based on the number of frames drawn during the last tick.
+	// Do not use this to adjust game speed!
 	public int	GetFrameRate();
 	
 	// Check for a command line argument. Returns the index of the argument if found, or -1 if not found.
@@ -50,10 +54,6 @@ public interface IGameEngine
 	
 	// Log a text message to the standard output stream, with an added timestamp
 	public void	LogMessage(String message);
-	
-	// screen size in pixels
-	public int	GetScreenWidth();
-	public int	GetScreenHeight();
 	
 	//
 	// Time

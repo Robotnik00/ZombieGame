@@ -37,7 +37,8 @@ public interface ITexture
 	// Drawing parameters
 	
 	// Set drawing position on screen.
-	// Range: [-1.0,1.0] on each axis, with the origin in the center of the screen.
+	// The position varies depending on the orthographic perspective setup given to the ITextureEngine.
+	// Default range: [-1.0,1.0] on each axis, with the origin in the center of the screen.
 	public void SetPos(float x, float y);
 	
 	// Specify a portion of the texture to draw (ignore to draw entire texture).
@@ -58,8 +59,8 @@ public interface ITexture
 	public void SetAlpha(float a);
 	
 	// Blend a color with the texture (color range [0,1]).
-	// Strength is how much to blend [0,1], where the final color = texture*(1-strength) + color*(strength).
-	public void SetBlendColor(float r, float g, float b, float strength);
+	// <blend> is how much to blend [0,1], where the final color = texture*(1-blend) + color*(blend).
+	public void SetBlendColor(float r, float g, float b, float blend);
 	
 	
 	//

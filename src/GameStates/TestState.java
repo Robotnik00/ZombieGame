@@ -14,6 +14,9 @@ package GameStates;
 import AudioEngine.IAudioEngine;
 import Engine.IGameEngine;
 import TextureEngine.ITextureEngine;
+import TextureEngine.ITexture;
+
+
 
 public class TestState implements IGameState
 {
@@ -32,6 +35,8 @@ public class TestState implements IGameState
 		gfx_ = gfx;
 		snd_ = snd;
 		game_ = game;
+		
+		image_ = gfx_.LoadTexture("image.bmp", 0x000000);
 	}
 		
 	public void	Quit()
@@ -41,12 +46,17 @@ public class TestState implements IGameState
 		
 	public void	Update()
 	{
-		//
+		//game_.LogMessage("TestState::Update");
 	}
 	
 	public void	Draw(float delta)
 	{
-		//
+		//game_.LogMessage("TestState::Draw");
+		
+		gfx_.ClearScreen();
+		
+		image_.SetPos(-0.5f, -0.5f);
+		image_.Draw();
 	}
 	
 	
@@ -58,6 +68,8 @@ public class TestState implements IGameState
 	ITextureEngine	gfx_;
 	IAudioEngine	snd_;
 	IGameEngine		game_;
+	
+	ITexture		image_;
 }
 
 
