@@ -51,13 +51,13 @@ public class StartGame implements IGameState
 	}
 
 	@Override
-	public void Draw(float delta) {
+	public void Draw(float delta) 
+	{
+		gfx.ClearScreen();
+		universe.draw();
 	}
 
-	// will notify all objects that are colliding with each other
-	public void notifyCollisions()
-	{
-	}
+
 
 	// sets up an enviroment with to collidable objects
 	public void buildUniverse()
@@ -83,7 +83,7 @@ public class StartGame implements IGameState
 		obj3.setBoundingBox(new Rectangle(0,0,5,5));
 		obj3.setProxemityBounds(new Rectangle(0,0,5,5));
 		obj1.addChild(obj3);
-		obj3.translate(10, 0);
+		obj3.translate(0, 0);
 		
 		
 		// hmmm game.GetFrameRate returns draw update freq
@@ -92,6 +92,10 @@ public class StartGame implements IGameState
 		PCControl control = new PCControl(obj1, universe, game);
 		
 		obj1.addAction(control);
+		
+		test = gfx.LoadTexture("image.bmp", 0x000000);
+		
+		obj1.setTexture(test);
 	}
 	
 	ITextureEngine	gfx;

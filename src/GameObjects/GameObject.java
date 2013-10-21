@@ -87,9 +87,11 @@ public class GameObject
 			// need to think about this.
 			float x = getGlobalX();
 			float y = getGlobalY();			
-			texture.SetPos(x/640, y/480);
-			//texture.SetRotation((float)Math.atan2(y, x)); // not right. ill do it later.
-			texture.SetScale(1, 1); // for now...
+			texture.SetPos(x, y);
+			
+			texture.SetRotation((float)Math.acos(getGlobalRotationMatrix().m00)); // not right. ill do it later.
+			texture.SetScale(0.25f, 0.25f); // for now...
+			texture.Draw();
 		}
 		drawThis();
 		drawChildren();
@@ -356,7 +358,14 @@ public class GameObject
 	}
 	
 	
-	
+	public void setTexture(ITexture tex)
+	{
+		this.texture = tex;
+	}
+	public ITexture getTexture()
+	{
+		return this.texture;
+	}
 	
 	
 	
