@@ -90,8 +90,8 @@ public class GameObject
 			
 			texture.SetRotation((float)Math.acos(getGlobalRotationMatrix().m00)); // not right. ill do it later.
 			texture.SetScale(0.25f, 0.25f); // for now...
+			texture.Draw();
 		}
-		drawThis();
 		drawChildren();
 	}
 	// draw children
@@ -103,14 +103,7 @@ public class GameObject
 		}
 	}
 	
-	// draws this object's texture. (not rly sure if im doing it correctly)
-	protected void drawThis()
-	{
-		if(texture != null)
-		{
-			texture.Draw();
-		}
-	}
+	
 
 	// checks if obj is a root node
 	public boolean isRootNode()
@@ -383,9 +376,7 @@ public class GameObject
 	// children of this object
 	ArrayList<Action> actions;
 	ArrayList<GameObject> children;
-	
-	ArrayList<GameObject> collidingObjects;
-	
+		
 	public static int E_COLLISION = 1;
 	public static int E_PROXEMITY = 2;
 	

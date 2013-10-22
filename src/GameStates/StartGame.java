@@ -71,6 +71,7 @@ public class StartGame implements IGameState
 		gameObj.addAction(control);
 		
 		
+		
 	}
 	ITexture test;
 	
