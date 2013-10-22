@@ -58,7 +58,7 @@ public class CollisionDetection
 			}
 			else // check for collisions between children
 			{
-				System.out.printf("processing children\n");
+				//System.out.printf("processing children\n");
 				for(int i = 0; i < obj1.getChildren().size(); i++) 
 				{
 					if(collidesWith(obj1.getChildren().get(i), obj2))

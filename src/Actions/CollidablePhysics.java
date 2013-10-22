@@ -27,7 +27,7 @@ public class CollidablePhysics extends Physics
 		GameObject[] collisions = CollisionDetection.getCollisions(obj, universe);
 		if(collisions.length > 0)
 		{
-			System.out.printf("collisions\n");
+			//System.out.printf("collisions\n");
 		}
 	}
 	
