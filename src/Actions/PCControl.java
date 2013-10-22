@@ -107,6 +107,15 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void setForceScale(float scale)
+	{
+		this.forceScale = scale;
+	}
+	public float getForceScale()
+	{
+		return forceScale;
+	}
 	 
 	int FORWARD_KEY = Keyboard.KEY_W;
 	int REVERSE_KEY = Keyboard.KEY_S;

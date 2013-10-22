@@ -90,7 +90,30 @@ public class Physics implements Action
 	{
 		this.rotationalVelocity = rotVel;
 	}
-	
+	public void setMass(float mass)
+	{
+		this.mass = mass;
+	}
+	public void setFrictionConstant(float friction)
+	{
+		this.frictionConstant = friction;
+	}
+	public void setRotationalFrictionConstant(float friction)
+	{
+		this.rotationalFrictionConstant = friction;
+	}
+	public float getRotationalFrictionConstant()
+	{
+		return rotationalFrictionConstant;
+	}
+	public float getFrictionConstant()
+	{
+		return frictionConstant;
+	}
+	public float getMass()
+	{
+		return mass;
+	}
 	public float getRotationalVelocity()
 	{
 		return rotationalVelocity;
@@ -114,7 +137,7 @@ public class Physics implements Action
 	float appliedTorque;
 	float rotationalVelocity;
 	
-	float mass = .1f;
+	float mass = 1f;
 	float momentOfInertia = 1;
 	
 	float frictionConstant = 1;
