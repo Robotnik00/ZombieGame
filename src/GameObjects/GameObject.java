@@ -81,7 +81,6 @@ public class GameObject
 	// draws this object and its children
 	public void draw()
 	{
-		System.out.printf("%s\n", texture);
 		if(texture != null)
 		{
 			// need to think about this.
