@@ -7,15 +7,23 @@ WHAT IS DONE (tested and working!):
 * IGamestate management / game loop.
 * Loading and displaying textures (images).
 * Scaling, rotation, translation on textures.
+* Scene graph for representing objects in game (GameObject class)
+* Physics action that can be applied to GameObjects
+* Collisions using bounding volume hierarchy with AABBs 
 
 WORK IN PROGRESS:
 * Alpha transparency and color blending on textures. (jacob)
 * Colorkey transparency on textures. (jacob)
 * Drawing primitive shapes (points, lines, rectangles). (jacob)
+* Collisions with OBB trees. (Jack)
+* Add scaling transform functionality to scene graph (jack)
 
 WHAT NEEDS TO BE DONE:
 * Sound back-end. (jacob)
 * Most game logic [expand on this].
+* Mouse/KeyBoard callback class to register events(like in awt package: KeyListener/MouseListener ect..) (jack)
+* Action to change object's orientation based on mouse loc 
+* Action to control object based on keys pressed.(already have one, but it needs to be revisited)
 
 =====
 Download the LWJGL runtimes, follow the instructions for setting it up with Eclipse.
