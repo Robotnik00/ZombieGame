@@ -38,7 +38,6 @@ public class GameObject
 		
 		boundingBox = null;
 		
-		collidingObjects = new ArrayList<GameObject>();
 	}
 	
 	// updates the obj and its children's position
@@ -82,6 +81,7 @@ public class GameObject
 	// draws this object and its children
 	public void draw()
 	{
+		System.out.printf("%s\n", texture);
 		if(texture != null)
 		{
 			// need to think about this.
@@ -91,7 +91,6 @@ public class GameObject
 			
 			texture.SetRotation((float)Math.acos(getGlobalRotationMatrix().m00)); // not right. ill do it later.
 			texture.SetScale(0.25f, 0.25f); // for now...
-			texture.Draw();
 		}
 		drawThis();
 		drawChildren();
