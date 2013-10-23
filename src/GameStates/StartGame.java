@@ -54,7 +54,7 @@ public class StartGame implements IGameState
 	public void Draw(float delta) 
 	{
 		gfx.ClearScreen();
-		universe.draw();
+		universe.draw(delta);
 	}
 
 

@@ -377,6 +377,7 @@ public class GameObject
 		{
 			return glbVelocity;
 		}
+		Matrix2f.transform(getGlobalRotationMatrix(), glbVelocity, glbVelocity);
 		Vector2f.add(parent.getGlobalTranslationalVelocity(), glbVelocity, glbVelocity);
 		return glbVelocity;
 	}
