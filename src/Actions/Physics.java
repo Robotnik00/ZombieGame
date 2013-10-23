@@ -14,8 +14,6 @@ public class Physics implements Action
 	public Physics(GameObject obj, IGameEngine eng)
 	{
 		this.obj = obj;
-		translationalVelocity = new Vector2f();
-		rotationalVelocity = 0;
 		appliedForce = new Vector2f();
 		appliedTorque = 0;
 
@@ -35,16 +33,16 @@ public class Physics implements Action
 		//}
 		
 		
-		float frictionTorque = rotationalVelocity * rotationalFrictionConstant;
+		float frictionTorque = obj.getRotationalVelocity() * rotationalFrictionConstant;
 		float effectiveTorque = appliedTorque - frictionTorque;
 		float deltaRotVel = effectiveTorque / momentOfInertia * deltaT;
-		rotationalVelocity += deltaRotVel;
-		float deltaAngle = rotationalVelocity * deltaT;
+		obj.setRotationalVelocity(obj.getRotationalVelocity() + deltaRotVel);
+		float deltaAngle = obj.getRotationalVelocity() * deltaT;
 		obj.rotate(deltaAngle);
-		//
+		
 		
 		// translational stuff
-		Vector2f frictionForce = new Vector2f(translationalVelocity);
+		Vector2f frictionForce = new Vector2f(obj.getTranslationalVelocity());
 		frictionForce.scale(frictionConstant);
 		Vector2f effectiveForce = new Vector2f();
 		
@@ -52,8 +50,9 @@ public class Physics implements Action
 		
 		Vector2f deltaV = new Vector2f(effectiveForce);
 		deltaV.scale(deltaT/mass);
-		Vector2f.add(deltaV, translationalVelocity, translationalVelocity);
-		Vector2f deltaX = new Vector2f(translationalVelocity);
+		Vector2f.add(deltaV, obj.getTranslationalVelocity(), obj.getTranslationalVelocity());
+		
+		Vector2f deltaX = new Vector2f(obj.getTranslationalVelocity());
 		deltaX.scale(deltaT);
 		obj.translate(deltaX.x, deltaX.y);
 		
@@ -82,14 +81,7 @@ public class Physics implements Action
 	{
 		appliedTorque -= torque;
 	}
-	public void setTranslationalVelocity(Vector2f velocity)
-	{
-		this.translationalVelocity = velocity;
-	}
-	public void setRotationalVelocity(float rotVel)
-	{
-		this.rotationalVelocity = rotVel;
-	}
+
 	public void setMass(float mass)
 	{
 		this.mass = mass;
@@ -114,14 +106,6 @@ public class Physics implements Action
 	{
 		return mass;
 	}
-	public float getRotationalVelocity()
-	{
-		return rotationalVelocity;
-	}
-	public Vector2f getTranslationalVelocirt()
-	{
-		return translationalVelocity;
-	}
 	public Vector2f getAppliedForce()
 	{
 		return appliedForce;
@@ -130,12 +114,9 @@ public class Physics implements Action
 	{
 		return appliedTorque;
 	}
-	
-	Vector2f translationalVelocity;
 	Vector2f appliedForce;
 	
 	float appliedTorque;
-	float rotationalVelocity;
 	
 	float mass = 1f;
 	float momentOfInertia = 1;

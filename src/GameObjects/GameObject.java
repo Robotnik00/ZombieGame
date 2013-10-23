@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Matrix2f;
 import org.lwjgl.util.vector.Matrix3f;
+import org.lwjgl.util.vector.Vector2f;
 import org.w3c.dom.css.Rect;
 
 //import com.sun.corba.se.impl.activation.ORBD;
@@ -29,7 +30,10 @@ public class GameObject
 		transform = new Matrix3f();
 		transform.setIdentity();
 		
+		velocity = new Vector2f();
+		rotationalVelocity = 0;
 		actions = new ArrayList<Action>();
+		
 		
 		parent = null;
 		children = new ArrayList<GameObject>();
@@ -75,31 +79,32 @@ public class GameObject
 	// decides how to update the position of the object
 	protected void updateThis()
 	{
-		
 	}
 	
 	// draws this object and its children
-	public void draw()
+	public void draw(float delta)
 	{
 		if(texture != null)
 		{
+			// express time in same units as Physics(time seconds).
+			float deltaT = (1/25f)*delta; // this should prob be done in GameEngine
 			// need to think about this.
 			float x = getGlobalX();
-			float y = getGlobalY();			
-			texture.SetPos(x, y);
+			float y = getGlobalY();
+			texture.SetPos(x + getGlobalTranslationalVelocity().x*deltaT, y + getGlobalTranslationalVelocity().y*deltaT);
 			
-			texture.SetRotation((float)Math.acos(getGlobalRotationMatrix().m00)); // not right. ill do it later.
+			texture.SetRotation((float)Math.acos(getGlobalRotationMatrix().m00) + getGlobalRotationalVelocity()*deltaT); // not right. ill do it later.
 			texture.SetScale(0.25f, 0.25f); // for now...
 			texture.Draw();
 		}
-		drawChildren();
+		drawChildren(delta);
 	}
 	// draw children
-	protected void drawChildren()
+	protected void drawChildren(float delta)
 	{
 		for(int i =0; i < children.size(); i++)
 		{
-			children.get(i).draw();
+			children.get(i).draw(delta);
 		}
 	}
 	
@@ -357,6 +362,41 @@ public class GameObject
 	{
 		return this.texture;
 	}
+	public void setTranslationalVelocity(Vector2f velocity)
+	{
+		this.velocity = velocity;
+	}
+	public void setRotationalVelocity(float rotationalVelocity)
+	{
+		this.rotationalVelocity = rotationalVelocity;
+	}
+	public Vector2f getGlobalTranslationalVelocity()
+	{
+		Vector2f glbVelocity = new Vector2f(velocity);
+		if(parent == null)
+		{
+			return glbVelocity;
+		}
+		Vector2f.add(parent.getGlobalTranslationalVelocity(), glbVelocity, glbVelocity);
+		return glbVelocity;
+	}
+	public float getGlobalRotationalVelocity()
+	{
+		float glbRot = rotationalVelocity;
+		if(parent == null)
+		{
+			return glbRot;
+		}
+		return parent.getGlobalRotationalVelocity() + glbRot;
+	}
+	public Vector2f getTranslationalVelocity()
+	{
+		return velocity;
+	}
+	public float getRotationalVelocity()
+	{
+		return rotationalVelocity;
+	}
 	
 	
 	
@@ -376,6 +416,9 @@ public class GameObject
 	// children of this object
 	ArrayList<Action> actions;
 	ArrayList<GameObject> children;
+	
+	Vector2f velocity;
+	float rotationalVelocity;
 		
 	public static int E_COLLISION = 1;
 	public static int E_PROXEMITY = 2;
