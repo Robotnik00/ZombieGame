@@ -405,7 +405,7 @@ public class GLTextureEngine implements ITextureEngine
 		// is it possible to work around them to support a lower opengl version?
 		
 		String TextureVertexShader = 
-			"#version 150							\n" +
+			"#version 330							\n" +
 			// vertex coordinate variables
 			"layout(location=0) in vec2 aPosition;	\n" +	// vertex and texture position
 			// vertex transformations
@@ -425,9 +425,8 @@ public class GLTextureEngine implements ITextureEngine
 			"	vTexCoord = vec2( uTexModel * vec4(aPosition, 1.0, 1.0) );					\n" +
 			"}																				\n";
 		
-		// FIXME: blending, alpha
 		String TextureFragmentShader = 
-			"#version 150						\n" +
+			"#version 330						\n" +
 			// texture coordinate variables
 			"in vec2			vTexCoord;		\n" +	// varying?
 			"uniform sampler2D	uSampler;		\n" +
@@ -435,12 +434,14 @@ public class GLTextureEngine implements ITextureEngine
 			"uniform float		uAlphaMul;		\n" +
 			"uniform vec4		uBlendColor;	\n" +
 			"uniform float		uBlendMul;		\n" +
+			// final color output
+			"out vec4			outputColor;	\n" +
 			// program start
 			"void main() {						\n" +
 				// get the texel at the given texture coord
 			"	vec4 fragColor = texture2D(uSampler, vTexCoord);									\n" +
 			"	fragColor = vec4(mix(vec3(fragColor),vec3(uBlendColor),uBlendMul),fragColor.a);		\n" +
-			"	gl_FragColor = vec4(fragColor.rgb, fragColor.a*uAlphaMul);							\n" +
+			"	outputColor = vec4(fragColor.rgb, fragColor.a*uAlphaMul);							\n" +
 			"}																						\n";
 		
 		tex_programId_ = CreateShaderProgram(TextureVertexShader, TextureFragmentShader);

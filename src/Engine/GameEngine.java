@@ -393,7 +393,7 @@ public class GameEngine implements IGameEngine
 		LogMessage("SetupDisplay");
 		
 		PixelFormat pixelFormat = new PixelFormat();
-		ContextAttribs contextAttribs = new ContextAttribs(3,2)
+		ContextAttribs contextAttribs = new ContextAttribs(3,3)
 			.withForwardCompatible(true)
 			.withProfileCore(true);
 		
