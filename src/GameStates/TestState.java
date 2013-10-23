@@ -43,7 +43,8 @@ public class TestState implements IGameState
 		vx_ = 0;
 		vy_ = 0;
 		
-		image_ = gfx_.LoadTexture("image.bmp", 0x00000000);
+		image1_ = gfx_.LoadTexture("image.bmp", 0x00000000);
+		image2_ = gfx_.LoadTexture("image2.png", 0x0000FFFF);
 		
 		// rescale the drawing perspective
 		//gfx_.SetOrthoPerspective(0, 640, 0, 480);
@@ -98,18 +99,21 @@ public class TestState implements IGameState
 	{
 		gfx_.ClearScreen();
 		
-		// have one move with the mouse
-		image_.SetScale(0.25f, 0.25f);
-		image_.SetOrigin(-0.5f, -0.5f);
-		image_.SetPos(x_ + vx_*delta, y_ + vy_*delta);
-		image_.Draw();
+		// draw at the origin, and rotate toward the cursor
+		image2_.SetSrcRect(0.0f, 0.0f, 2.0f, 2.0f);
+		image2_.SetScale(0.4f, 0.4f);
+		image2_.SetOrigin(-0.5f, -0.5f);
+		image2_.SetRotation((float)Math.atan2(y_ + vy_*delta, x_ + vx_*delta));
+		image2_.SetPos(0.0f, 0.0f);
+		image2_.Draw();
 		
-		// another is drawn at the origin, and rotates toward the cursor
-		image_.SetScale(0.25f, 0.25f);
-		image_.SetOrigin(-0.5f, -0.5f);
-		image_.SetRotation((float)Math.atan2(y_ + vy_*delta, x_ + vx_*delta));
-		image_.SetPos(0.0f, 0.0f);
-		image_.Draw();
+		// controlled by the keyboard
+		image1_.SetScale(0.25f, 0.25f);
+		image1_.SetOrigin(-0.5f, -0.5f);
+		image1_.SetBlendColor(0.0f, 0.0f, 1.0f, 0.5f);
+		image1_.SetAlpha(0.5f);
+		image1_.SetPos(x_ + vx_*delta, y_ + vy_*delta);
+		image1_.Draw();
 	}
 	
 	
@@ -122,7 +126,8 @@ public class TestState implements IGameState
 	protected IAudioEngine		snd_;
 	protected IGameEngine		game_;
 	
-	protected ITexture			image_;
+	protected ITexture			image1_;
+	protected ITexture			image2_;
 	
 	protected float				x_,y_;
 	protected float				vx_,vy_;

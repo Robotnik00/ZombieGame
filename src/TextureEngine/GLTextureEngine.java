@@ -436,11 +436,12 @@ public class GLTextureEngine implements ITextureEngine
 			"uniform vec4		uBlendColor;	\n" +
 			"uniform float		uBlendMul;		\n" +
 			// program start
-			"void main() {											\n" +
-				// write the texel at the given texture coord
-			"	gl_FragColor = texture2D(uSampler, vTexCoord);		\n" +
-		//	"	gl_FragColor = vec4(1.0,1.0,1.0,1.0);				\n" +
-			"}														\n";
+			"void main() {						\n" +
+				// get the texel at the given texture coord
+			"	vec4 fragColor = texture2D(uSampler, vTexCoord);									\n" +
+			"	fragColor = vec4(mix(vec3(fragColor),vec3(uBlendColor),uBlendMul),fragColor.a);		\n" +
+			"	gl_FragColor = vec4(fragColor.rgb, fragColor.a*uAlphaMul);							\n" +
+			"}																						\n";
 		
 		tex_programId_ = CreateShaderProgram(TextureVertexShader, TextureFragmentShader);
 		

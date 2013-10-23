@@ -10,10 +10,9 @@ WHAT IS DONE (tested and working!):
 * Scene graph for representing objects in game (GameObject class)
 * Physics action that can be applied to GameObjects
 * Collisions using bounding volume hierarchy with AABBs 
+* Alpha transparency, color blending, colorkey, drawing a portion of a texture.
 
 WORK IN PROGRESS:
-* Alpha transparency and color blending on textures. (jacob)
-* Colorkey transparency on textures. (jacob)
 * Drawing primitive shapes (points, lines, rectangles). (jacob)
 * Collisions with OBB trees. (Jack)
 * Add scaling transform functionality to scene graph (jack)

@@ -138,7 +138,9 @@ public class GLTexture implements ITexture
 		// texture model
 		Matrix4f texModelT = new Matrix4f();
 		texModelT.setIdentity();
-		// FIXME: do this
+		// purposely different transformation order, because i cannot into math
+		texModelT.translate(new Vector2f(u1_,v1_));
+		texModelT.scale(new Vector3f(u2_-u1_, v2_-v1_,1.0f));
 		texModelT.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uTexModel_, false, matrixBuffer_);
 		
@@ -148,9 +150,12 @@ public class GLTexture implements ITexture
 		//glUniform1i(uSampler_, 0);
 		
 		// fragment shader stuff
-		glUniform1f(uAlphaMul_, alpha_);
 		glUniform1f(uBlendMul_, blend_);
-		glUniform3f(uBlendColor_, r_, g_, b_);
+		glUniform4f(uBlendColor_, r_, g_, b_, 1.0f);
+		
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glUniform1f(uAlphaMul_, alpha_);
 		
 		// finally draw the texture
 		gfx_.DrawTexture();
@@ -158,6 +163,7 @@ public class GLTexture implements ITexture
 		// undo stuff
 		ResetDrawingParams();
 		glUseProgram(0);
+		glDisable(GL_BLEND);
 	}
 
 	//
