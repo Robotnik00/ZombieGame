@@ -20,7 +20,7 @@ public class Physics implements Action
 		appliedTorque = 0;
 
 		this.eng = eng;
-		deltaT = (float)1/25; 
+		deltaT = (float)1/eng.GetTickFrequency(); 
 	}
 	@Override
 	public void performAction() 
