@@ -332,6 +332,7 @@ public class GLTextureEngine implements ITextureEngine
 	
 	// buffers
 	protected int			quadBufferId_;
+	protected int			quadArrayIndex_;
 	protected int			quadIndexBufferId_;
 	
 	// primitive shape shader variables
@@ -405,9 +406,9 @@ public class GLTextureEngine implements ITextureEngine
 		// is it possible to work around them to support a lower opengl version?
 		
 		String TextureVertexShader = 
-			"#version 330							\n" +
+			"#version 150							\n" +
 			// vertex coordinate variables
-			"layout(location=0) in vec2 aPosition;	\n" +	// vertex and texture position
+			"in vec2 aPosition;						\n" +	// vertex and texture position (attrib 0)
 			// vertex transformations
 			"uniform mat4	uModel;					\n" +	// model transformation matrix (rotate+scale sprite)
 			"uniform mat4	uView;					\n" +	// view transformation (move into camera space)
@@ -426,7 +427,7 @@ public class GLTextureEngine implements ITextureEngine
 			"}																				\n";
 		
 		String TextureFragmentShader = 
-			"#version 330						\n" +
+			"#version 150						\n" +
 			// texture coordinate variables
 			"in vec2			vTexCoord;		\n" +	// varying?
 			"uniform sampler2D	uSampler;		\n" +
@@ -444,7 +445,10 @@ public class GLTextureEngine implements ITextureEngine
 			"	outputColor = vec4(fragColor.rgb, fragColor.a*uAlphaMul);							\n" +
 			"}																						\n";
 		
-		tex_programId_ = CreateShaderProgram(TextureVertexShader, TextureFragmentShader);
+		// one length arrays are goofy but support is there for more attribs if needed.
+		String[] vertAttribs = new String[1];
+		vertAttribs[0] = "aPosition";
+		tex_programId_ = CreateShaderProgram(TextureVertexShader, TextureFragmentShader, vertAttribs);
 		
 		// attribs
 		//tex_aPosition_		= glGetAttribLocation(tex_programId_, "aPosition");
@@ -459,7 +463,7 @@ public class GLTextureEngine implements ITextureEngine
 		tex_uBlendMul_		= glGetUniformLocation(tex_programId_, "uBlendMul");
 	}
 	
-	protected int	CreateShaderProgram(String vertShader, String fragShader) throws Exception
+	protected int	CreateShaderProgram(String vertShader, String fragShader, String[] vertAttribNames) throws Exception
 	{
 		int vertexShaderId;
 		int fragmentShaderId;
@@ -477,6 +481,13 @@ public class GLTextureEngine implements ITextureEngine
 			glDeleteShader(vertexShaderId);
 			glDeleteShader(fragmentShaderId);
 			throw new Exception("GLTextureEngine::CreateShaderProgram: Failed to create shader program.");
+		}
+		
+		// bind attrib locations BEFORE linking
+		for (int i=0; i < vertAttribNames.length; i++)
+		{
+			// no error checking, LIVIN ON THE EDGE
+			glBindAttribLocation(vertexShaderId, i, vertAttribNames[i]);
 		}
 		
 		glAttachShader(programId, vertexShaderId);
