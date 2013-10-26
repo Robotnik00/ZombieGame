@@ -99,7 +99,7 @@ public class GameEngine implements IGameEngine
 		audioEngine_		=null;
 		currentState_		=null;
 		runGame_			=true;
-		framesPerTick_		=0;
+		framesPerSecond_	=0;
 		
 		// copy arguments
 		arguments_ = args;
@@ -162,8 +162,7 @@ public class GameEngine implements IGameEngine
 	
 	public int	GetFrameRate()
 	{
-		// scale up frames per tick to frames per second
-		return framesPerTick_ * TICKS_PER_SECOND;
+		return framesPerSecond_;
 	}
 	
 	public int	CheckArguments(String arg)
@@ -240,7 +239,7 @@ public class GameEngine implements IGameEngine
 	protected IGameState		currentState_;
 	protected boolean			runGame_=true;
 	
-	protected int				framesPerTick_;
+	protected int				framesPerSecond_;
 	
 	protected String[]			arguments_;
 	
@@ -256,8 +255,9 @@ public class GameEngine implements IGameEngine
 	
 	protected void	GameLoop()
 	{
-		int updates = 0;
-		int frames = 0;
+		int updates = 0;	// each time update() is called, used for frameskip
+		int frames = 0;		// each time draw() is called
+		int numUpdates=0;	// incremented with update(), frame rate is polled when it hits TICKS_PER_SECOND
 		float frameDelta = 0.0f;
 		long next_tick = GetTime();
 		IGameState thisState = null;
@@ -293,8 +293,13 @@ public class GameEngine implements IGameEngine
 				//LogMessage("Update");
 				
 				// update frame rate counter
-				framesPerTick_ = frames;
-				frames = 0;
+				numUpdates++;
+				if (numUpdates == TICKS_PER_SECOND)
+				{
+					framesPerSecond_ = frames;
+					frames = 0;
+					numUpdates = 0;
+				}
 				
 				// when is the next update due? if the last update took too long, the loop will iterate again
 				next_tick += TICK_LENGTH;
@@ -314,6 +319,7 @@ public class GameEngine implements IGameEngine
 			
 			// swap buffers, update the screen, update LWJGL
 			Display.update();
+			//Display.sync(60);
 		}
 	}
 	

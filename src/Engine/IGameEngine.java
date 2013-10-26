@@ -42,8 +42,7 @@ public interface IGameEngine
 	// Returns the number of gamestate update calls performed in one second.
 	public int	GetTickFrequency();
 	
-	// Returns the estimated frames per second based on the number of frames drawn during the last tick.
-	// Do not use this to adjust game speed!
+	// Returns the number of frames drawn during the last second
 	public int	GetFrameRate();
 	
 	// Check for a command line argument. Returns the index of the argument if found, or -1 if not found.

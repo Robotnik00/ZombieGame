@@ -100,7 +100,7 @@ public class TestState implements IGameState
 		gfx_.ClearScreen();
 		
 		// draw at the origin, and rotate toward the cursor
-		image2_.SetSrcRect(0.25f, 0.25f, 0.75f, 0.75f);
+		//image2_.SetSrcRect(0.25f, 0.25f, 0.75f, 0.75f);
 		image2_.SetScale(0.4f, 0.4f);
 		image2_.SetOrigin(-0.5f, -0.5f);
 		image2_.SetRotation((float)Math.atan2(y_ + vy_*delta, x_ + vx_*delta));

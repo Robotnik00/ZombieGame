@@ -84,22 +84,24 @@ public class GLTextureEngine implements ITextureEngine
 		glUniformMatrix4(tex_uPerspective_, false, matrixBuffer_);
 		
 		// enable and bind the vertex array
+		glBindVertexArray(quadVAOId_);
 		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, quadBufferId_);
 		
 		// attrib 0 is the vertices, each vertex only has 2 components
-		glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
+		//glBindBuffer(GL_ARRAY_BUFFER, quadVBOId_);
+		//glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
 		
 		// bind index buffer
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadIndexBufferId_);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadElementIndexId_);
 		
 		// draw!
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
 		
 		// cleanup
-		glDisableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER,0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+		glDisableVertexAttribArray(0);
+		//glBindBuffer(GL_ARRAY_BUFFER,0);
+		glBindVertexArray(0);
 	}
 	
 	
@@ -310,6 +312,7 @@ public class GLTextureEngine implements ITextureEngine
 		return result;
 	}
 	
+	
 	//
 	// protected members
 	//
@@ -331,9 +334,9 @@ public class GLTextureEngine implements ITextureEngine
 	protected Matrix4f		perspectiveT_;
 	
 	// buffers
-	protected int			quadBufferId_;
-	protected int			quadArrayIndex_;
-	protected int			quadIndexBufferId_;
+	protected int			quadVAOId_;
+	protected int			quadVBOId_;
+	protected int			quadElementIndexId_;
 	
 	// primitive shape shader variables
 	protected int			prim_programId_;
@@ -387,15 +390,28 @@ public class GLTextureEngine implements ITextureEngine
 		indexBuffer.put(quadIndices);
 		indexBuffer.flip();
 		
+		// make a vertex array object
+		quadVAOId_ = glGenVertexArrays();
+		glBindVertexArray(quadVAOId_);
+		
 		// make a vertex buffer for the quad
-		quadBufferId_ = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, quadBufferId_);
+		quadVBOId_ = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBOId_);
+		
+		// fill with data
 		glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
+		
+		// specify data format and attribute location
+		// remember: for 2d we only have 2 components per vertex!
+		glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
+		
+		// unbind stuff
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
 		
 		// make a buffer for the index/element array
-		quadIndexBufferId_ = glGenBuffers();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadIndexBufferId_);
+		quadElementIndexId_ = glGenBuffers();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadElementIndexId_);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBuffer, GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
@@ -446,24 +462,21 @@ public class GLTextureEngine implements ITextureEngine
 			"}																						\n";
 		
 		// one length arrays are goofy but support is there for more attribs if needed.
-		String[] vertAttribs = new String[1];
-		vertAttribs[0] = "aPosition";
-		tex_programId_ = CreateShaderProgram(TextureVertexShader, TextureFragmentShader, vertAttribs);
+		String[] attribs = new String[1];
+		attribs[0] = "aPosition";
+		tex_programId_ = CreateShaderProgram(TextureVertexShader, TextureFragmentShader, attribs);
 		
-		// attribs
-		//tex_aPosition_		= glGetAttribLocation(tex_programId_, "aPosition");
 		// uniforms
 		tex_uModel_			= glGetUniformLocation(tex_programId_, "uModel");
 		tex_uView_			= glGetUniformLocation(tex_programId_, "uView");
 		tex_uPerspective_	= glGetUniformLocation(tex_programId_, "uPerspective");
 		tex_uTexModel_		= glGetUniformLocation(tex_programId_, "uTexModel");
-		//tex_uSampler_		= glGetUniformLocation(tex_programId_, "uSampler");
 		tex_uAlphaMul_		= glGetUniformLocation(tex_programId_, "uAlphaMul");
 		tex_uBlendColor_	= glGetUniformLocation(tex_programId_, "uBlendColor");
 		tex_uBlendMul_		= glGetUniformLocation(tex_programId_, "uBlendMul");
 	}
 	
-	protected int	CreateShaderProgram(String vertShader, String fragShader, String[] vertAttribNames) throws Exception
+	protected int	CreateShaderProgram(String vertShader, String fragShader, String[] attribNames) throws Exception
 	{
 		int vertexShaderId;
 		int fragmentShaderId;
@@ -483,15 +496,16 @@ public class GLTextureEngine implements ITextureEngine
 			throw new Exception("GLTextureEngine::CreateShaderProgram: Failed to create shader program.");
 		}
 		
-		// bind attrib locations BEFORE linking
-		for (int i=0; i < vertAttribNames.length; i++)
-		{
-			// no error checking, LIVIN ON THE EDGE
-			glBindAttribLocation(vertexShaderId, i, vertAttribNames[i]);
-		}
-		
+		// attach shaders to the program
 		glAttachShader(programId, vertexShaderId);
 		glAttachShader(programId, fragmentShaderId);
+		
+		// bind attrib locations BEFORE linking
+		for (int i=0; i < attribNames.length; i++)
+		{
+			// no error checking, LIVIN ON THE EDGE
+			glBindAttribLocation(programId, i, attribNames[i]);
+		}
 		
 		glLinkProgram(programId);
 		
@@ -558,15 +572,22 @@ public class GLTextureEngine implements ITextureEngine
 	{
 		glUseProgram(0);
 		glDeleteProgram(tex_programId_);
-		glDeleteProgram(prim_programId_);
+		//glDeleteProgram(prim_programId_);
 	}
 	
 	protected void	CleanupBuffers()
 	{
+		glBindVertexArray(quadVAOId_);
+		glDisableVertexAttribArray(0);
+		
 		glBindBuffer(GL_ARRAY_BUFFER,0);
-		glDeleteBuffers(quadBufferId_);
+		glDeleteBuffers(quadVBOId_);
+		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-		glDeleteBuffers(quadIndexBufferId_);
+		glDeleteBuffers(quadElementIndexId_);
+		
+		glBindVertexArray(0);
+		glDeleteVertexArrays(quadVAOId_);
 	}
 	
 	protected void	CleanupTextures()
