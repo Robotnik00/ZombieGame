@@ -13,14 +13,15 @@ WHAT IS DONE (tested and working!):
 * Alpha transparency, color blending, colorkey, drawing a portion of a texture.  
 
 WORK IN PROGRESS:  
-* Fixing OpenGL problems, OSX support. (jacob)  
 * Drawing primitive shapes (points, lines, rectangles). (jacob)  
 * Collisions with OBB trees. (Jack)  
+* Mouse/KeyBoard callback class to register events(like in awt package:   KeyListener/MouseListener ect..) (jack)  
+* GUI stuff.
 
 WHAT NEEDS TO BE DONE:  
 * Sound back-end. (jacob)  
 * Most game logic [expand on this].  
-* Mouse/KeyBoard callback class to register events(like in awt package:   KeyListener/MouseListener ect..) (jack)  
+  
 * Action to change object's orientation based on mouse loc   
 * Action to control object based on keys pressed.(already have one, but it needs to be revisited)  
 

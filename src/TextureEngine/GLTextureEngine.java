@@ -210,9 +210,6 @@ public class GLTextureEngine implements ITextureEngine
 		perRight = right;
 		perBottom = bottom;
 		perTop = top;
-		
-		// tell opengl to not deal with perspective correct texture mapping
-		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 	}
 	
 	// drawing stuff goes here
@@ -503,7 +500,7 @@ public class GLTextureEngine implements ITextureEngine
 			// program start
 			"void main() {						\n" +
 				// get the texel at the given texture coord
-			"	vec4 fragColor = texture2D(uSampler, vTexCoord);									\n" +
+			"	vec4 fragColor = texture(uSampler, vTexCoord);										\n" +
 			"	fragColor = vec4(mix(vec3(fragColor),vec3(uBlendColor),uBlendMul),fragColor.a);		\n" +
 			"	outputColor = vec4(fragColor.rgb, fragColor.a*uAlphaMul);							\n" +
 			"}																						\n";

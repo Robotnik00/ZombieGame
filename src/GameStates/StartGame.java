@@ -25,6 +25,7 @@ public class StartGame implements IGameState
 	{
 		
 	}
+	
 	@Override
 	public void Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game) {
 		// TODO Auto-generated method stub
