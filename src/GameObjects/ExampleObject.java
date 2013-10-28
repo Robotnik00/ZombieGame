@@ -23,6 +23,7 @@ public class ExampleObject
 		child1 = new GameObject(); // create node
 		child1.translate(1f, 0); // object location
 		node.addChild(child1); // add to node
+		child1.scale(.5f, 1); // scale child1
 		
 		child2 = new GameObject(); // create node
 		child2.translate(0, .7f); // object location
