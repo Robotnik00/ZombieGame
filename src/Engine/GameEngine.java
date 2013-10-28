@@ -116,8 +116,8 @@ public class GameEngine implements IGameEngine
 		Keyboard.create();
 		
 		// start initial gamestate
-		ChangeGameState(new TestState());
-		//ChangeGameState(new StartGame());
+		//ChangeGameState(new TestState());
+		ChangeGameState(new StartGame());
 		
 		// run the game loop
 		GameLoop();

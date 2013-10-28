@@ -103,17 +103,17 @@ public class GLTexture implements ITexture
 	
 	public void Draw(Matrix4f mat)
 	{
-		// what gltexture sets:
-		// program
-		// modelT, viewT, texModelT,
-		// texture id,
-		// alpha+blend stuff
+		// What the drawing state does:
+		// - set shader program
+		// - set blend modes
+		// - bind arrays
+		// - set perspective matrix		
+		// - set texture
+		gfx_.SetTextureDrawingState(textureId_);
 		
-		// what this needs to set:
-		// array and index attribs,
-		// perspectiveT, 
-		
-		glUseProgram(shaderProgramId_);
+		// What does this function need to do:
+		// - set model (supplied), view matrixes
+		// - set shader params (alpha, blend, blend color)
 		
 		// setup model transformation (scaling, rotation, offset)
 		Matrix4f m = new Matrix4f();
@@ -136,42 +136,32 @@ public class GLTexture implements ITexture
 		m.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uTexModel_, false, matrixBuffer_);
 		
-		// texture sampler
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textureId_);
-		//glUniform1i(uSampler_, 0);
-		
-		// fragment shader stuff
+		// shader params
 		glUniform1f(uBlendMul_, blend_);
 		glUniform4f(uBlendColor_, r_, g_, b_, 1.0f);
-		
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniform1f(uAlphaMul_, alpha_);
 		
 		// finally draw the texture
 		gfx_.DrawTexture();
 		
-		// undo stuff
+		// undo some stuff
 		ResetDrawingParams();
-		glUseProgram(0);
-		glDisable(GL_BLEND);
 	}
 	
 	
 	public void Draw()
 	{
-		// what gltexture sets:
-		// program
-		// modelT, viewT, texModelT,
-		// texture id,
-		// alpha+blend stuff
+		// What the drawing state does:
+		// - set shader program
+		// - set blend modes
+		// - bind arrays
+		// - set perspective matrix		
+		// - set texture
+		gfx_.SetTextureDrawingState(textureId_);
 		
-		// what this needs to set:
-		// array and index attribs,
-		// perspectiveT, 
-		
-		glUseProgram(shaderProgramId_);
+		// What does this function need to do:
+		// - set model, view matrixes
+		// - set shader params (alpha, blend, blend color)
 		
 		// setup model transformation (scaling, rotation, offset)
 		Matrix4f m = new Matrix4f();
@@ -198,16 +188,9 @@ public class GLTexture implements ITexture
 		m.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uTexModel_, false, matrixBuffer_);
 		
-		// texture sampler
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textureId_);
-		
 		// fragment shader stuff
 		glUniform1f(uBlendMul_, blend_);
 		glUniform4f(uBlendColor_, r_, g_, b_, 1.0f);
-		
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniform1f(uAlphaMul_, alpha_);
 		
 		// finally draw the texture
@@ -215,8 +198,6 @@ public class GLTexture implements ITexture
 		
 		// undo stuff
 		ResetDrawingParams();
-		glUseProgram(0);
-		glDisable(GL_BLEND);
 	}
 
 	//

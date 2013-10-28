@@ -64,45 +64,80 @@ public class GLTextureEngine implements ITextureEngine
 		perRight 		= 1.0f;
 		perBottom 		= -1.0f;
 		perTop 			= 1.0f;
+		
+		drawingState_	= 0;
+		currentTexture_	= -1;
+	}
+	
+	public void SetTextureDrawingState(int textureId)
+	{
+		if (drawingState_ != 1)
+		{
+			// undo primitives state
+			//UnsetPrimitivesDrawingState();
+			
+			// set program
+			glUseProgram(tex_programId_);
+			
+			// set blend modes
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			
+			// setup vertex buffers
+			glBindVertexArray(quadVAOId_);
+			glEnableVertexAttribArray(0);
+			// bind index buffer
+			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadElementIndexId_);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			
+			// set perspective
+			FloatBuffer matrixBuffer_ = BufferUtils.createFloatBuffer(16);
+			perspectiveT_.store(matrixBuffer_); matrixBuffer_.flip();
+			glUniformMatrix4(tex_uPerspective_, false, matrixBuffer_);
+			
+			drawingState_ = 1;
+		}
+		
+		// set texture
+		if (textureId != currentTexture_)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, textureId);
+			currentTexture_ = textureId;
+		}
+	}
+	
+	public void	UnsetTextureDrawingState()
+	{
+		glDisable(GL_BLEND);
+		
+		glBindTexture(GL_TEXTURE_2D,0);
+		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+		glDisableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER,0);
+		glBindVertexArray(0);
+		
+		currentTexture_ = -1;
+		drawingState_ = 0;
 	}
 	
 	public void	DrawTexture()
 	{
-		// what gltexture sets:
-		// program
-		// modelT, viewT, texModelT,
-		// texture id,
-		// alpha+blend stuff
+		if (drawingState_ == 1)
+		{
+			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		}
 		
-		// what this needs to set:
-		// array and index attribs,
-		// perspectiveT,
-		
-		// perspective
-		FloatBuffer matrixBuffer_ = BufferUtils.createFloatBuffer(16);
-		perspectiveT_.store(matrixBuffer_); matrixBuffer_.flip();
-		glUniformMatrix4(tex_uPerspective_, false, matrixBuffer_);
-		
-		// enable and bind the vertex array
-		glBindVertexArray(quadVAOId_);
-		glEnableVertexAttribArray(0);
-		
-		// attrib 0 is the vertices, each vertex only has 2 components
-		//glBindBuffer(GL_ARRAY_BUFFER, quadVBOId_);
-		//glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
-		
-		// bind index buffer
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadElementIndexId_);
-		
-		// draw!
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
-		
-		// cleanup
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-		glDisableVertexAttribArray(0);
-		//glBindBuffer(GL_ARRAY_BUFFER,0);
-		glBindVertexArray(0);
+		// cleanup is done when states change
 	}
+	
+	// set primitive drawing state
+	
+	// unset primitive drawing state
+	
+	// draw primitive
 	
 	
 	//
@@ -328,6 +363,9 @@ public class GLTextureEngine implements ITextureEngine
 	protected int			displayWidth_;
 	protected int			displayHeight_;
 	
+	protected int			drawingState_;
+	protected int			currentTexture_;
+	
 	// drawing perspective
 	protected float			perLeft;
 	protected float			perRight;
@@ -376,6 +414,9 @@ public class GLTextureEngine implements ITextureEngine
 		float[] quad = {		// vertex coordinates
 				0.0f, 0.0f,		// bottom left		(0)
 				1.0f, 0.0f,		// top left			(1)
+				1.0f, 1.0f,		// top right		(2)
+				//0.0f, 1.0f,		// bottom right		(3)
+				0.0f, 0.0f,		// bottom left		(0)
 				1.0f, 1.0f,		// top right		(2)
 				0.0f, 1.0f		// bottom right		(3)
 		};
