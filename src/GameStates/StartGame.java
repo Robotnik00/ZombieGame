@@ -66,12 +66,7 @@ public class StartGame implements IGameState
 		universe = new GameObject(); // create universe
 		universe.scale(.5f, .5f);
 		
-		ExampleObject obj = new ExampleObject(universe);
-		obj.loadTexture(gfx);
-		PCControl pc = new PCControl(obj.getHandle(), universe, game);
-		obj.addAction(pc);
-		
-		
+		ExampleObject obj = new ExampleObject(universe, game, gfx);
 	}
 	ITexture test;
 	

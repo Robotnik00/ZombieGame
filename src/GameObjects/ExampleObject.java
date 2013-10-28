@@ -5,25 +5,39 @@ import org.lwjgl.util.Rectangle;
 import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
 import Actions.Action;
+import Actions.PCControl;
+import Actions.Physics;
+import Engine.IGameEngine;
 
 // this is an example of how to build an object out nodes
 public class ExampleObject 
 {
-	public ExampleObject(GameObject universe)
+	public ExampleObject(GameObject universe, IGameEngine game, ITextureEngine gfx)
 	{
 		this.universe = universe;
 		
 		handle = new GameObject(); // create node
 		universe.addChild(handle); // add to universe
+		PCControl pc = new PCControl(handle, universe, game);
+		handle.addAction(pc);
 		
 		GameObject node = new GameObject(); // create node for rotating
 		handle.addChild(node); // add it to handle
 		node.rotate((float)Math.PI/4); // rotate it and all of its children
+		node.scale(-1, 1);
+		
+		
+		GameObject child1Node = new GameObject();
+		Physics action = new Physics(child1Node, game);
+		child1Node.addAction(action);
+		action.applyTorque(2f);
+		node.addChild(child1Node);
+		child1Node.translate(1f, 0);
 		
 		child1 = new GameObject(); // create node
-		child1.translate(1f, 0); // object location
-		node.addChild(child1); // add to node
-		child1.scale(.5f, 1); // scale child1
+		child1.translate(-.5f, -.5f); // center on rotating node
+		child1Node.addChild(child1); // add to node
+		child1.scale(.5f, 1); // scale child
 		
 		child2 = new GameObject(); // create node
 		child2.translate(0, .7f); // object location
@@ -32,6 +46,8 @@ public class ExampleObject
 		child3 = new GameObject(); // create node
 		child3.translate(-.4f, 0); // object location
 		node.addChild(child3); // add to node
+		
+		loadTexture(gfx);
 	}
 	public void loadTexture(ITextureEngine gfx) 
 	{
@@ -44,10 +60,6 @@ public class ExampleObject
 		child2.setTexture(tex2); // set texture to draw
 		child3.setTexture(tex3); // set texture to draw
 		
-	}
-	public void addAction(Action action)
-	{
-		handle.addAction(action);
 	}
 	public GameObject getHandle()
 	{
