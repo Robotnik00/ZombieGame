@@ -4,13 +4,10 @@ package GameObjects;
 import java.util.ArrayList;
 
 import org.lwjgl.util.Rectangle;
-import org.lwjgl.util.vector.Matrix2f;
-import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import org.w3c.dom.css.Rect;
 
 //import com.sun.corba.se.impl.activation.ORBD;
 
