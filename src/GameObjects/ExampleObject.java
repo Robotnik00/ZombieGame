@@ -25,7 +25,7 @@ public class ExampleObject
 		
 		GameObject node = new GameObject(); // create node for rotating
 		handle.addChild(node); // add it to handle
-		node.addAction(new MouseTracker(node, game));
+		node.addAction(new MouseTracker(node, game)); 
 		
 		
 		
