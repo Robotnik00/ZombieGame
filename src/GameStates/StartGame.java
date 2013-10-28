@@ -2,14 +2,8 @@
 package GameStates;
 
 
-
-import org.lwjgl.util.Rectangle;
-import org.lwjgl.util.vector.Vector2f;
-
-import Actions.CollidablePhysics;
-import Actions.PCControl;
-import Actions.Physics;
 import AudioEngine.IAudioEngine;
+import Drawing.TileDraw;
 import Engine.IGameEngine;
 import GameObjects.ExampleObject;
 import GameObjects.GameObject;
@@ -65,7 +59,11 @@ public class StartGame implements IGameState
 	public void buildUniverse()
 	{
 		universe = new GameObject(); // create universe
-		universe.scale(.5f, .5f);
+		test = gfx.LoadTexture("image3.bmp", 0);
+		universe.setDrawingInterface(new TileDraw(universe, test));
+		
+		
+		universe.scale(.25f, .25f);
 		
 		ExampleObject obj = new ExampleObject(universe, game, gfx);
 	}

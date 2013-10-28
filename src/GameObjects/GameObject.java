@@ -12,6 +12,7 @@ import org.lwjgl.util.vector.Vector4f;
 //import com.sun.corba.se.impl.activation.ORBD;
 
 import Actions.Action;
+import Drawing.DrawObject;
 import TextureEngine.ITexture;
 
 
@@ -35,6 +36,7 @@ public class GameObject
 		parent = null;
 		children = new ArrayList<GameObject>();
 		texture = null; // no default texture
+		drawing = null;
 		proxemity = null;
 		
 		boundingBox = null;
@@ -93,12 +95,12 @@ public class GameObject
 	// draws this object and its children
 	public void draw(float delta)
 	{
-		if(texture != null)
+		if(drawing != null)
 		{
 			// express time in same units as Physics(time seconds).
 			float deltaT = delta * (1/25f); // this should prob be done in GameEngine
 			
-			Matrix4f glbInterpolator = getGlobalTransform(this.interpolator);
+			/*Matrix4f glbInterpolator = getGlobalTransform(this.interpolator);
 			
 			Vector4f glbVelocity = getGlobalVelocity();
 			glbVelocity.scale(deltaT);
@@ -109,7 +111,9 @@ public class GameObject
 			
 			glbInterpolator.translate(deltaX);
 			
-			texture.Draw(glbInterpolator);
+			texture.Draw(glbInterpolator);*/
+			drawing.draw(deltaT);
+			
 		}
 		drawChildren(delta);
 	}
@@ -334,19 +338,42 @@ public class GameObject
 		{
 			return glbVelocity;
 		}
-		Matrix4f.transform(getGlobalTransform(transform), glbVelocity, glbVelocity);
+		Matrix4f transform = getGlobalTransform(this.transform);
+		transform.m30 = 0;
+		transform.m31 = 0;
+		Matrix4f.transform(transform, glbVelocity, glbVelocity);
 		
 		Vector4f.add(parent.getGlobalVelocity(), glbVelocity, glbVelocity);
 		
 		return glbVelocity;
 	}
-	
+	public Matrix4f getInterpolator()
+	{
+		return interpolator;
+	}
 	public void scale(float x, float y)
 	{
 		Matrix4f scale = new Matrix4f();
 		scale.scale(new Vector3f(x,y,1));
 		Matrix4f.mul(scale, transform, transform);
 	}
+	public void setDrawingInterface(DrawObject idrawing)
+	{
+		drawing = idrawing;
+	}
+	
+	public float getGlobalOrientation()
+	{
+		Vector4f xaxis = new Vector4f(1,0,0,0);
+		Matrix4f tranform = getGlobalTransform(this.transform);
+		
+		
+		Matrix4f.transform(tranform, xaxis, xaxis);
+		
+		return (float)Math.atan2(xaxis.y, xaxis.x);
+	}
+	
+	
 	
 	Rectangle proxemity; // if no objects in this area than don't process any children unless it is null
 	Rectangle boundingBox; // if object in this area notify a collision
@@ -357,6 +384,9 @@ public class GameObject
 	
 	// I think this is used to draw objects...
 	ITexture texture;
+	
+	DrawObject drawing;
+	
 	
 	// parent of this object
 	GameObject parent;
