@@ -71,6 +71,7 @@ public class GLTexture implements ITexture
 		blend_= 0.0f; r_= 0.0f; g_= 0.0f; b_= 0.0f;
 		
 		matrixBuffer_		= BufferUtils.createFloatBuffer(16);
+		vectorUp_			= new Vector3f(0.0f,0.0f,1.0f);
 	}
 	
 	public String	GetTextureName()
@@ -99,6 +100,7 @@ public class GLTexture implements ITexture
 		{ alpha_ = a; }
 	public void SetBlendColor(float r, float g, float b, float strength)
 		{ r_ = r; g_ = g; b_ = b; blend_ = strength; }
+	
 	public void Draw(Matrix4f mat)
 	{
 		// what gltexture sets:
@@ -114,26 +116,24 @@ public class GLTexture implements ITexture
 		glUseProgram(shaderProgramId_);
 		
 		// setup model transformation (scaling, rotation, offset)
-		Matrix4f modelT = new Matrix4f();
-		modelT.setIdentity();
-		
-		modelT.load(mat);
-		
-		modelT.store(matrixBuffer_); matrixBuffer_.flip();
+		Matrix4f m = new Matrix4f();
+		m.setIdentity();
+		m.load(mat);
+		m.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uModel_, false, matrixBuffer_);
 		
-		Matrix4f viewT = new Matrix4f();
-		viewT.setIdentity();
-		viewT.store(matrixBuffer_); matrixBuffer_.flip();
+		//Matrix4f viewT = new Matrix4f();
+		m.setIdentity();
+		m.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uView_, false, matrixBuffer_);
 		
 		// texture model
-		Matrix4f texModelT = new Matrix4f();
-		texModelT.setIdentity();
+		//Matrix4f texModelT = new Matrix4f();
+		m.setIdentity();
 		// purposely different transformation order, because i cannot into math
-		texModelT.translate(new Vector2f(u1_,v1_));
-		texModelT.scale(new Vector3f(u2_-u1_, v2_-v1_,1.0f));
-		texModelT.store(matrixBuffer_); matrixBuffer_.flip();
+		m.translate(new Vector2f(u1_,v1_));
+		m.scale(new Vector3f(u2_-u1_, v2_-v1_,1.0f));
+		m.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uTexModel_, false, matrixBuffer_);
 		
 		// texture sampler
@@ -157,6 +157,8 @@ public class GLTexture implements ITexture
 		glUseProgram(0);
 		glDisable(GL_BLEND);
 	}
+	
+	
 	public void Draw()
 	{
 		// what gltexture sets:
@@ -172,39 +174,33 @@ public class GLTexture implements ITexture
 		glUseProgram(shaderProgramId_);
 		
 		// setup model transformation (scaling, rotation, offset)
-		Matrix4f modelT = new Matrix4f();
-		modelT.setIdentity();
-
-		// adjust for screen aspect ratio (scale vertically)
-		float scale = (float)gfx_.GetScreenWidth() / (float)gfx_.GetScreenHeight();
-		modelT.scale(new Vector3f(sx_,sy_*scale,1.0f));
-		
-		modelT.rotate(rad_, new Vector3f(0.0f, 0.0f, 1.0f));
-		modelT.translate(new Vector2f(ox_,oy_));
-		
-		modelT.store(matrixBuffer_); matrixBuffer_.flip();
+		Matrix4f m = new Matrix4f();
+		m.setIdentity();
+		m.scale(new Vector3f(sx_,sy_,1.0f));
+		m.rotate(rad_, new Vector3f(0.0f, 0.0f, 1.0f));
+		m.translate(new Vector2f(ox_,oy_));
+		m.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uModel_, false, matrixBuffer_);
 		
 		// setup view transformation (position)
-		Matrix4f viewT = new Matrix4f();
-		viewT.setIdentity();
-		viewT.translate(new Vector2f(x_,y_));
-		viewT.store(matrixBuffer_); matrixBuffer_.flip();
+		//Matrix4f viewT = new Matrix4f();
+		m.setIdentity();
+		m.translate(new Vector2f(x_,y_));
+		m.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uView_, false, matrixBuffer_);
 		
 		// texture model
-		Matrix4f texModelT = new Matrix4f();
-		texModelT.setIdentity();
+		//Matrix4f texModelT = new Matrix4f();
+		m.setIdentity();
 		// purposely different transformation order, because i cannot into math
-		texModelT.translate(new Vector2f(u1_,v1_));
-		texModelT.scale(new Vector3f(u2_-u1_, v2_-v1_,1.0f));
-		texModelT.store(matrixBuffer_); matrixBuffer_.flip();
+		m.translate(new Vector2f(u1_,v1_));
+		m.scale(new Vector3f(u2_-u1_, v2_-v1_,1.0f));
+		m.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uTexModel_, false, matrixBuffer_);
 		
 		// texture sampler
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureId_);
-		//glUniform1i(uSampler_, 0);
 		
 		// fragment shader stuff
 		glUniform1f(uBlendMul_, blend_);
@@ -257,6 +253,7 @@ public class GLTexture implements ITexture
 	
 	// stuff
 	protected FloatBuffer	matrixBuffer_;
+	protected Vector3f		vectorUp_;
 	
 	//
 	// protected methods

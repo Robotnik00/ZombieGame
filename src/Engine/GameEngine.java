@@ -95,11 +95,12 @@ public class GameEngine implements IGameEngine
 	public GameEngine(String[] args) throws Exception
 	{
 		// init members
-		textureEngine_		=null;
-		audioEngine_		=null;
-		currentState_		=null;
-		runGame_			=true;
-		framesPerSecond_	=0;
+		textureEngine_		= null;
+		audioEngine_		= null;
+		currentState_		= null;
+		runGame_			= true;
+		framesPerSecond_	= 0;
+		lastMousePosition_	= new float[2];
 		
 		// copy arguments
 		arguments_ = args;
@@ -207,12 +208,14 @@ public class GameEngine implements IGameEngine
 	@Override
 	public float GetMouseX()
 	{
+		//PumpMouseMotionEvents();
 		return lastMousePosition_[0];
 	}
 
 	@Override
 	public float GetMouseY() 
 	{
+		//PumpMouseMotionEvents();
 		return lastMousePosition_[1];
 	}
 
@@ -269,7 +272,7 @@ public class GameEngine implements IGameEngine
 			// Is the display requesting to be closed?
 			if (Display.isCloseRequested() == true)
 			{
-				LogMessage("GameEngine::GameLoop: Display close requested, ending game loop.\n");
+				LogMessage("GameEngine::GameLoop: Display close requested, ending game loop.");
 				EndGameLoop();
 				return;
 			}
@@ -285,7 +288,8 @@ public class GameEngine implements IGameEngine
 			{
 				// update keyboard and mouse events
 				PumpKeyboardEvents();
-				PumpMouseEvents();
+				PumpMouseButtonEvents();
+				PumpMouseMotionEvents();
 				
 				// update
 				currentState_.Update();
@@ -309,6 +313,9 @@ public class GameEngine implements IGameEngine
 			// the new state has not been updated, and the old state will not be able to draw at this point
 			if (thisState != currentState_)
 				continue;
+			
+			// update this again, mouse position can be updated between frames
+			PumpMouseMotionEvents();
 			
 			// express the current time as a fraction of a tick,
 			// use this value to interpolate graphics between frames
@@ -361,7 +368,7 @@ public class GameEngine implements IGameEngine
 		}
 	}
 	
-	protected void	PumpMouseEvents()
+	protected void	PumpMouseButtonEvents()
 	{
 		// can't use native data types on containers, that would be too simple.
 		ArrayList<Integer> events = new ArrayList<Integer>();
@@ -388,8 +395,10 @@ public class GameEngine implements IGameEngine
 		{
 			lastMouseEvents_[i] = events.get(i);
 		}
-		
-		// mouse coordinates
+	}
+	
+	protected void	PumpMouseMotionEvents()
+	{
 		lastMousePosition_ = textureEngine_.ScaleWindowCoordinates(Mouse.getX(), Mouse.getY());
 	}
 	
@@ -417,7 +426,11 @@ public class GameEngine implements IGameEngine
 		
 		textureEngine_.SetClearColor(0.0f, 0.5f, 1.0f);
 		textureEngine_.SetDrawingArea(0, 0, width, height);
-		textureEngine_.SetOrthoPerspective(-1.0f, 1.0f, -1.0f, 1.0f);
+		
+		textureEngine_.SetOrthoPerspective(
+				-1.0f, 1.0f, 
+				-((float)height/(float)width), ((float)height/(float)width)
+				);
 		
 		textureEngine_.ClearScreen();
 	}

@@ -38,16 +38,17 @@ public class TestState implements IGameState
 		snd_ = snd;
 		game_ = game;
 		
-		x_ = 0;
-		y_ = 0;
+		x_ = 10.0f;
+		y_ = 10.0f;
 		vx_ = 0;
 		vy_ = 0;
 		
 		image1_ = gfx_.LoadTexture("image.bmp", 0x00000000);
 		image2_ = gfx_.LoadTexture("image2.png", 0x0000FFFF);
+		image3_ = gfx_.LoadTexture("image3.bmp", 0x00000001);
 		
 		// rescale the drawing perspective
-		//gfx_.SetOrthoPerspective(0, 640, 0, 480);
+		gfx_.SetOrthoPerspective(0, 20, 0, 15);
 	}
 		
 	public void	Quit()
@@ -84,7 +85,7 @@ public class TestState implements IGameState
 		}
 		
 		// move
-		float moveSpeed = 0.05f;
+		float moveSpeed = 0.1f;
 		if (moveUp_)	vy_ += moveSpeed;
 		if (moveDown_)	vy_ += -moveSpeed;
 		if (moveLeft_)	vx_ += -moveSpeed;
@@ -92,27 +93,48 @@ public class TestState implements IGameState
 		
 		// display the frame rate
 		game_.SetWindowTitle("FPS: "+game_.GetFrameRate());
-		
 	}
 	
 	public void	Draw(float delta)
 	{
-		gfx_.ClearScreen();
+		//gfx_.ClearScreen();
+		
+		float dx = x_ + vx_ * delta;
+		float dy = y_ + vy_ * delta;
+		
+		// draw a bunch of tiles
+		for (int x=0; x < 20; x++)
+		{
+			for (int y=0; y < 15; y++)
+			{
+				image3_.SetPos((float)x, (float)y);
+				image3_.Draw();
+			}
+		}
+		//image3_.SetPos(0.0f,0.0f);
+		//image3_.SetScale(20.0f, 15.0f);
+		//image3_.SetSrcRect(0.0f, 0.0f, 20.0f, 15.0f);
+		//image3_.Draw();
 		
 		// draw at the origin, and rotate toward the cursor
 		//image2_.SetSrcRect(0.25f, 0.25f, 0.75f, 0.75f);
-		image2_.SetScale(0.4f, 0.4f);
+		//image2_.SetScale(0.4f, 0.4f);
 		image2_.SetOrigin(-0.5f, -0.5f);
-		image2_.SetRotation((float)Math.atan2(y_ + vy_*delta, x_ + vx_*delta));
-		image2_.SetPos(0.0f, 0.0f);
+		image2_.SetRotation((float)Math.atan2(dy-10.0f, dx-10.0f));
+		image2_.SetPos(10.0f, 10.0f);
 		image2_.Draw();
 		
 		// controlled by the keyboard
-		image1_.SetScale(0.25f, 0.25f);
+		//image1_.SetScale(1.0f, 1.0f);
 		image1_.SetOrigin(-0.5f, -0.5f);
-		image1_.SetBlendColor(0.0f, 0.0f, 1.0f, 0.5f);
-		image1_.SetAlpha(0.5f);
-		image1_.SetPos(x_ + vx_*delta, y_ + vy_*delta);
+		image1_.SetRotation(
+			(float)Math.atan2(
+				game_.GetMouseY()-dy,
+				game_.GetMouseX()-dx)
+				);
+		//image1_.SetBlendColor(0.0f, 0.0f, 1.0f, 0.5f);
+		//image1_.SetAlpha(0.5f);
+		image1_.SetPos(dx, dy);
 		image1_.Draw();
 	}
 	
@@ -128,6 +150,7 @@ public class TestState implements IGameState
 	
 	protected ITexture			image1_;
 	protected ITexture			image2_;
+	protected ITexture			image3_;
 	
 	protected float				x_,y_;
 	protected float				vx_,vy_;

@@ -175,6 +175,9 @@ public class GLTextureEngine implements ITextureEngine
 		perRight = right;
 		perBottom = bottom;
 		perTop = top;
+		
+		// tell opengl to not deal with perspective correct texture mapping
+		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
 	}
 	
 	// drawing stuff goes here
@@ -280,6 +283,9 @@ public class GLTextureEngine implements ITextureEngine
 		// texture repeats for coords > 1.0
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		
+		// generate mipmaps?
+		glGenerateMipmap(GL_TEXTURE_2D);
 		
 		// gl cleanup
 		glBindTexture(GL_TEXTURE_2D,0);
