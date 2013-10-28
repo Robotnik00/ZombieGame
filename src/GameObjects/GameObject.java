@@ -9,6 +9,7 @@ import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.w3c.dom.css.Rect;
 
 //import com.sun.corba.se.impl.activation.ORBD;
@@ -98,18 +99,20 @@ public class GameObject
 		if(texture != null)
 		{
 			// express time in same units as Physics(time seconds).
-			float deltaT = (1/25f)*delta; // this should prob be done in GameEngine
-
-			Vector2f deltaX = new Vector2f(this.velocity);
-			deltaX.scale(deltaT);
-			interpolator.translate(deltaX);
-			interpolator.rotate(rotationalVelocity*deltaT, new Vector3f(0,0,1));
+			float deltaT = delta * (1/25f); // this should prob be done in GameEngine
 			
+			Matrix4f glbInterpolator = getGlobalTransform(this.interpolator);
 			
-			Matrix4f interpolator = getGlobalTransform(this.interpolator);
+			Vector4f glbVelocity = getGlobalVelocity();
+			glbVelocity.scale(deltaT);
 			
+			Vector2f deltaX = new Vector2f();
+			deltaX.x = glbVelocity.x;
+			deltaX.y = glbVelocity.y;
 			
-			texture.Draw(interpolator);
+			glbInterpolator.translate(deltaX);
+			
+			texture.Draw(glbInterpolator);
 		}
 		drawChildren(delta);
 	}
@@ -324,6 +327,23 @@ public class GameObject
 	{
 		return rotationalVelocity;
 	}
+	public Vector4f getGlobalVelocity()
+	{
+		Vector4f glbVelocity = new Vector4f();
+		glbVelocity.x = velocity.x;
+		glbVelocity.y = velocity.y;
+		
+		if(parent == null)
+		{
+			return glbVelocity;
+		}
+		Matrix4f.transform(getGlobalTransform(transform), glbVelocity, glbVelocity);
+		
+		Vector4f.add(parent.getGlobalVelocity(), glbVelocity, glbVelocity);
+		
+		return glbVelocity;
+	}
+	
 	public void scale(float x, float y)
 	{
 		Matrix4f scale = new Matrix4f();
