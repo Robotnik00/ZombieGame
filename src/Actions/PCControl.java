@@ -123,7 +123,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	int RIGHT_KEY   = Keyboard.KEY_D;
 	int ACTION_KEY  = Keyboard.KEY_E;
 	
-	float forceScale = 1; // amount of force to apply
+	float forceScale = 5; // amount of force to apply
 
 
 }

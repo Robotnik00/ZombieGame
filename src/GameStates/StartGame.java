@@ -61,9 +61,10 @@ public class StartGame implements IGameState
 		universe = new GameObject(); // create universe
 		test = gfx.LoadTexture("image3.bmp", 0);
 		universe.setDrawingInterface(new TileDraw(universe, test));
+		universe.translate(0, -.5f); 
 		
 		
-		universe.scale(.25f, .25f);
+		universe.scale(.1f, .1f);
 		
 		ExampleObject obj = new ExampleObject(universe, game, gfx);
 	}

@@ -45,6 +45,6 @@ public class TileDraw implements DrawObject
 	}
 	ITexture tex;
 	GameObject obj;
-	int rows = 10;
-	int cols = 10;
+	int rows = 15;
+	int cols = 20;
 }
