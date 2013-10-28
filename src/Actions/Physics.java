@@ -37,8 +37,9 @@ public class Physics implements Action
 		float effectiveTorque = appliedTorque - frictionTorque;
 		float deltaRotVel = effectiveTorque / momentOfInertia * deltaT;
 		obj.setRotationalVelocity(obj.getRotationalVelocity() + deltaRotVel);
-		float deltaAngle = obj.getRotationalVelocity() * deltaT;
-		obj.rotate(deltaAngle);
+		//float deltaAngle = obj.getRotationalVelocity() * deltaT;
+		//obj.addRotationalVelocity(deltaAngle);
+		//obj.rotate(deltaAngle);
 		
 		
 		// translational stuff
@@ -52,9 +53,9 @@ public class Physics implements Action
 		deltaV.scale(deltaT/mass);
 		Vector2f.add(deltaV, obj.getTranslationalVelocity(), obj.getTranslationalVelocity());
 		
-		Vector2f deltaX = new Vector2f(obj.getTranslationalVelocity());
-		deltaX.scale(deltaT);
-		obj.translate(deltaX.x, deltaX.y);
+		//Vector2f deltaX = new Vector2f(obj.getTranslationalVelocity());
+		//deltaX.scale(deltaT);
+		//obj.translate(deltaX.x, deltaX.y);
 		
 	}
 	public void setAppliedForce(Vector2f force)

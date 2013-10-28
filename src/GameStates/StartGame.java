@@ -47,7 +47,8 @@ public class StartGame implements IGameState
 	@Override
 	public void Update() {
 		// TODO Auto-generated method stub]
-		universe.update();
+		universe.update((float)1/game.GetTickFrequency());
+		game.SetWindowTitle(""+game.GetFrameRate());
 	}
 
 	@Override
@@ -63,13 +64,12 @@ public class StartGame implements IGameState
 	public void buildUniverse()
 	{
 		universe = new GameObject(); // create universe
-
-		ExampleObject gameObj = new ExampleObject(universe); 
-		gameObj.loadTexture(gfx);
-		PCControl control = new PCControl(gameObj.getHandle(), universe, game); // create an Action
-		control.setMass(1);
-		gameObj.addAction(control);
+		universe.scale(.5f, .5f);
 		
+		ExampleObject obj = new ExampleObject(universe);
+		obj.loadTexture(gfx);
+		PCControl pc = new PCControl(obj.getHandle(), universe, game);
+		obj.addAction(pc);
 		
 		
 	}

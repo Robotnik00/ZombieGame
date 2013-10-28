@@ -99,7 +99,64 @@ public class GLTexture implements ITexture
 		{ alpha_ = a; }
 	public void SetBlendColor(float r, float g, float b, float strength)
 		{ r_ = r; g_ = g; b_ = b; blend_ = strength; }
-	
+	public void Draw(Matrix4f mat)
+	{
+		// what gltexture sets:
+		// program
+		// modelT, viewT, texModelT,
+		// texture id,
+		// alpha+blend stuff
+		
+		// what this needs to set:
+		// array and index attribs,
+		// perspectiveT, 
+		
+		glUseProgram(shaderProgramId_);
+		
+		// setup model transformation (scaling, rotation, offset)
+		Matrix4f modelT = new Matrix4f();
+		modelT.setIdentity();
+		
+		modelT.load(mat);
+		
+		modelT.store(matrixBuffer_); matrixBuffer_.flip();
+		glUniformMatrix4(uModel_, false, matrixBuffer_);
+		
+		Matrix4f viewT = new Matrix4f();
+		viewT.setIdentity();
+		viewT.store(matrixBuffer_); matrixBuffer_.flip();
+		glUniformMatrix4(uView_, false, matrixBuffer_);
+		
+		// texture model
+		Matrix4f texModelT = new Matrix4f();
+		texModelT.setIdentity();
+		// purposely different transformation order, because i cannot into math
+		texModelT.translate(new Vector2f(u1_,v1_));
+		texModelT.scale(new Vector3f(u2_-u1_, v2_-v1_,1.0f));
+		texModelT.store(matrixBuffer_); matrixBuffer_.flip();
+		glUniformMatrix4(uTexModel_, false, matrixBuffer_);
+		
+		// texture sampler
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureId_);
+		//glUniform1i(uSampler_, 0);
+		
+		// fragment shader stuff
+		glUniform1f(uBlendMul_, blend_);
+		glUniform4f(uBlendColor_, r_, g_, b_, 1.0f);
+		
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glUniform1f(uAlphaMul_, alpha_);
+		
+		// finally draw the texture
+		gfx_.DrawTexture();
+		
+		// undo stuff
+		ResetDrawingParams();
+		glUseProgram(0);
+		glDisable(GL_BLEND);
+	}
 	public void Draw()
 	{
 		// what gltexture sets:

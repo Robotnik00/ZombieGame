@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import org.lwjgl.util.Rectangle;
 import org.lwjgl.util.vector.Matrix2f;
 import org.lwjgl.util.vector.Matrix3f;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 import org.w3c.dom.css.Rect;
 
 //import com.sun.corba.se.impl.activation.ORBD;
@@ -16,18 +18,15 @@ import TextureEngine.ITexture;
 
 
 
-// other objects in the game can extend from this. 
-// Example1: Cat could extend this to load a texture of a Cat
-// Example2: PhysicsObject could extend this objects behavior 
-//           allowing it to have velocity, mass, force ect...
-
-// display not working yet, but math seems to work.
+// other objects can use these as building blocks for more complicated geometry
+// basically a single GameObject is a node in a 'SceneGraph' http://en.wikipedia.org/wiki/Scene_graph
 public class GameObject 
 {
 	public GameObject()
 	{
 		// set up default transformation matrix (loc: 0,0 rot: 0)
-		transform = new Matrix3f();
+		transform = new Matrix4f();
+		interpolator = new Matrix4f();
 		transform.setIdentity();
 		
 		velocity = new Vector2f();
@@ -45,16 +44,19 @@ public class GameObject
 	}
 	
 	// updates the obj and its children's position
-	public void update()
+	public void update(float deltaT)
 	{
 		//boundingBox.transform(getGlobalTransform());
+		interpolator.load(transform);
+		float x = getGlobalX();
+		float y = getGlobalY();
 		
-		
-		if(boundingBox != null && proxemity != null)
+		if(boundingBox != null)
 		{
-			float x = getGlobalX();
-			float y = getGlobalY();
 			boundingBox.setLocation((int)x, (int)y);
+		}
+		if(proxemity != null)
+		{
 			proxemity.setLocation((int)x, (int)y);
 		}
 		
@@ -63,21 +65,30 @@ public class GameObject
 		{
 			actions.get(i).performAction();
 		}
-		updateChildren();
-		updateThis();
+
+		
+		Vector2f deltaX = new Vector2f(velocity);
+		deltaX.scale(deltaT);
+		
+		transform.translate(deltaX);
+		
+		rotate(rotationalVelocity*deltaT);
+		
+		updateChildren(deltaT);
+		updateThis(deltaT);
 	}
 	
 	// update children's position
-	protected void updateChildren()
+	protected void updateChildren(float deltaT)
 	{
 		for(int i = 0; i < children.size(); i++)
 		{
-			children.get(i).update();
+			children.get(i).update(deltaT);
 		}
 	}
 	
 	// decides how to update the position of the object
-	protected void updateThis()
+	protected void updateThis(float deltaT)
 	{
 	}
 	
@@ -88,14 +99,17 @@ public class GameObject
 		{
 			// express time in same units as Physics(time seconds).
 			float deltaT = (1/25f)*delta; // this should prob be done in GameEngine
-			// need to think about this.
-			float x = getGlobalX();
-			float y = getGlobalY();
-			texture.SetPos(x + getGlobalTranslationalVelocity().x*deltaT, y + getGlobalTranslationalVelocity().y*deltaT);
+
+			Vector2f deltaX = new Vector2f(this.velocity);
+			deltaX.scale(deltaT);
+			interpolator.translate(deltaX);
+			interpolator.rotate(rotationalVelocity*deltaT, new Vector3f(0,0,1));
 			
-			texture.SetRotation((float)Math.acos(getGlobalRotationMatrix().m00) + getGlobalRotationalVelocity()*deltaT); // not right. ill do it later.
-			texture.SetScale(0.25f, 0.25f); // for now...
-			texture.Draw();
+			
+			Matrix4f interpolator = getGlobalTransform(this.interpolator);
+			
+			
+			texture.Draw(interpolator);
 		}
 		drawChildren(delta);
 	}
@@ -147,88 +161,39 @@ public class GameObject
 		child.removeParent();
 		children.remove(child);
 	}
-	
-	// sets x location relative to the parent
-	public void setX(float x)
-	{
-		transform.m20 = x;
-	}
-	// sets y location relative to the parent
-	public void setY(float y)
-	{
-		transform.m21 = y;
-	}
-	// sets the rotation about the origin of the object relative to parent
-	public void setRotation(float rot)
-	{
-		Matrix2f rotMat = new Matrix2f();
-		rotMat.m00 = (float)Math.cos(rot);
-		rotMat.m01 = (float)Math.sin(rot);
-		rotMat.m10 = (float)Math.sin(rot)*-1;
-		rotMat.m11 = (float)Math.cos(rot);
-		setRotationMatrix(rotMat);
-		
-	}
-	// sets rotation matrix of the object relative to parent
-	public void setRotationMatrix(Matrix2f rotMat)
-	{
-		this.transform.m00 = rotMat.m00;
-		this.transform.m01 = rotMat.m01;
-		this.transform.m10 = rotMat.m10;
-		this.transform.m11 = rotMat.m11;
-	}
+
 	// sets 3by3 transform matrix relative to parent
-	public void setTransform(Matrix3f transform)
+	public void setTransform(Matrix4f transform)
 	{
 		this.transform = transform;
 	}
 	// get x relative to parent
 	public float getLocalX()
 	{
-		return transform.m20;
+		return transform.m30;
 	}
 	// get y relative to parent
 	public float getLocalY()
 	{
-		return transform.m21;
+		return transform.m31;
 	}
-	// get local rotation matrix (relative to parent)
-	public Matrix2f getLocalRotationMatrix()
-	{
-		Matrix2f rotMat = new Matrix2f();
-		rotMat.m00 = transform.m00;
-		rotMat.m01 = transform.m01;
-		rotMat.m10 = transform.m10;
-		rotMat.m11 = transform.m11;
-		return rotMat;
-	}
+
 	// get local transform (relative to parent)
-	public Matrix3f getLocalTransform()
+	public Matrix4f getLocalTransform()
 	{	
-		Matrix3f clonedTransform = new Matrix3f();
+		Matrix4f clonedTransform = new Matrix4f();
 		clonedTransform.load(transform);
 		return clonedTransform;
 	}
 	
-	// gets rotation relative to the 'Universe' origin
-	public Matrix2f getGlobalRotationMatrix()
-	{
-		Matrix2f rotMat = getLocalRotationMatrix();
-		
-		if(parent != null)
-		{
-			Matrix2f.mul(parent.getGlobalRotationMatrix(), rotMat, rotMat);
-		}
-		
-		return rotMat;
-	}
 	// gets location relative to the 'Universe' origin
-	public Matrix3f getGlobalTransform()
+	public Matrix4f getGlobalTransform(Matrix4f transform)
 	{
-		Matrix3f glbTrans = getLocalTransform();
+		Matrix4f glbTrans = new Matrix4f();
+		glbTrans.load(transform);
 		if(parent != null)
 		{
-			Matrix3f.mul(parent.getGlobalTransform(), glbTrans, glbTrans);
+			Matrix4f.mul(parent.getGlobalTransform(parent.transform), glbTrans, glbTrans);
 		}
 		
 		
@@ -238,46 +203,27 @@ public class GameObject
 	// gets x relative to 'Universe'
 	public float getGlobalX()
 	{
-		return getGlobalTransform().m20;
+		return getGlobalTransform(transform).m30;
 	}
 	// gets y relatice to 'Universe'
 	public float getGlobalY()
 	{
-		return getGlobalTransform().m21;
+		return getGlobalTransform(transform).m31;
 	}
 	
 	// rotate object by an angle
 	public void rotate(float angle)
 	{
-		Matrix2f rotMat = new Matrix2f();
-		rotMat.m00 = (float)Math.cos(angle);
-		rotMat.m01 = (float)Math.sin(angle);
-		rotMat.m10 = (float)Math.sin(angle)*-1;
-		rotMat.m11 = (float)Math.cos(angle);
-		Matrix2f.mul(rotMat, getLocalRotationMatrix(), rotMat);
-		setRotationMatrix(rotMat);
-		normalizeRotationMatrix();
+		transform.rotate(angle, new Vector3f(0,0,1));
+		//normalizeRotationMatrix();
 	}
 	// translate object by (x,y)
 	public void translate(float x, float y)
 	{
-		transform.m20 += x;
-		transform.m21 += y;
+		transform.m30 += x;
+		transform.m31 += y;
 	}
 	
-	// normalizes rotation matrix.  This is important, because is prevents 
-	// round-off errors in the rotation matrix from compounding.
-	public void normalizeRotationMatrix()
-	{
-		Matrix2f rotMat = getLocalRotationMatrix();
-		float determinate = rotMat.determinant();
-		rotMat.m00 /= determinate;
-		rotMat.m01 /= determinate;
-		rotMat.m10 /= determinate;
-		rotMat.m11 /= determinate;
-		setRotationMatrix(rotMat);
-		
-	}
 	public void setBoundingBox(Rectangle box)
 	{
 		boundingBox = box;
@@ -333,22 +279,22 @@ public class GameObject
 	// gets transform that if multiplied by this transform will result in obj's transform
 	// relative to wrt's coordinate space.
 	// basicly difference in orientation and location of this object to obj with respect to wrt
-	public Matrix3f getRelativeTransform(GameObject obj, GameObject wrt)
+	public Matrix4f getRelativeTransform(GameObject obj, GameObject wrt)
 	{
-		Matrix3f glbtranthis = getGlobalTransform();
-		Matrix3f glbtranobj  = obj.getGlobalTransform();
-		Matrix3f glbtranwrt  = wrt.getGlobalTransform();
+		Matrix4f glbtranthis = getGlobalTransform(transform);
+		Matrix4f glbtranobj  = obj.getGlobalTransform(transform);
+		Matrix4f glbtranwrt  = wrt.getGlobalTransform(transform);
 		
 		
-		Matrix3f transform = new Matrix3f();
+		Matrix4f transform = new Matrix4f();
 		
 		glbtranthis.invert();
 		
-		Matrix3f.mul(glbtranthis, glbtranobj, transform);
+		Matrix4f.mul(glbtranthis, glbtranobj, transform);
 		
 		transform.invert();
 		
-		Matrix3f.mul(transform, glbtranwrt, transform);
+		Matrix4f.mul(transform, glbtranwrt, transform);
 				
 		return transform;
 	}
@@ -370,29 +316,6 @@ public class GameObject
 	{
 		this.rotationalVelocity = rotationalVelocity;
 	}
-	public Vector2f getGlobalTranslationalVelocity()
-	{
-		Vector2f glbVelocity = new Vector2f(velocity);
-		if(parent == null)
-		{
-			return glbVelocity;
-		}
-		Matrix2f.transform(getGlobalRotationMatrix(), glbVelocity, glbVelocity);
-		Matrix2f rotMat = getLocalRotationMatrix();
-		rotMat.invert();
-		Matrix2f.transform(rotMat, glbVelocity, glbVelocity);
-		Vector2f.add(parent.getGlobalTranslationalVelocity(), glbVelocity, glbVelocity);
-		return glbVelocity;
-	}
-	public float getGlobalRotationalVelocity()
-	{
-		float glbRot = rotationalVelocity;
-		if(parent == null)
-		{
-			return glbRot;
-		}
-		return parent.getGlobalRotationalVelocity() + glbRot;
-	}
 	public Vector2f getTranslationalVelocity()
 	{
 		return velocity;
@@ -401,15 +324,19 @@ public class GameObject
 	{
 		return rotationalVelocity;
 	}
-	
-	
+	public void scale(float x, float y)
+	{
+		Matrix4f scale = new Matrix4f();
+		scale.scale(new Vector3f(x,y,1));
+		Matrix4f.mul(scale, transform, transform);
+	}
 	
 	Rectangle proxemity; // if no objects in this area than don't process any children unless it is null
 	Rectangle boundingBox; // if object in this area notify a collision
 	
 	// transformation matrix for 2d transformations
-	Matrix3f transform; // location/orientation/scale of obj relative to parent
-	
+	Matrix4f transform; // location/orientation/scale of obj relative to parent
+	Matrix4f interpolator; // used for interpolating between frames
 	
 	// I think this is used to draw objects...
 	ITexture texture;
@@ -423,9 +350,6 @@ public class GameObject
 	
 	Vector2f velocity;
 	float rotationalVelocity;
-		
-	public static int E_COLLISION = 1;
-	public static int E_PROXEMITY = 2;
-	
+			
 	boolean collidable = false;
 }

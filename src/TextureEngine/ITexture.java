@@ -25,6 +25,8 @@
 
 package TextureEngine;
 
+import org.lwjgl.util.vector.Matrix4f;
+
 public interface ITexture
 {
 	// Texture information
@@ -67,4 +69,5 @@ public interface ITexture
 	
 	// Draw the texture after setting parameters
 	public void Draw();
+	public void Draw(Matrix4f mat);
 }

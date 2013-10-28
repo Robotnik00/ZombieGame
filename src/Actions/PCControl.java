@@ -52,19 +52,19 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	{
 		if(keyPressed == FORWARD_KEY)
 		{
-			applyForce(new Vector2f(0,.21f));
+			applyForce(new Vector2f(0,forceScale));
 		}
 		else if(keyPressed == REVERSE_KEY)
 		{
-			applyForce(new Vector2f(0,-.21f));
+			applyForce(new Vector2f(0,-forceScale));
 		}
 		else if(keyPressed == LEFT_KEY)
 		{
-			applyForce(new Vector2f(-.21f,0));
+			applyForce(new Vector2f(-forceScale,0));
 		}
 		else if(keyPressed == RIGHT_KEY)
 		{
-			applyForce(new Vector2f(.211f,0));
+			applyForce(new Vector2f(forceScale,0));
 		}
 		else if(keyPressed == ACTION_KEY)
 		{
@@ -77,19 +77,19 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	{
 		if(keyReleased == FORWARD_KEY)
 		{
-			removeForce(new Vector2f(0,.21f));
+			removeForce(new Vector2f(0,forceScale));
 		}
 		else if(keyReleased == REVERSE_KEY)
 		{
-			removeForce(new Vector2f(0,-.21f));
+			removeForce(new Vector2f(0,-forceScale));
 		}
 		else if(keyReleased == LEFT_KEY)
 		{
-			removeForce(new Vector2f(-.21f,0));
+			removeForce(new Vector2f(-forceScale,0));
 		}
 		else if(keyReleased == RIGHT_KEY)
 		{
-			removeForce(new Vector2f(.211f,0));
+			removeForce(new Vector2f(forceScale,0));
 		}
 		else if(keyReleased == ACTION_KEY)
 		{

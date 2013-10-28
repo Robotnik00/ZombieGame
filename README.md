@@ -16,7 +16,6 @@ WORK IN PROGRESS:
 * Fixing OpenGL problems, OSX support. (jacob)  
 * Drawing primitive shapes (points, lines, rectangles). (jacob)  
 * Collisions with OBB trees. (Jack)  
-* Add scaling transform functionality to scene graph (jack)  
 
 WHAT NEEDS TO BE DONE:  
 * Sound back-end. (jacob)  

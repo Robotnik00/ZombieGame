@@ -1,5 +1,7 @@
 package GameObjects;
 
+import org.lwjgl.util.Rectangle;
+
 import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
 import Actions.Action;
@@ -12,17 +14,23 @@ public class ExampleObject
 		this.universe = universe;
 		
 		handle = new GameObject(); // create node
-		handle.translate(-0.4f, 0); // object location
 		universe.addChild(handle); // add to universe
 		
-
+		GameObject node = new GameObject(); // create node for rotating
+		handle.addChild(node); // add it to handle
+		node.rotate((float)Math.PI/4); // rotate it and all of its children
+		
 		child1 = new GameObject(); // create node
-		child1.translate(.4f, 0); // object location
-		handle.addChild(child1); // add to handle
+		child1.translate(1f, 0); // object location
+		node.addChild(child1); // add to node
 		
 		child2 = new GameObject(); // create node
-		child2.translate(0, .4f); // object location
-		handle.addChild(child2); // add to handle
+		child2.translate(0, .7f); // object location
+		node.addChild(child2); // add to node
+		
+		child3 = new GameObject(); // create node
+		child3.translate(-.4f, 0); // object location
+		node.addChild(child3); // add to node
 	}
 	public void loadTexture(ITextureEngine gfx) 
 	{
@@ -31,9 +39,9 @@ public class ExampleObject
 		tex3 = gfx.LoadTexture("image.bmp", 0x000000); // load texture
 		
 		
-		handle.setTexture(tex1); // set texture to draw
-		child1.setTexture(tex2); // set texture to draw
-		child2.setTexture(tex3); // set texture to draw
+		child1.setTexture(tex1); // set texture to draw
+		child2.setTexture(tex2); // set texture to draw
+		child3.setTexture(tex3); // set texture to draw
 		
 	}
 	public void addAction(Action action)
@@ -48,5 +56,6 @@ public class ExampleObject
 	GameObject handle;
 	GameObject child1;
 	GameObject child2;
+	GameObject child3;
 	GameObject universe;
 }

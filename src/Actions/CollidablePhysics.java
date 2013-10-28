@@ -2,6 +2,9 @@ package Actions;
 
 import java.util.ArrayList;
 
+import org.lwjgl.util.vector.Matrix3f;
+import org.lwjgl.util.vector.Vector2f;
+
 import Utility.CollisionDetection;
 
 import Engine.IGameEngine;
@@ -27,8 +30,11 @@ public class CollidablePhysics extends Physics
 		GameObject[] collisions = CollisionDetection.getCollisions(obj, universe);
 		if(collisions.length > 0)
 		{
-			//System.out.printf("collisions\n");
+			Vector2f velocity = obj.getTranslationalVelocity();
+			velocity.negate();
+			obj.setTranslationalVelocity(velocity);
 		}
+		
 	}
 	
 
