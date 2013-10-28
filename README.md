@@ -22,7 +22,6 @@ WHAT NEEDS TO BE DONE:
 * Sound back-end. (jacob)  
 * Most game logic [expand on this].  
   
-* Action to change object's orientation based on mouse loc   
 * Action to control object based on keys pressed.(already have one, but it needs to be revisited)  
 
 =====  
