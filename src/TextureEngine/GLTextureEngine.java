@@ -48,22 +48,24 @@ public class GLTextureEngine implements ITextureEngine
 	
 	public GLTextureEngine()
 	{
-		system_ 		= null;
-		displayWidth_ 	= 0;//displayWidth;
-		displayHeight_ 	= 0;//displayHeight;
+		system_ 			= null;
+		displayWidth_ 		= 0;
+		displayHeight_ 		= 0;
 		
-		perspectiveT_ 	= new Matrix4f();
+		textures_			= new ArrayList<GLTexture>();
+		
+		perspectiveT_ 		= new Matrix4f();
 		perspectiveT_.setIdentity();
 		
-		textures_		= new ArrayList<GLTexture>();
+		updatePerspective_	= true;
+		matrixBuffer_		= BufferUtils.createFloatBuffer(16);
+		perLeft 			= -1.0f;
+		perRight 			= 1.0f;
+		perBottom 			= -1.0f;
+		perTop 				= 1.0f;
 		
-		perLeft 		= -1.0f;
-		perRight 		= 1.0f;
-		perBottom 		= -1.0f;
-		perTop 			= 1.0f;
-		
-		drawingState_	= 0;
-		currentTexture_	= -1;
+		drawingState_		= 0;
+		currentTexture_		= -1;
 	}
 	
 	/**
@@ -91,10 +93,11 @@ public class GLTextureEngine implements ITextureEngine
 			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadElementIndexId_);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			
-			// set perspective
-			FloatBuffer matrixBuffer_ = BufferUtils.createFloatBuffer(16);
-			perspectiveT_.store(matrixBuffer_); matrixBuffer_.flip();
-			glUniformMatrix4(tex_uPerspective_, false, matrixBuffer_);
+			// force a perspective update when state is first changed
+			updatePerspective_ = true;
+			//FloatBuffer matrixBuffer_ = BufferUtils.createFloatBuffer(16);
+			//perspectiveT_.store(matrixBuffer_); matrixBuffer_.flip();
+			//glUniformMatrix4(tex_uPerspective_, false, matrixBuffer_);
 			
 			drawingState_ = 1;
 		}
@@ -124,6 +127,7 @@ public class GLTextureEngine implements ITextureEngine
 		
 		currentTexture_ = -1;
 		drawingState_ = 0;
+		updatePerspective_ = true;
 	}
 	
 	/**
@@ -133,6 +137,15 @@ public class GLTextureEngine implements ITextureEngine
 	{
 		if (drawingState_ == 1)
 		{
+			// set perspective
+			if (updatePerspective_ == true)
+			{
+				//FloatBuffer matrixBuffer_ = BufferUtils.createFloatBuffer(16);
+				perspectiveT_.store(matrixBuffer_); matrixBuffer_.flip();
+				glUniformMatrix4(tex_uPerspective_, false, matrixBuffer_);
+				updatePerspective_ = false;
+			}
+						
 			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
@@ -217,6 +230,8 @@ public class GLTextureEngine implements ITextureEngine
 		perRight = right;
 		perBottom = bottom;
 		perTop = top;
+		
+		updatePerspective_ = true;
 	}
 	
 	// drawing stuff goes here
@@ -375,6 +390,8 @@ public class GLTextureEngine implements ITextureEngine
 	protected float			perRight;
 	protected float			perBottom;
 	protected float			perTop;
+	protected FloatBuffer 	matrixBuffer_;
+	protected boolean		updatePerspective_;
 	
 	protected ArrayList<GLTexture>	textures_;
 	
