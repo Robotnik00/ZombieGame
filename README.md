@@ -25,7 +25,6 @@ WHAT NEEDS TO BE DONE:
 * Action to control object based on keys pressed.(already have one, but it needs to be revisited)  
 
 Bugs:
-======
 * i noticed flickering prob. its minor, but noticable. I thought it was my interpolator, so i turned it off, but its still there.(see StartGame)
 
 
