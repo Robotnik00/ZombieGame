@@ -30,6 +30,7 @@ public class ExampleObject
 		
 		handle = new GameObject(); // create node
 		universe.addChild(handle); // add to universe
+		handle.addAction(new MouseTracker(handle, game)); 
 		PCControl pc = new PCControl(handle, universe, game);
 		pc.setMass(.1f);
 		pc.setForceScale(2f);
@@ -37,7 +38,6 @@ public class ExampleObject
 		
 		GameObject node = new GameObject(); // create node for rotating
 		handle.addChild(node); // add it to handle
-		node.addAction(new MouseTracker(node, game)); 
 		
 		
 		
