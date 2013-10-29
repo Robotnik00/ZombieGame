@@ -29,6 +29,7 @@ public class ExampleObject
 		this.universe = universe;
 		
 		handle = new GameObject(); // create node
+		handle.rotate((float)Math.PI/2);
 		universe.addChild(handle); // add to universe
 		handle.addAction(new MouseTracker(handle, game)); 
 		PCControl pc = new PCControl(handle, universe, game);
