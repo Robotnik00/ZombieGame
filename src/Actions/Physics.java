@@ -6,8 +6,10 @@ import Engine.GameEngine;
 import Engine.IGameEngine;
 import GameObjects.GameObject;
 import GameStates.IGameState;
-
-// makes a GameObject behave like a PhysicsObject. This is a better way to do it.
+/**
+*
+* gives an object Physics like behavior
+*/
 public class Physics implements Action
 {
 	// takes in a deltaT so that if the update rate changes objects will still move at same speed

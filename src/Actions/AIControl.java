@@ -2,7 +2,10 @@ package Actions;
 
 import Engine.IGameEngine;
 import GameObjects.GameObject;
-
+/**
+*
+* added to a character to make it controlled by a computer
+*/
 public class AIControl extends PhysicsObjectController
 {
 

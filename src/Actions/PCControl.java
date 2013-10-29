@@ -8,12 +8,10 @@ import GameObjects.GameObject;
 import InputCallbacks.KeyEventListener;
 import InputCallbacks.MouseEventListener;
 
-// should allow for basic wasd movement. no mouse yet. 
-// right now it just adds forces in different directions according to keypresses.
-// this makes it so if to keys are pressed the object may move faster than 
-// if only one key is pressed(will fix later). Just testing user input and 
-// adding actions to GameObjects. 
-
+/**
+*
+* allows for a PC to control an object with a keyboard and mouse ect
+*/
 public class PCControl extends PhysicsObjectController implements KeyEventListener, MouseEventListener
 {
 

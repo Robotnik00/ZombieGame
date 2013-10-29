@@ -6,7 +6,10 @@ import org.lwjgl.util.vector.Vector4f;
 
 import GameObjects.GameObject;
 import TextureEngine.ITexture;
-
+/**
+*
+* draws a texture in a tiled array centered at the GameObject
+*/
 public class TileDraw implements DrawObject
 {
 	public TileDraw(GameObject obj, ITexture tex)

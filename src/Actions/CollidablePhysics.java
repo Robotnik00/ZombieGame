@@ -11,9 +11,10 @@ import Engine.IGameEngine;
 import GameObjects.GameObject;
 
 
-// not rly sure if collisions should be actions yet or if we should do an event queue of some sort.
-// if we use events than i think we can make collision detection take half as long 
-// but w/e its only a constant factor
+/**
+*
+* processes collisions and responds to them
+*/
 public class CollidablePhysics extends Physics
 {
 

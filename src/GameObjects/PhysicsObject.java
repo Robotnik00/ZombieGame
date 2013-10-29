@@ -5,11 +5,11 @@ package GameObjects;
 
 import org.lwjgl.util.vector.Vector2f;
 
-// this class is a GameObject that updates its position based on
-// forces, velocity, and friction.
-// note: 1. somewhat tested, but needs to be tested more once display works.
-//     	 2. collisions not implemented yet, cause im still thinking about them.
-
+/**
+ * Example of how to extend GameObject and add stuff to its callback
+ * 
+ *  
+ */
 @Deprecated // love doing this
 public class PhysicsObject extends GameObject
 {

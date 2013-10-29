@@ -2,6 +2,7 @@
 package GameStates;
 
 
+import Actions.ObjectFollower;
 import AudioEngine.IAudioEngine;
 import Drawing.TileDraw;
 import Engine.IGameEngine;
@@ -12,7 +13,11 @@ import TextureEngine.ITextureEngine;
 
 /// example of making a scene. Creates ExampleObject and adds action to it
 
-
+/**
+ * StartGame a sandbox state showing how to create objects using nodes
+ * 
+ * 
+ */
 public class StartGame implements IGameState
 {
 	public StartGame()
@@ -62,11 +67,15 @@ public class StartGame implements IGameState
 		test = gfx.LoadTexture("image3.bmp", 0);
 		universe.setDrawingInterface(new TileDraw(universe, test));
 		universe.translate(0, -.5f); 
-		
-		
 		universe.scale(.1f, .1f);
 		
 		ExampleObject obj = new ExampleObject(universe, game, gfx);
+		
+		ObjectFollower objFollower = new ObjectFollower(universe, obj.getHandle(), game);
+		objFollower.setMass(1f);
+		objFollower.setFrictionConstant(1f);
+		universe.addAction(objFollower);
+	
 	}
 	ITexture test;
 	

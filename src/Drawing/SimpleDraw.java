@@ -6,7 +6,10 @@ import org.lwjgl.util.vector.Vector4f;
 
 import GameObjects.GameObject;
 import TextureEngine.ITexture;
-
+/**
+*
+* draws a basic texture at the location of the GameObject
+*/
 public class SimpleDraw implements DrawObject
 {
 	public SimpleDraw(GameObject obj, ITexture tex)
@@ -27,7 +30,7 @@ public class SimpleDraw implements DrawObject
 		velocity2d.scale(deltaT);
 		interpolator.translate(velocity2d);
 		
-		tex.Draw(interpolator);
+		tex.Draw(obj.getGlobalTransform(obj.getLocalTransform()));
 	}
 	ITexture tex;
 	GameObject obj;

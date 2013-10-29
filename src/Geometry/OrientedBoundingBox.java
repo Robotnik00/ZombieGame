@@ -2,8 +2,12 @@ package Geometry;
 
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Vector3f;
+/**
+*
+* OBB using SAT http://www.metanetsoftware.com/technique/tutorialA.html
+* Used in collision detection as the bounds of a single node
+*/
 
-// OBB using SAT http://www.metanetsoftware.com/technique/tutorialA.html
 public class OrientedBoundingBox
 {
 	public OrientedBoundingBox(Vector3f[] verts)

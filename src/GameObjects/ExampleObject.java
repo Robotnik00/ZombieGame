@@ -10,10 +10,20 @@ import Actions.PCControl;
 import Actions.Physics;
 import Drawing.SimpleDraw;
 import Engine.IGameEngine;
-
-// this is an example of how to build an object out nodes
+/**
+ * Example of how to build models out of GameObjects
+ * 
+ * 
+ *
+ */
 public class ExampleObject 
 {
+	/**
+	 *  
+	 * @param  universe (the root of the scene graph)
+	 * @param  game
+	 * @param  gfx for loading textures
+	 */
 	public ExampleObject(GameObject universe, IGameEngine game, ITextureEngine gfx)
 	{
 		this.universe = universe;
@@ -21,6 +31,8 @@ public class ExampleObject
 		handle = new GameObject(); // create node
 		universe.addChild(handle); // add to universe
 		PCControl pc = new PCControl(handle, universe, game);
+		pc.setMass(.1f);
+		pc.setForceScale(2f);
 		handle.addAction(pc);
 		
 		GameObject node = new GameObject(); // create node for rotating

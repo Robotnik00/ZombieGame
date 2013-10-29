@@ -3,7 +3,10 @@ package Utility;
 import java.util.ArrayList;
 
 import GameObjects.GameObject;
-
+/**
+*
+* Provides algorithms for detecting of objects are colliding 
+*/
 public class CollisionDetection 
 {
 	

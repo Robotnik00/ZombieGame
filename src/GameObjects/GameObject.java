@@ -17,8 +17,13 @@ import TextureEngine.ITexture;
 
 
 
-// other objects can use these as building blocks for more complicated geometry
-// basically a single GameObject is a node in a 'SceneGraph' http://en.wikipedia.org/wiki/Scene_graph
+
+/**
+ * other objects can use these as building blocks for more complicated geometry
+ * basically a single GameObject is a node in a 'SceneGraph' http://en.wikipedia.org/wiki/Scene_graph
+ * 
+ */
+
 public class GameObject 
 {
 	public GameObject()
@@ -42,8 +47,12 @@ public class GameObject
 		boundingBox = null;
 		
 	}
-	
-	// updates the obj and its children's position
+	/**
+	 * Synchronous callback from GameEngine
+	 * @param deltaT period of update callback
+	 * 
+	 * 
+	 */
 	public void update(float deltaT)
 	{
 		//boundingBox.transform(getGlobalTransform());
@@ -91,7 +100,12 @@ public class GameObject
 	protected void updateThis(float deltaT)
 	{
 	}
-	
+	/**
+	 *
+	 * 
+	 * Asynchronous callback from GameEngine 
+	 * Draws the object based on Drawing interface
+	 */
 	// draws this object and its children
 	public void draw(float delta)
 	{
@@ -166,7 +180,13 @@ public class GameObject
 		children.remove(child);
 	}
 
-	// sets 3by3 transform matrix relative to parent
+
+	/**
+	 *
+	 * 
+	 * sets the local 4x4 matrix used for storing location/scale/rotation
+	 * 
+	 */
 	public void setTransform(Matrix4f transform)
 	{
 		this.transform = transform;
@@ -190,7 +210,13 @@ public class GameObject
 		return clonedTransform;
 	}
 	
-	// gets location relative to the 'Universe' origin
+
+	/**
+	 *
+	 * 
+	 * calculates the transform of the object with respect to the root node(universe)
+	 * used to determine 'Actual' coordinates for drawing and collision detection
+	 */
 	public Matrix4f getGlobalTransform(Matrix4f transform)
 	{
 		Matrix4f glbTrans = new Matrix4f();
@@ -214,20 +240,30 @@ public class GameObject
 	{
 		return getGlobalTransform(transform).m31;
 	}
-	
-	// rotate object by an angle
+
+	/**
+	 *
+	 * 
+	 * rotates object by 'angle'
+	 * 
+	 */	
 	public void rotate(float angle)
 	{
 		transform.rotate(angle, new Vector3f(0,0,1));
 		//normalizeRotationMatrix();
 	}
-	// translate object by (x,y)
 	public void translate(float x, float y)
 	{
 		transform.m30 += x;
 		transform.m31 += y;
 	}
-	
+
+	/**
+	 *
+	 * 
+	 * sets the BoundingBox of the object for collision detections
+	 * 
+	 */
 	public void setBoundingBox(Rectangle box)
 	{
 		boundingBox = box;
@@ -236,6 +272,13 @@ public class GameObject
 	{
 		return boundingBox;
 	}
+
+	/**
+	 *
+	 * 
+	 * sets proximity bounds for optimizing collisions
+	 * 
+	 */
 	public void setProxemityBounds(Rectangle bounds)
 	{
 		this.proxemity = bounds;
@@ -259,6 +302,12 @@ public class GameObject
 	}
 	
 
+	/**
+	 *
+	 * 
+	 * adds an action to the objects update callback
+	 * 
+	 */
 	public void addAction(Action action)
 	{
 		actions.add(action);
@@ -272,6 +321,13 @@ public class GameObject
 	{
 		return children;
 	}
+
+	/**
+	 *
+	 * 
+	 * set this and other objects can collide with this object
+	 * 
+	 */
 	public void setCollidable(boolean collidable)
 	{
 		this.collidable = collidable;
@@ -280,9 +336,15 @@ public class GameObject
 	{
 		return collidable;
 	}
-	// gets transform that if multiplied by this transform will result in obj's transform
-	// relative to wrt's coordinate space.
-	// basicly difference in orientation and location of this object to obj with respect to wrt
+	/**
+	 *
+	 * 
+	 * gets transform that if multiplied by this transform will result in obj's transform
+	 * relative to wrt's coordinate space.
+	 * basicly difference in orientation and location of this object to obj with respect to wrt
+	 * 
+	 * 
+	 */
 	public Matrix4f getRelativeTransform(GameObject obj, GameObject wrt)
 	{
 		Matrix4f glbtranthis = getGlobalTransform(transform);
@@ -303,7 +365,11 @@ public class GameObject
 		return transform;
 	}
 	
-	
+	/**
+	 *
+	 * sets the texture for this object for drawing
+	 */
+	@Deprecated
 	public void setTexture(ITexture tex)
 	{
 		this.texture = tex;
@@ -312,10 +378,18 @@ public class GameObject
 	{
 		return this.texture;
 	}
+	/**
+	 *
+	 * sets the velocity of this object with respect to parent
+	 */
 	public void setTranslationalVelocity(Vector2f velocity)
 	{
 		this.velocity = velocity;
 	}
+	/**
+	 *
+	 * sets rotational velocity of this object with respect to parent
+	 */
 	public void setRotationalVelocity(float rotationalVelocity)
 	{
 		this.rotationalVelocity = rotationalVelocity;
@@ -328,6 +402,10 @@ public class GameObject
 	{
 		return rotationalVelocity;
 	}
+	/**
+	 * gets the objects velocity with respect to the world
+	 * used for interpolating between frames
+	 */
 	public Vector4f getGlobalVelocity()
 	{
 		Vector4f glbVelocity = new Vector4f();
@@ -338,7 +416,7 @@ public class GameObject
 		{
 			return glbVelocity;
 		}
-		Matrix4f transform = getGlobalTransform(this.transform);
+		Matrix4f transform = parent.getGlobalTransform(parent.transform);
 		transform.m30 = 0;
 		transform.m31 = 0;
 		Matrix4f.transform(transform, glbVelocity, glbVelocity);
@@ -347,21 +425,36 @@ public class GameObject
 		
 		return glbVelocity;
 	}
+	/**
+	 *
+	 * copy of the transform matrix that can be manipulated to interpolate between frames
+	 */
 	public Matrix4f getInterpolator()
 	{
 		return interpolator;
 	}
+	/**
+	 *
+	 * scales the object's coordinate space. Note this will consequently scale all of its children
+	 */
 	public void scale(float x, float y)
 	{
 		Matrix4f scale = new Matrix4f();
 		scale.scale(new Vector3f(x,y,1));
 		Matrix4f.mul(scale, transform, transform);
 	}
+	/**
+	 *
+	 * sets the interface that is used to draw this object
+	 */
 	public void setDrawingInterface(DrawObject idrawing)
 	{
 		drawing = idrawing;
 	}
-	
+	/**
+	 *
+	 * gets the orientation with respect to the x axis
+	 */
 	public float getGlobalOrientation()
 	{
 		Vector4f xaxis = new Vector4f(1,0,0,0);

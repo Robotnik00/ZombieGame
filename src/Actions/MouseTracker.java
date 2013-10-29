@@ -2,7 +2,10 @@ package Actions;
 
 import Engine.IGameEngine;
 import GameObjects.GameObject;
-
+/**
+*
+* makes the object point in the direction of the mouse
+*/
 public class MouseTracker implements Action
 {
 	public MouseTracker(GameObject obj, IGameEngine game)

@@ -2,7 +2,10 @@ package Actions;
 
 import Engine.IGameEngine;
 import GameObjects.GameObject;
-
+/**
+*
+* added to a object to allow it to be controlled on an android device
+*/
 public class AndroidControl extends PhysicsObjectController
 {
 
