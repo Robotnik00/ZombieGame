@@ -7,11 +7,16 @@
  * 		OpenAL audio engine.
  */
 
-// imports
-
 package AudioEngine;
 
+// imports
 import Engine.IGameEngine;
+
+
+/**	ALAudioEngine
+ * 
+ * 	Implements IAudioEngine via OpenAL
+ */
 
 public class ALAudioEngine implements IAudioEngine
 {

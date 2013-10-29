@@ -7,10 +7,9 @@
  * 		Development gamestate.	
  */
 
-// imports
-
 package GameStates;
 
+// imports
 import AudioEngine.IAudioEngine;
 import Engine.IGameEngine;
 import TextureEngine.ITextureEngine;
@@ -20,12 +19,18 @@ import org.lwjgl.input.*;
 
 
 
+/**
+ * Gamestate used to test features during development.
+ * 
+ * @author Jacob
+ */
 public class TestState implements IGameState
 {
 	public TestState()
 	{
 		//
 	}
+	
 	
 	
 	//

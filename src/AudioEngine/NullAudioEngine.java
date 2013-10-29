@@ -8,11 +8,16 @@
  * 		Plays no sounds.
  */
 
-// imports
 package AudioEngine;
 
+// imports
 import Engine.IGameEngine;
 
+
+/** NullAudioEngine
+ *
+ *	An empty sound engine for when sound is disabled or unneeded
+ */
 
 public class NullAudioEngine implements IAudioEngine
 {

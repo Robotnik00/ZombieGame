@@ -14,19 +14,26 @@ import Engine.IGameEngine;
 
 
 
-/*	ITextureEngine
- * 
- * 	Interface to a graphics resource management class. 
+/**
+ * Interface to a graphics resource management class. 
  */
 
 public interface ITextureEngine
 {
-	// Initializes the display window and graphics libraries.
-	// Exception is thrown on failure.
+	/** 
+	 * Initializes the display window and graphics libraries.
+	 * 
+	 * @param system Game Engine
+	 * @param displayWidth Drawing area width in pixels.
+	 * @param displayHeight Drawing area height in pixels.
+	 * @throws Exception
+	 */
 	public void	Init(IGameEngine system, int displayWidth, int displayHeight) throws Exception;
 	
-	// De-initialize class and clean up resources. 
-	// Some libraries require manual resource management (OpenGL), which Java's GC can't take care of.
+	/** 
+	 * De-initialize class and clean up resources. 
+	 * Some libraries require manual resource management (OpenGL), which Java's GC can't take care of.
+	 */
 	public void	Quit();
 	
 	
@@ -34,19 +41,48 @@ public interface ITextureEngine
 	// general drawing functions
 	//
 	
-	// clear the screen to a solid color
+	/** 
+	 * Set the color when clearing the screen. Color components range [0.0,1.0]
+	 * @param r Red
+	 * @param g Green
+	 * @param b Blue
+	 */
 	public void	SetClearColor(float r, float g, float b);
+	
+	/**
+	 * Clear the screen to the set clear color.
+	 */
 	public void ClearScreen();
 	
-	// Set the area of the screen (in pixels) for drawing operations to target.
-	// All operations will be scaled+clipped to within this area.
+	/**
+	 * Get the width of the screen in pixels.
+	 */
 	public int	GetScreenWidth();
+	
+	/**
+	 * Get the height of the screen in pixels.
+	 */
 	public int	GetScreenHeight();
+	
+	/** 
+	 * Set the region of the screen (in pixels) for drawing operations to target.
+	 * All operations will be scaled and clipped to within this area.
+	 * 
+	 * @param x X coordinate of drawing region origin.
+	 * @param y Y coordinate of drawing region origin.
+	 * @param w Width of drawing region.
+	 * @param h Height of drawing region.
+	 */
 	public void SetDrawingArea(int x, int y, int w, int h);	
 	
-	// Establish the screen coordinate system for 2d drawing operations.
-	//	left,right,top,down	- the coordinate value representing this edge of the screen.
-	// By default, OpenGL assigns -1.0 to the left/bottom edges, and 1.0 to the right/top.
+	/**
+	 * Establish the screen coordinate system for 2d drawing operations.
+	 * By default, OpenGL assigns -1.0 to the left/bottom edges, and 1.0 to the right/top.
+	 * @param left - Left edge
+	 * @param right - Right edge
+	 * @param bottom - Bottom edge
+	 * @param top - Top edge
+	 */
 	public void	SetOrthoPerspective(float left, float right, float bottom, float top);
 
 	// basic drawing operations
@@ -61,10 +97,12 @@ public interface ITextureEngine
 	// images/textures
 	//
 	
-	// Load a texture from a file.
-	//	filename	- name of file
-	//	colorkey	- Transparent color of the texture
-	// Colorkey is specified in BGRA format, with B=least sig. 8 bits.
+	/** Load a texture from a file.
+	 * 
+	 * @param filename Name of image file
+	 * @param colorkey Transparent color of image, specified in BGRA format with B=least significant byte.
+	 * @return
+	 */
 	public ITexture	LoadTexture(String filename, int colorkey);
 	
 	
@@ -72,6 +110,11 @@ public interface ITextureEngine
 	// utility functions
 	//
 	
-	// Apply drawing perspective transformations to window coordinates (in pixels).
+	/**
+	 * Apply drawing perspective transformations to window coordinates.
+	 * @param x Coordinate in pixels.
+	 * @param y Coordinate in pixels.
+	 * @return float[2], [0] = scaled x coordinate, [1] = scaled y coordinate
+	 */
 	public float[] ScaleWindowCoordinates(int x, int y);
 }

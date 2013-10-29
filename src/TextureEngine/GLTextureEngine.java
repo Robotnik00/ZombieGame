@@ -7,10 +7,9 @@
  * 		OpenGL texture loading.	
  */
 
-// imports
-
 package TextureEngine;
 
+// imports
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL13.*;
@@ -38,11 +37,9 @@ import Engine.IGameEngine;
 
 
 
-/*	GLTextureEngine
- * 
- * 	This class uses OpenGL to load/manage textures.
+/**	
+ * This class uses OpenGL to load/manage textures.
  */
-
 public class GLTextureEngine implements ITextureEngine
 {
 	//
@@ -69,6 +66,10 @@ public class GLTextureEngine implements ITextureEngine
 		currentTexture_	= -1;
 	}
 	
+	/**
+	 * Setup the texture drawing state with a given texture.
+	 * @param textureId GL texture buffer id.
+	 */
 	public void SetTextureDrawingState(int textureId)
 	{
 		if (drawingState_ != 1)
@@ -107,6 +108,9 @@ public class GLTextureEngine implements ITextureEngine
 		}
 	}
 	
+	/**
+	 * Undo texture drawing state setup.
+	 */
 	public void	UnsetTextureDrawingState()
 	{
 		glDisable(GL_BLEND);
@@ -122,6 +126,9 @@ public class GLTextureEngine implements ITextureEngine
 		drawingState_ = 0;
 	}
 	
+	/**
+	 * Draws a texture.
+	 */
 	public void	DrawTexture()
 	{
 		if (drawingState_ == 1)

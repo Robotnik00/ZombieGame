@@ -7,20 +7,17 @@
  * 		Interface to main game controller object.	
  */
 
+package Engine;
+
 // imports
+import GameStates.IGameState;
 
 
-
-/*	IGameEngine
- * 
+/**
  * 	Interface to the gamestate controller object.
  * 
  *	These are the functions that each gamestate is allowed to use to control the overall program.
  */
-
-package Engine;
-
-import GameStates.IGameState;
 
 public interface IGameEngine
 {
@@ -28,55 +25,96 @@ public interface IGameEngine
 	// gamestates, program flow
 	//
 	
-	// Changes the current gamestate.
-	// Exception thrown on failure.
+	/**	
+	 * Changes the current gamestate.
+	 * Exception thrown on failure.
+	 * 
+	 * @param state	IGameState 
+	 */
 	public void	ChangeGameState(IGameState state);
 	
-	// Ends the game loop and cause the program to shutdown
+	/**
+	 * Ends the game loop and cause the program to shutdown.
+	 * The Quit method of the current game state will be called.
+	 */
 	public void	EndGameLoop();
+	
 	
 	//
 	// information
 	//
 	
-	// Returns the number of gamestate update calls performed in one second.
+	/**
+	 * @return the number of gamestate update calls performed in one second.
+	 */
 	public int	GetTickFrequency();
 	
-	// Returns the number of frames drawn during the last second
+	/**
+	 * @return the number of frames drawn during the last second.
+	 */
 	public int	GetFrameRate();
 	
-	// Check for a command line argument. Returns the index of the argument if found, or -1 if not found.
+	/** 
+	 * Check for a command line argument.
+	 * @param arg String argument.
+	 * @return Index of argument in the program's arguments array, or -1 if not found.
+	 */
 	public int	CheckArguments(String arg);
 	
-	// Returns the list of command line argument strings. 
+	/** 
+	 * @return array of command line arguments.
+	 */
 	public String[]	GetArguments();
 	
-	// Log a text message to the standard output stream, with an added timestamp
+	/** 
+	 * Logs a text message to the standard output stream, with an added timestamp.
+	 * @param message Text string to record.
+	 */
 	public void	LogMessage(String message);
 	
-	// Set the window title text
+	/**
+	 * Set the window's title bar text.
+	 * @param str Text string.
+	 */
 	public void	SetWindowTitle(String str);
+	
 	
 	//
 	// Time
 	//
 	
-	// Returns the time elapsed since the program started in milliseconds.
+	/** 
+	 * @return time elapsed since the program started in milliseconds.
+	 */
 	public long	GetTime();
 	
 	//
 	// Input
 	//
 	
-	// Return mouse coordinates scaled by the drawing perspective.
+	/**
+	 * Poll mouse x position, scaled by the current drawing perspective.
+	 * @return scaled mouse x position.
+	 */
 	public float GetMouseX();
+	
+	/**
+	 * Poll mouse y position, scaled by the current drawing perspective.
+	 * @return scaled mouse y position.
+	 */
 	public float GetMouseY();
 	
-	// Returns the mouse buttons pressed/released this frame;
-	// positive values indicate pressed buttons, negative values are released buttons.
+	/** 
+	 * Returns the mouse buttons pressed/released this frame.
+	 * Positive values indicate pressed buttons, negative values are released buttons.
+	 * @return mouse button events.
+	 */
 	public int[] GetMouseEvents();
 	
-	// Returns the keys pressed/released this frame;
-	// positive key values indicate pressed keys, negative values are released keys.
+	/** 
+	 * Returns the keys pressed/released this frame
+	 * Positive key values indicate pressed keys, negative values are released keys.
+	 * @return keyboard events
+	 */
 	public int[] GetKeyEvents();
 }

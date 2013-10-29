@@ -7,15 +7,16 @@
  * 		Interface to a sound resource.	
  */
 
+package AudioEngine;
+
 // imports
 
 
 
-/*	ISound
+/**	ISound
  * 
+ * 	Interface to a sound effect resource.
  */
-package AudioEngine;
-
 
 public interface ISound
 {

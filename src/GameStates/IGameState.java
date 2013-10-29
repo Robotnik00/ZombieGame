@@ -16,7 +16,7 @@ import TextureEngine.ITextureEngine;
 
 
 
-/*	IGameState
+/**	IGameState
  *
  * 	The top-level gameplay code will be contained in a GameState class. This interface must be implemented by all
  * 	gamestate classes.
@@ -39,28 +39,30 @@ import TextureEngine.ITextureEngine;
 
 public interface IGameState
 {
-	// Initialize the gamestate and pass references to game resource managers.
-	// Exception should be thrown on failure.
+	/** 
+	 * Initialize the gamestate and pass references to game resource managers.
+	 * Exception should be thrown on failure.
+	 * 
+	 * @param gfx ITextureEngine
+	 * @param snd IAudioEngine
+	 * @param game IGameEngine
+	 */
 	public void	Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game);
 	
-	// Called when the gamestate is destroyed.
-	public void	Quit();
+	/**
+	 * Called when the gamestate is destroyed, or when the program exits.
+	 */
+	public void Quit();
 	
-	// Called at a constant rate by the GameEngine.
+	/** 
+	 * Signal the gamestate to update the game logic.
+	 * Called at a constant rate by the GameEngine.
+	 */
 	public void	Update();
 	
-	// Called many times per update, or none at all if the game is running slowly (highly unlikely).
-	//	delta	- interpolation value in between frames
+	/** 
+	 * Signal the gamestate to update the screen.
+	 * @param delta interpolation value in between frames, ranging from [0.0,1.0)
+	 */
 	public void	Draw(float delta);
 }
-
-
-
-
-
-
-
-
-
-
-

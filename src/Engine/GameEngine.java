@@ -47,17 +47,22 @@ public class GameEngine implements IGameEngine
 	// constants
 	//
 	
-	// This is how many game logic updates occur per second. This is independent of the frame rate.
-	// Try to pick values that divide into 1000 nicely.
-	// FIXME: use better precision for frame timing
+	/**
+	 * This is how many game logic updates occur per second, independent of the frame rate.
+	 * Try to pick values that divide into 1000 nicely.
+	 */
 	final int		TICKS_PER_SECOND	= 25;
 	
-	// Time window for each game logic update to occur.
-	// After the game update, the engine will display as many frames as it can within the remaining time.
+	/** 
+	 * Time window for each game logic update to occur.
+	 * After the game update, the engine will display as many frames as it can within the remaining time.
+	 */
 	final long		TICK_LENGTH			= 1000 / TICKS_PER_SECOND;
 	
-	// If a game logic update takes longer than TICK_LENGTH, no frames will be drawn for that tick.
-	// This value forces a frame update if too many logic updates go without frame updates.
+	/**
+	 * If a game logic update takes longer than TICK_LENGTH, no frames will be drawn for that tick.
+	 * This value forces a frame update if too many logic updates go without frame updates.
+	 */
 	final int		MAX_FRAMESKIP		= 5;
 	
 	// Game title / title bar text
@@ -73,6 +78,10 @@ public class GameEngine implements IGameEngine
 	// Static methods
 	//
 	
+	/**
+	 * Program entry point.
+	 * @param args Command line arguments.
+	 */
 	public static void main(String[] args)
 	{
 		try
@@ -92,6 +101,11 @@ public class GameEngine implements IGameEngine
 	// public methods
 	//
 	
+	/**
+	 * "Actual" main function. Initializes various "engines" and sets up the initial gamestate.
+	 * @param args Command line arguments.
+	 * @throws Exception
+	 */
 	public GameEngine(String[] args) throws Exception
 	{
 		// init members
@@ -256,6 +270,9 @@ public class GameEngine implements IGameEngine
 	// protected methods
 	//
 	
+	/**
+	 * Runs the current gamestate, calling update and draw, and measures game performance.
+	 */
 	protected void	GameLoop()
 	{
 		int updates = 0;	// each time update() is called, used for frameskip
@@ -330,6 +347,9 @@ public class GameEngine implements IGameEngine
 		}
 	}
 	
+	/**
+	 * Reads keyboard input, called once per frame.
+	 */
 	protected void	PumpKeyboardEvents()
 	{
 		ArrayList<Integer> events = new ArrayList<Integer>();
@@ -368,6 +388,9 @@ public class GameEngine implements IGameEngine
 		}
 	}
 	
+	/**
+	 * Reads mouse button input, called once per frame.
+	 */
 	protected void	PumpMouseButtonEvents()
 	{
 		// can't use native data types on containers, that would be too simple.
@@ -397,12 +420,22 @@ public class GameEngine implements IGameEngine
 		}
 	}
 	
+	/**
+	 * Reads mouse position, called before update and draw frames.
+	 * The mouse position begins as a coordinate in window space (in pixels),
+	 * but is scaled into the ITextureEngine's current drawing perspective.
+	 */
 	protected void	PumpMouseMotionEvents()
 	{
 		lastMousePosition_ = textureEngine_.ScaleWindowCoordinates(Mouse.getX(), Mouse.getY());
 	}
 	
-	// Initialize LWJGL and create a display w/ opengl 3.2 context
+	/** 
+	 * Initialize LWJGL and create a display w/ opengl 3.2 context
+	 * @param width Width of window in pixels.
+	 * @param height Height of window in pixels.
+	 * @throws Exception
+	 */
 	protected void	SetupDisplay(int width, int height) throws Exception
 	{
 		LogMessage("SetupDisplay");
@@ -435,6 +468,9 @@ public class GameEngine implements IGameEngine
 		textureEngine_.ClearScreen();
 	}
 	
+	/**
+	 * Shutdown the ITextureEngine, frees graphics resources, and shutdown LWJGL display.
+	 */
 	protected void	ShutdownDisplay()
 	{
 		LogMessage("ShutdownDisplay");
@@ -442,6 +478,9 @@ public class GameEngine implements IGameEngine
 		Display.destroy();
 	}
 	
+	/**
+	 * Initialize the IAudioEngine, either with OpenAL or Null on failure.
+	 */
 	protected void	SetupAudio() throws Exception
 	{
 		try 
@@ -456,11 +495,18 @@ public class GameEngine implements IGameEngine
 		}
 	}
 	
+	/**
+	 * Initialize the ALAudioEngine.
+	 * @throws Exception
+	 */
 	protected void 	InitOpenALAudioEngine() throws Exception
 	{
 		throw new Exception("InitOpenALAudioEngine: Not implemented yet!", null);
 	}
 	
+	/**
+	 * Initialize the NullAudioEngine.
+	 */
 	protected void 	InitNullAudioEngine()
 	{
 		audioEngine_ = new NullAudioEngine();
@@ -474,6 +520,9 @@ public class GameEngine implements IGameEngine
 		}
 	}
 	
+	/**
+	 * Shutdown audio engine and resources.
+	 */
 	protected void	ShutdownAudio()
 	{
 		LogMessage("ShutdownAudio");
@@ -481,13 +530,3 @@ public class GameEngine implements IGameEngine
 	}
 
 }
-
-
-
-
-
-
-
-
-
-

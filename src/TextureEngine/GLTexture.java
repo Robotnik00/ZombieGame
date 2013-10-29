@@ -23,14 +23,12 @@ import org.lwjgl.BufferUtils;
 
 
 
-/*	GLTexture
+/**	GLTexture
  *
  *	Contains a loaded texture which can be drawn via OpenGL.
  *
  *	These are created and returned by an ITextureEngine, which actually manages OpenGL resources.
  */
-
-
 public class GLTexture implements ITexture
 {
 	// lots of gl information must be passed
@@ -148,7 +146,6 @@ public class GLTexture implements ITexture
 		ResetDrawingParams();
 	}
 	
-	
 	public void Draw()
 	{
 		// What the drawing state does:
@@ -200,6 +197,7 @@ public class GLTexture implements ITexture
 		ResetDrawingParams();
 	}
 
+	
 	//
 	// protected members
 	//
@@ -235,6 +233,7 @@ public class GLTexture implements ITexture
 	// stuff
 	protected FloatBuffer	matrixBuffer_;
 	protected Vector3f		vectorUp_;
+	
 	
 	//
 	// protected methods

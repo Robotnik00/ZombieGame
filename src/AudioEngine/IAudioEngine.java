@@ -7,17 +7,16 @@
  * 		Interface to sound library.	
  */
 
-// imports
-
-
-
-/*	IAudioEngine
- * 
- */
 package AudioEngine;
 
+// imports
 import Engine.IGameEngine;
 
+
+/**	IAudioEngine
+ * 
+ * 	Interface to a sound library and sound loading function.
+ */
 
 public interface IAudioEngine
 {

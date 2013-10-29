@@ -7,12 +7,15 @@
  * 		Empty sound effect.
  */
 
-// imports
 package AudioEngine;
 
+// imports
 
 
-
+/** NullSound
+ * 
+ * 	Empty sound created by NullAudioEngine.
+ */
 public class NullSound implements ISound
 {
 	//
