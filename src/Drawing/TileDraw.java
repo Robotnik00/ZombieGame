@@ -37,6 +37,7 @@ public class TileDraw implements DrawObject
 		interpolator.rotate(rotVelocity, new Vector3f(0,0,1));
 		interpolator.translate(velocity);
 		
+		interpolator = obj.getGlobalTransform(interpolator);
 		
 		interpolator.translate(new Vector2f(-cols/2, -rows/2));
 		

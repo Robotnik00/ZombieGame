@@ -34,7 +34,7 @@ public class ExampleObject
 		handle.addAction(new MouseTracker(handle, game)); 
 		PCControl pc = new PCControl(handle, universe, game);
 		pc.setMass(.1f);
-		pc.setForceScale(2f);
+		pc.setForceScale(3f);
 		handle.addAction(pc);
 		
 		GameObject node = new GameObject(); // create node for rotating
