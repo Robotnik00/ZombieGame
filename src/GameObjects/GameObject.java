@@ -431,7 +431,7 @@ public class GameObject
 	 */
 	public Matrix4f getInterpolator()
 	{
-		return interpolator;
+		return new Matrix4f(interpolator);
 	}
 	/**
 	 *

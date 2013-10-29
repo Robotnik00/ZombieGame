@@ -2,6 +2,7 @@ package Drawing;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import GameObjects.GameObject;
@@ -24,14 +25,19 @@ public class TileDraw implements DrawObject
 	public void draw(float deltaT) {
 		// TODO Auto-generated method stub
 		
-		Matrix4f interpolator = obj.getGlobalTransform(obj.getInterpolator());
-		Vector4f velocity = obj.getGlobalVelocity();
-		Vector2f velocity2d = new Vector2f();
-		velocity2d.x = velocity.x;
-		velocity2d.y = velocity.y;
+		Matrix4f interpolator = obj.getInterpolator();
 		
-		velocity2d.scale(deltaT);
-		interpolator.translate(velocity2d);
+		
+		Vector2f velocity = new Vector2f(obj.getTranslationalVelocity());
+		float rotVelocity = obj.getRotationalVelocity();
+		
+		velocity.scale(deltaT);
+		rotVelocity *= deltaT;
+		
+		interpolator.rotate(rotVelocity, new Vector3f(0,0,1));
+		interpolator.translate(velocity);
+		
+		
 		interpolator.translate(new Vector2f(-cols/2, -rows/2));
 		
 		for(int i = 0; i < rows; i++)

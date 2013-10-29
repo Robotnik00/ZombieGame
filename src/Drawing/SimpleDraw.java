@@ -2,6 +2,7 @@ package Drawing;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import GameObjects.GameObject;
@@ -20,17 +21,22 @@ public class SimpleDraw implements DrawObject
 	
 	@Override
 	public void draw(float deltaT) {
-		// TODO Auto-generated method stub.
-		Matrix4f interpolator = obj.getGlobalTransform(obj.getInterpolator());
-		Vector4f velocity = obj.getGlobalVelocity();
-		Vector2f velocity2d = new Vector2f();
-		velocity2d.x = velocity.x;
-		velocity2d.y = velocity.y;
+				
+		Vector2f velocity = new Vector2f(obj.getTranslationalVelocity());
+		float rotVelocity = obj.getRotationalVelocity();
 		
-		velocity2d.scale(deltaT);
-		interpolator.translate(velocity2d);
+		Matrix4f interpolator = obj.getInterpolator();
 		
-		tex.Draw(obj.getGlobalTransform(obj.getLocalTransform()));
+		velocity.scale(deltaT);
+		rotVelocity *= deltaT;
+		
+		interpolator.rotate(rotVelocity, new Vector3f(0,0,1));
+		interpolator.translate(velocity);
+		interpolator = obj.getGlobalTransform(interpolator);
+
+		tex.Draw(interpolator);
+		
+		
 	}
 	ITexture tex;
 	GameObject obj;
