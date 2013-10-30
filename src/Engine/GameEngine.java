@@ -23,8 +23,12 @@ import org.lwjgl.input.Keyboard;
 import AudioEngine.IAudioEngine;
 import AudioEngine.NullAudioEngine;
 import GameStates.IGameState;
+import GameStates.InputExample;
 import GameStates.StartGame;
 import GameStates.TestState;
+import InputCallbacks.KeyEventListener;
+import InputCallbacks.MouseEvent;
+import InputCallbacks.MouseEventListener;
 import TextureEngine.GLTextureEngine;
 import TextureEngine.ITextureEngine;
 import static org.lwjgl.opengl.GL11.*;
@@ -118,6 +122,10 @@ public class GameEngine implements IGameEngine
 		
 		// copy arguments
 		arguments_ = args;
+
+
+		keyListeners = new ArrayList<KeyEventListener>();
+		mouseListeners = new ArrayList<MouseEventListener>();
 		
 		// setup window w/LWJGL, init opengl
 		SetupDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -132,6 +140,7 @@ public class GameEngine implements IGameEngine
 		// start initial gamestate
 		ChangeGameState(new TestState());
 		//ChangeGameState(new StartGame());
+		ChangeGameState(new InputExample());
 		
 		// run the game loop
 		GameLoop();
@@ -352,72 +361,58 @@ public class GameEngine implements IGameEngine
 	 */
 	protected void	PumpKeyboardEvents()
 	{
-		ArrayList<Integer> events = new ArrayList<Integer>();
-		
 		while (Keyboard.next())
 		{
-			if (Keyboard.getEventKeyState())	// pressed
+			for(int i = 0; i < keyListeners.size(); i++)
 			{
-				// pressed = positive id
-				// released = negative id
-				
-				events.add(Keyboard.getEventKey());
+				if (Keyboard.getEventKeyState())	// pressed
+				{
+					keyListeners.get(i).keyPressed(Keyboard.getEventKey());
+				}
+				else // released
+				{
+					keyListeners.get(i).keyReleased(Keyboard.getEventKey());
+				}
 			}
-			else // released
-			{
-				events.add(-Keyboard.getEventKey());
-			}
-		}
-		
-		// don't create an empty array
-		if (events.size() == 0)
-		{
-			events.add(Keyboard.KEY_NONE);
-		}
-		
-		// pack button events into array
-		lastKeyEvents_ = new int [events.size()];
-		//LogMessage("PumpKeyboardEvents: " + events.size() + " events.");
-		
-		for (int i=0; i < events.size(); i++)
-		{
-			lastKeyEvents_[i] = events.get(i);
-			
-			//if (lastKeyEvents_[i] > 0)
-			//	LogMessage("PumpKeyboardEvents: Event " + i + " = " + lastKeyEvents_[i]);
 		}
 	}
-	
+
+	@Override
+	public void addKeyEventListener(KeyEventListener keyListener) 
+	{
+		keyListeners.add(keyListener);
+	}
 	/**
 	 * Reads mouse button input, called once per frame.
 	 */
 	protected void	PumpMouseButtonEvents()
 	{
-		// can't use native data types on containers, that would be too simple.
-		ArrayList<Integer> events = new ArrayList<Integer>();
-		
 		while (Mouse.next())
 		{
-			// pressed = positive button id
-			// released = negative button id
-			// add 1 because 0 is neither +/-
-			if (Mouse.getEventButtonState())	// pressed
-			{	
-				events.add(Mouse.getEventButton()+1);
-			}
-			else // released
+			for(int i = 0; i < mouseListeners.size(); i++)
 			{
-				events.add(-(Mouse.getEventButton()+1));
+				if (Mouse.getEventButton() >= 0)	// pressed
+				{	
+					MouseEvent event = new MouseEvent(Mouse.getX(), Mouse.getY(), Mouse.getEventButton());
+					//events.add(Mouse.getEventButton()+1);
+					if(Mouse.getEventButtonState())
+					{
+						mouseListeners.get(i).buttonPressed(event);
+					}
+					else
+					{
+						mouseListeners.get(i).buttonReleased(event);
+					}
+					
+				}
 			}
 		}
 		
-		// pack button events into array
-		lastMouseEvents_ = new int [events.size()];
-		
-		for (int i=0; i < events.size(); i++)
-		{
-			lastMouseEvents_[i] = events.get(i);
-		}
+	}
+	@Override
+	public void addMouseEventListener(MouseEventListener mouseListener)
+	{
+		mouseListeners.add(mouseListener);
 	}
 	
 	/**
@@ -528,5 +523,11 @@ public class GameEngine implements IGameEngine
 		LogMessage("ShutdownAudio");
 		audioEngine_.Quit();
 	}
+
+	ArrayList<KeyEventListener> keyListeners;
+	ArrayList<MouseEventListener> mouseListeners;
+
+
+
 
 }

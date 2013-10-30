@@ -11,11 +11,11 @@ WHAT IS DONE (tested and working!):
 * Physics action that can be applied to GameObjects  
 * Collisions using bounding volume hierarchy with AABBs   
 * Alpha transparency, color blending, colorkey, drawing a portion of a texture.  
+* input callbacks are finished.(hopefully without breaking anything anyone was doing) >.<
 
 WORK IN PROGRESS:  
 * Drawing primitive shapes (points, lines, rectangles). (jacob)  
 * Collisions with OBB trees. (Jack)  
-* Mouse/KeyBoard callback class to register events(like in awt package:   KeyListener/MouseListener ect..) (jack)  
 * GUI stuff.
 
 WHAT NEEDS TO BE DONE:  

@@ -8,6 +8,8 @@ import Drawing.TileDraw;
 import Engine.IGameEngine;
 import GameObjects.ExampleObject;
 import GameObjects.GameObject;
+import InputCallbacks.MouseEvent;
+import InputCallbacks.MouseEventListener;
 import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
 
@@ -31,7 +33,6 @@ public class StartGame implements IGameState
 		this.gfx  = gfx;
 		this.snd  = snd;
 		this.game = game;
-		
 		buildUniverse();
 		
 		//game.EndGameLoop(); // quits immediately.
@@ -86,6 +87,7 @@ public class StartGame implements IGameState
 	GameObject obj1, obj2, obj3;
 	
 	GameObject universe;
+
 	
 	
 }

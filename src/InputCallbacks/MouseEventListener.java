@@ -5,6 +5,6 @@ package InputCallbacks;
 */
 public interface MouseEventListener 
 {
-	public void buttonPressed(int event);
-	public void buttonReleased(int event);
+	public void buttonPressed(MouseEvent event);
+	public void buttonReleased(MouseEvent event);
 }

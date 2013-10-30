@@ -12,6 +12,7 @@ package GameStates;
 // imports
 import AudioEngine.IAudioEngine;
 import Engine.IGameEngine;
+import InputCallbacks.KeyEventListener;
 import TextureEngine.ITextureEngine;
 import TextureEngine.ITexture;
 
@@ -24,7 +25,7 @@ import org.lwjgl.input.*;
  * 
  * @author Jacob
  */
-public class TestState implements IGameState
+public class TestState implements IGameState, KeyEventListener
 {
 	public TestState()
 	{
@@ -42,6 +43,7 @@ public class TestState implements IGameState
 		gfx_ = gfx;
 		snd_ = snd;
 		game_ = game;
+		game_.addKeyEventListener(this);
 		
 		x_ = 10.0f;
 		y_ = 10.0f;
@@ -64,37 +66,8 @@ public class TestState implements IGameState
 	public void	Update()
 	{
 		// move
-		x_ += vx_; vx_ = 0;
-		y_ += vy_; vy_ = 0;
-		
-		// read input, determine movement vector for this frame
-		int[] keys = game_.GetKeyEvents();
-		
-		for (int i=0; i < keys.length; i++)
-		{
-			switch (keys[i])
-			{
-			case Keyboard.KEY_W:	moveUp_ = true;			break;
-			case -Keyboard.KEY_W:	moveUp_ = false;		break;
-			case Keyboard.KEY_S:	moveDown_ = true;		break;
-			case -Keyboard.KEY_S:	moveDown_ = false;		break;
-			case Keyboard.KEY_A:	moveLeft_ = true;		break;
-			case -Keyboard.KEY_A:	moveLeft_ = false;		break;
-			case Keyboard.KEY_D:	moveRight_ = true;		break;
-			case -Keyboard.KEY_D:	moveRight_ = false;		break;
-			
-			case Keyboard.KEY_ESCAPE:	
-				game_.EndGameLoop();
-				break;
-			}
-		}
-		
-		// move
-		float moveSpeed = 0.1f;
-		if (moveUp_)	vy_ += moveSpeed;
-		if (moveDown_)	vy_ += -moveSpeed;
-		if (moveLeft_)	vx_ += -moveSpeed;
-		if (moveRight_)	vx_ += moveSpeed;
+		x_ += vx_; 
+		y_ += vy_; 
 		
 		// display the frame rate
 		game_.SetWindowTitle("FPS: "+game_.GetFrameRate());
@@ -143,7 +116,33 @@ public class TestState implements IGameState
 		image1_.Draw();
 	}
 	
-	
+	@Override
+	public void keyPressed(int event) {
+		// TODO Auto-generated method stub
+		switch (event)
+		{
+		case Keyboard.KEY_W:	vy_+= moveSpeed;		break;
+		case Keyboard.KEY_S:	vy_ += -moveSpeed;		break;
+		case Keyboard.KEY_A:	vx_ += -moveSpeed;		break;
+		case Keyboard.KEY_D:	vx_ += moveSpeed;		break;
+		
+		case Keyboard.KEY_ESCAPE:	
+			game_.EndGameLoop();
+			break;
+		}// move
+	}
+
+	@Override
+	public void keyReleased(int event) 
+	{
+		switch (event)
+		{
+		case Keyboard.KEY_W:	vy_-= moveSpeed;		break;
+		case Keyboard.KEY_S:	vy_ -= -moveSpeed;		break;
+		case Keyboard.KEY_A:	vx_ -= -moveSpeed;		break;
+		case Keyboard.KEY_D:	vx_ -= moveSpeed;		break;
+		}// move
+	}
 	
 	//
 	// protected members
@@ -159,11 +158,15 @@ public class TestState implements IGameState
 	
 	protected float				x_,y_;
 	protected float				vx_,vy_;
+	float moveSpeed = 0.1f;
 	
 	protected boolean			moveUp_;
 	protected boolean			moveDown_;
 	protected boolean			moveLeft_;
 	protected boolean			moveRight_;
+
+
+
 }
 
 

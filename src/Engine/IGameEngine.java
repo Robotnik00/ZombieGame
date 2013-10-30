@@ -11,6 +11,8 @@ package Engine;
 
 // imports
 import GameStates.IGameState;
+import InputCallbacks.KeyEventListener;
+import InputCallbacks.MouseEventListener;
 
 
 /**
@@ -110,11 +112,12 @@ public interface IGameEngine
 	 * @return mouse button events.
 	 */
 	public int[] GetMouseEvents();
-	
+	public void addMouseEventListener(MouseEventListener mouseListener);
 	/** 
 	 * Returns the keys pressed/released this frame
 	 * Positive key values indicate pressed keys, negative values are released keys.
 	 * @return keyboard events
 	 */
 	public int[] GetKeyEvents();
+	public void addKeyEventListener(KeyEventListener keyListener);
 }

@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector2f;
 import Engine.IGameEngine;
 import GameObjects.GameObject;
 import InputCallbacks.KeyEventListener;
+import InputCallbacks.MouseEvent;
 import InputCallbacks.MouseEventListener;
 
 /**
@@ -19,6 +20,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	{
 		super(obj, universe, eng); 
 		// TODO Auto-generated constructor stub
+		eng.addKeyEventListener(this);
 	}
 
 	@Override
@@ -26,7 +28,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	{
 		super.performAction();
 		
-		processKeyEvents();
+		//processKeyEvents();
 	}
 	// prob should make an event queue for this
 	public void processKeyEvents()
@@ -95,13 +97,13 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		}
 	}
 	@Override
-	public void buttonPressed(int event) {
+	public void buttonPressed(MouseEvent event) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void buttonReleased(int event) {
+	public void buttonReleased(MouseEvent event) {
 		// TODO Auto-generated method stub
 		
 	}
