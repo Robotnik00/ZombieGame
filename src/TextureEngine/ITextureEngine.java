@@ -86,11 +86,10 @@ public interface ITextureEngine
 	public void	SetOrthoPerspective(float left, float right, float bottom, float top);
 
 	// basic drawing operations
-//	public void SetDrawColor(float r, float g, float b);
-//	public void	SetDrawAlpha(float a);
-//	public void DrawPoint(float x, float y);
-//	public void DrawLine(float x1, float y1, float x2, float y2);
-//	public void DrawRectangle(float x1, float y1, float x2, float y2);
+	public void SetDrawColor(float r, float g, float b, float a);
+	public void DrawPoint(float x, float y);
+	public void DrawLine(float x1, float y1, float x2, float y2);
+	public void DrawRectangle(float x1, float y1, float x2, float y2);
 	
 	
 	//

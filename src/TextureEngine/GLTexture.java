@@ -122,6 +122,7 @@ public class GLTexture implements ITexture
 		
 		//Matrix4f viewT = new Matrix4f();
 		m.setIdentity();
+		m.translate(new Vector2f(x_,y_));
 		m.store(matrixBuffer_); matrixBuffer_.flip();
 		glUniformMatrix4(uView_, false, matrixBuffer_);
 		

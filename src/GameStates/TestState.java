@@ -160,6 +160,13 @@ public class TestState implements IGameState
 		bitmapFont_.SetScale(0.5f,0.5f);
 		bitmapFont_.SetKerning(0.4f);
 		bitmapFont_.DrawString("Hello world!\nI am a new line!\n0123456789\n\t456789!");
+		
+		// draw primitive shapes
+		gfx_.SetDrawColor(1.0f, 0, 0, 1.0f);
+		gfx_.DrawRectangle(0, 0, 2.0f, 2.0f);
+		gfx_.SetDrawColor(0.0f, 1.0f, 0.0f, 1.0f);
+		gfx_.DrawLine(0, 0, 2.0f, 2.0f);
+		gfx_.DrawLine(0, 2.0f, 2.0f, 0);
 	}
 	
 	
