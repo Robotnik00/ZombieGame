@@ -73,8 +73,9 @@ public class StartGame implements IGameState
 		ExampleObject obj = new ExampleObject(universe, game, gfx);
 		
 		ObjectFollower objFollower = new ObjectFollower(universe, obj.getHandle(), game);
-		objFollower.setMass(1f);
-		objFollower.setFrictionConstant(1f);
+		objFollower.setMass(0.5f);
+		objFollower.setFrictionConstant(10f);
+		
 		universe.addAction(objFollower);
 	
 	}

@@ -12,9 +12,9 @@ package GameStates;
 // imports
 import AudioEngine.IAudioEngine;
 import Engine.IGameEngine;
-import InputCallbacks.KeyEventListener;
 import TextureEngine.ITextureEngine;
 import TextureEngine.ITexture;
+import Utility.BitmapFont;
 
 import org.lwjgl.input.*;
 
@@ -25,7 +25,7 @@ import org.lwjgl.input.*;
  * 
  * @author Jacob
  */
-public class TestState implements IGameState, KeyEventListener
+public class TestState implements IGameState
 {
 	public TestState()
 	{
@@ -43,7 +43,6 @@ public class TestState implements IGameState, KeyEventListener
 		gfx_ = gfx;
 		snd_ = snd;
 		game_ = game;
-		game_.addKeyEventListener(this);
 		
 		x_ = 10.0f;
 		y_ = 10.0f;
@@ -53,6 +52,10 @@ public class TestState implements IGameState, KeyEventListener
 		image1_ = gfx_.LoadTexture("image.bmp", 0x00000000);
 		image2_ = gfx_.LoadTexture("image2.png", 0x0000FFFF);
 		image3_ = gfx_.LoadTexture("image3.bmp", 0x00000001);
+		font_ = gfx_.LoadTexture("font1.png", 0);
+		
+		bitmapFont_ = new BitmapFont();
+		bitmapFont_.SetFont(font_);
 		
 		// rescale the drawing perspective
 		gfx_.SetOrthoPerspective(0, 20, 0, 15);
@@ -67,7 +70,39 @@ public class TestState implements IGameState, KeyEventListener
 	{
 		// move
 		x_ += vx_; 
-		y_ += vy_; 
+		y_ += vy_;
+		
+		vx_ = 0;
+		vy_ = 0;
+		
+		// read input, determine movement vector for this frame
+        int[] keys = game_.GetKeyEvents();
+        
+        for (int i=0; i < keys.length; i++)
+        {
+	        switch (keys[i])
+	        {
+	        case Keyboard.KEY_W:	moveUp_ = true;		break;
+	        case -Keyboard.KEY_W:	moveUp_ = false;	break;
+	        case Keyboard.KEY_S:	moveDown_ = true;	break;
+	        case -Keyboard.KEY_S:	moveDown_ = false;	break;
+	        case Keyboard.KEY_A:	moveLeft_ = true;	break;
+	        case -Keyboard.KEY_A:	moveLeft_ = false;	break;
+	        case Keyboard.KEY_D:	moveRight_ = true;	break;
+	        case -Keyboard.KEY_D:	moveRight_ = false;	break;
+	        
+	        case Keyboard.KEY_ESCAPE:        
+	                game_.EndGameLoop();
+	                break;
+	        }
+        }
+        
+        // move
+        float moveSpeed = 0.1f;
+        if (moveUp_)	vy_ += moveSpeed;
+        if (moveDown_)	vy_ += -moveSpeed;
+        if (moveLeft_)	vx_ += -moveSpeed;
+        if (moveRight_)	vx_ += moveSpeed;
 		
 		// display the frame rate
 		game_.SetWindowTitle("FPS: "+game_.GetFrameRate());
@@ -94,7 +129,9 @@ public class TestState implements IGameState, KeyEventListener
 		//image3_.SetSrcRect(0.0f, 0.0f, 20.0f, 15.0f);
 		//image3_.Draw();
 		
+		
 		// draw at the origin, and rotate toward the cursor
+		
 		//image2_.SetSrcRect(0.25f, 0.25f, 0.75f, 0.75f);
 		//image2_.SetScale(0.4f, 0.4f);
 		image2_.SetOrigin(-0.5f, -0.5f);
@@ -102,7 +139,9 @@ public class TestState implements IGameState, KeyEventListener
 		image2_.SetPos(10.0f, 10.0f);
 		image2_.Draw();
 		
+		
 		// controlled by the keyboard
+		
 		//image1_.SetScale(1.0f, 1.0f);
 		image1_.SetOrigin(-0.5f, -0.5f);
 		image1_.SetRotation(
@@ -114,35 +153,16 @@ public class TestState implements IGameState, KeyEventListener
 		//image1_.SetAlpha(0.5f);
 		image1_.SetPos(dx, dy);
 		image1_.Draw();
+		
+		
+		// draw font
+		bitmapFont_.SetPosition(0.0f, 19.0f);
+		bitmapFont_.SetScale(0.5f,0.5f);
+		bitmapFont_.SetKerning(0.4f);
+		bitmapFont_.DrawString("Hello world!\nI am a new line!\n0123456789\n\t456789!");
 	}
 	
-	@Override
-	public void keyPressed(int event) {
-		// TODO Auto-generated method stub
-		switch (event)
-		{
-		case Keyboard.KEY_W:	vy_+= moveSpeed;		break;
-		case Keyboard.KEY_S:	vy_ += -moveSpeed;		break;
-		case Keyboard.KEY_A:	vx_ += -moveSpeed;		break;
-		case Keyboard.KEY_D:	vx_ += moveSpeed;		break;
-		
-		case Keyboard.KEY_ESCAPE:	
-			game_.EndGameLoop();
-			break;
-		}// move
-	}
-
-	@Override
-	public void keyReleased(int event) 
-	{
-		switch (event)
-		{
-		case Keyboard.KEY_W:	vy_-= moveSpeed;		break;
-		case Keyboard.KEY_S:	vy_ -= -moveSpeed;		break;
-		case Keyboard.KEY_A:	vx_ -= -moveSpeed;		break;
-		case Keyboard.KEY_D:	vx_ -= moveSpeed;		break;
-		}// move
-	}
+	
 	
 	//
 	// protected members
@@ -155,28 +175,14 @@ public class TestState implements IGameState, KeyEventListener
 	protected ITexture			image1_;
 	protected ITexture			image2_;
 	protected ITexture			image3_;
+	protected ITexture			font_;
+	protected BitmapFont		bitmapFont_;
 	
 	protected float				x_,y_;
 	protected float				vx_,vy_;
-	float moveSpeed = 0.1f;
 	
 	protected boolean			moveUp_;
 	protected boolean			moveDown_;
 	protected boolean			moveLeft_;
 	protected boolean			moveRight_;
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-

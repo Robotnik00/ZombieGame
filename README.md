@@ -11,7 +11,8 @@ WHAT IS DONE (tested and working!):
 * Physics action that can be applied to GameObjects  
 * Collisions using bounding volume hierarchy with AABBs   
 * Alpha transparency, color blending, colorkey, drawing a portion of a texture.  
-* input callbacks are finished.(hopefully without breaking anything anyone was doing) >.<
+* Input callbacks.
+* Bitmapped font drawing.
 
 WORK IN PROGRESS:  
 * Drawing primitive shapes (points, lines, rectangles). (jacob)  
@@ -23,11 +24,6 @@ WHAT NEEDS TO BE DONE:
 * Most game logic [expand on this].  
 * fix interpolator in gameobject  
 * Action to control object based on keys pressed.(already have one, but it needs to be revisited)  
-
-Bugs:
-* i noticed flickering prob. its minor, but noticable. I thought it was my interpolator, so i turned it off, but its still there.(see StartGame)
-
-
 
 
 =====  
