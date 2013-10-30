@@ -43,8 +43,7 @@ public class ObjectFollower extends Physics
 	}
 	
 	float deadZone = 0.05f;
-	float forceScale = 4f;// note much higher than Physics. The reason is because universe is in global coordinate 
-						    // space so its velocity is scaled but its x,y coordinates are not.
+	float forceScale = 3f;
 	
 	GameObject toFollow;
 }
