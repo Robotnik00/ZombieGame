@@ -2,8 +2,11 @@
 package GameStates;
 
 
+import Actions.MouseTracker;
 import Actions.ObjectFollower;
+import Actions.PCControl;
 import AudioEngine.IAudioEngine;
+import Drawing.SimpleDraw;
 import Drawing.TileDraw;
 import Engine.IGameEngine;
 import GameObjects.ExampleObject;
@@ -68,16 +71,26 @@ public class StartGame implements IGameState
 		test = gfx.LoadTexture("image3.bmp", 1);
 		universe.setDrawingInterface(new TileDraw(universe, test));
 		universe.translate(0, -.5f); 
-		universe.scale(.1f, .1f);
+		universe.scale(.2f, .2f);
 		
 		ExampleObject obj = new ExampleObject(universe, game, gfx);
 		
 		ObjectFollower objFollower = new ObjectFollower(universe, obj.getHandle(), game);
-		objFollower.setMass(1f);
+		objFollower.setMass(.1f);
 		objFollower.setFrictionConstant(1f);
 		
 		universe.addAction(objFollower);
-	
+		
+		
+		for(int i = 0; i < 10; i++)
+		{
+			GameObject obj1 = new GameObject();
+			obj1.translate((float)(Math.random()-.5)* 10, (float)(Math.random()-.5) * 10);
+			obj1.rotate((float)(Math.random()*2*Math.PI));
+			obj1.setDrawingInterface(new SimpleDraw(obj1, gfx.LoadTexture("image.bmp", 0)));
+			universe.addChild(obj1);
+		}
+		
 	}
 	ITexture test;
 	

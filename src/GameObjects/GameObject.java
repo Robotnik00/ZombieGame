@@ -56,7 +56,6 @@ public class GameObject
 	public void update(float deltaT)
 	{
 		//boundingBox.transform(getGlobalTransform());
-		interpolator.load(transform);
 		float x = getGlobalX();
 		float y = getGlobalY();
 		
@@ -82,6 +81,7 @@ public class GameObject
 		transform.translate(deltaX);
 		
 		rotate(rotationalVelocity*deltaT);
+		interpolator.load(transform);
 		
 		updateChildren(deltaT);
 		updateThis(deltaT);
@@ -441,7 +441,11 @@ public class GameObject
 	{
 		Matrix4f scale = new Matrix4f();
 		scale.scale(new Vector3f(x,y,1));
+		float xcoor = transform.m30;
+		float ycoor = transform.m31;
 		Matrix4f.mul(scale, transform, transform);
+		transform.m30 = xcoor;
+		transform.m31 = ycoor;
 	}
 	/**
 	 *

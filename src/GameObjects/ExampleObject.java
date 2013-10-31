@@ -28,41 +28,43 @@ public class ExampleObject
 	{
 		this.universe = universe;
 		
+		// this is where the controls for the object 'grab hold'
 		handle = new GameObject(); // create node
-		handle.rotate((float)Math.PI/2);
 		universe.addChild(handle); // add to universe
 		handle.addAction(new MouseTracker(handle, game)); 
 		PCControl pc = new PCControl(handle, universe, game);
-		pc.setMass(.1f);
-		pc.setForceScale(3f);
+		pc.setMass(.1f);    // set this so that the object accelerates quickly
+		pc.setForceScale(3f); // max force applied by pc. thus max velocity = 3.0/1.0(with respect to universe.)
 		handle.addAction(pc);
 		
-		GameObject node = new GameObject(); // create node for rotating
-		handle.addChild(node); // add it to handle
 		
-		
-		
-		GameObject child1Node = new GameObject();
+		// create a rotating node to attach child1 to. 
+		// The reason this is required is because child1 has a scale applied to it.
+		// since the scale is already applied, we have to create a node in order to 
+		// effectively change the order of the transforms from 'rotate then scale' to 'scale then rotate'
+		// otherwise the the texture will be distorted.
+		GameObject child1Node = new GameObject(); 
 		Physics action = new Physics(child1Node, game);
 		child1Node.addAction(action);
 		action.applyTorque(2f);
-		node.addChild(child1Node);
-		child1Node.translate(-.7f, -.3f);
+		handle.addChild(child1Node);
+		child1Node.translate(-1f, -.2f); // sets the location of the axis to rotate child1 about. 
 		
+		// add child1 to child1Node with a scale in the x direction
+		// default location with respect to child1Node is 0.
 		child1 = new GameObject(); // create node
-		child1.translate(-.5f, -.5f); // center on rotating node
 		child1Node.addChild(child1); // add to node
 		child1.scale(.5f, 1); // scale child
 		
 		
-		
+		// child 2 and 3 have no animation so they are pretty easy to add
 		child2 = new GameObject(); // create node
 		child2.translate(0, .3f); // object location
-		node.addChild(child2); // add to node
+		handle.addChild(child2); // add to node
 		
 		child3 = new GameObject(); // create node
 		child3.translate(-.4f, -.5f); // object location
-		node.addChild(child3); // add to node
+		handle.addChild(child3); // add to node
 		
 		loadTexture(gfx);
 	}

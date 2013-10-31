@@ -27,15 +27,14 @@ public class TileDraw implements DrawObject
 		
 		Matrix4f interpolator = obj.getInterpolator();
 		
-		
 		Vector2f velocity = new Vector2f(obj.getTranslationalVelocity());
 		float rotVelocity = obj.getRotationalVelocity();
 		
 		velocity.scale(deltaT);
 		rotVelocity *= deltaT;
 		
-		interpolator.rotate(rotVelocity, new Vector3f(0,0,1));
-		interpolator.translate(velocity);
+		//interpolator.rotate(rotVelocity, new Vector3f(0,0,1));
+		//interpolator.translate(velocity);
 		
 		interpolator = obj.getGlobalTransform(interpolator);
 		
