@@ -20,19 +20,8 @@ public class SimpleDraw implements DrawObject
 	}
 	
 	@Override
-	public void draw(float deltaT) {
+	public void draw(Matrix4f interpolator) {
 				
-		Vector2f velocity = new Vector2f(obj.getTranslationalVelocity());
-		float rotVelocity = obj.getRotationalVelocity();
-		
-		Matrix4f interpolator = obj.getInterpolator();
-		
-		velocity.scale(deltaT);
-		rotVelocity *= deltaT;
-		
-		interpolator.rotate(rotVelocity, new Vector3f(0,0,1));
-		interpolator.translate(velocity);
-		interpolator = obj.getGlobalTransform(interpolator);
 		interpolator.translate(new Vector2f(-.5f, -.5f));
 		tex.Draw(interpolator);
 		

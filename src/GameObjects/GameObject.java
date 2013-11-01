@@ -31,9 +31,14 @@ public class GameObject
 		// set up default transformation matrix (loc: 0,0 rot: 0)
 		transform = new Matrix4f();
 		interpolator = new Matrix4f();
+		
+		glbTransform = new Matrix4f();
+		glbInterpolator = new Matrix4f();
+		
 		transform.setIdentity();
 		
 		velocity = new Vector2f();
+		deltaX = new Vector2f();
 		rotationalVelocity = 0;
 		actions = new ArrayList<Action>();
 		
@@ -68,21 +73,21 @@ public class GameObject
 			proxemity.setLocation((int)x, (int)y);
 		}
 		
+		
+		deltaX.x = velocity.x;
+		deltaX.y = velocity.y;
+		deltaX.scale(deltaT);
+		
+		transform.translate(deltaX);
+		
+		rotate(rotationalVelocity*deltaT);
+
 		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
 		for(int i = 0; i < actions.size(); i++)
 		{
 			actions.get(i).performAction();
 		}
 
-		
-		Vector2f deltaX = new Vector2f(velocity);
-		deltaX.scale(deltaT);
-		
-		transform.translate(deltaX);
-		
-		rotate(rotationalVelocity*deltaT);
-		interpolator.load(transform);
-		
 		updateChildren(deltaT);
 		updateThis(deltaT);
 	}
@@ -113,20 +118,17 @@ public class GameObject
 		{
 			// express time in same units as Physics(time seconds).
 			float deltaT = delta * (1/25f); // this should prob be done in GameEngine
+
+			interpolator.load(transform);
 			
-			/*Matrix4f glbInterpolator = getGlobalTransform(this.interpolator);
+			deltaX.x = velocity.x;
+			deltaX.y = velocity.y;
+			deltaX.scale(deltaT);
+			interpolator.translate(deltaX);
+			interpolator.rotate(rotationalVelocity*deltaT, zaxis);
 			
-			Vector4f glbVelocity = getGlobalVelocity();
-			glbVelocity.scale(deltaT);
-			
-			Vector2f deltaX = new Vector2f();
-			deltaX.x = glbVelocity.x;
-			deltaX.y = glbVelocity.y;
-			
-			glbInterpolator.translate(deltaX);
-			
-			texture.Draw(glbInterpolator);*/
-			drawing.draw(deltaT);
+	
+			drawing.draw(getGlobalInterpolator()); // note need to store transform interpolator then store it for children.
 			
 		}
 		drawChildren(delta);
@@ -219,15 +221,24 @@ public class GameObject
 	 */
 	public Matrix4f getGlobalTransform(Matrix4f transform)
 	{
-		Matrix4f glbTrans = new Matrix4f();
-		glbTrans.load(transform);
+		//Matrix4f glbTrans = new Matrix4f();
+		glbTransform.load(transform);
 		if(parent != null)
 		{
-			Matrix4f.mul(parent.getGlobalTransform(parent.transform), glbTrans, glbTrans);
+			Matrix4f.mul(parent.getGlobalTransform(parent.transform), glbTransform, glbTransform);
 		}
 		
 		
-		return glbTrans;
+		return glbTransform;
+	}
+	public Matrix4f getGlobalInterpolator()
+	{
+		glbInterpolator.load(transform);
+		if(parent != null)
+		{
+			Matrix4f.mul(parent.getGlobalInterpolator(), glbInterpolator, glbInterpolator);
+		}
+		return glbInterpolator;
 	}
 	
 	// gets x relative to 'Universe'
@@ -250,6 +261,7 @@ public class GameObject
 	public void rotate(float angle)
 	{
 		transform.rotate(angle, new Vector3f(0,0,1));
+		
 		//normalizeRotationMatrix();
 	}
 	public void translate(float x, float y)
@@ -469,7 +481,16 @@ public class GameObject
 		
 		return (float)Math.atan2(xaxis.y, xaxis.x);
 	}
-	
+	public Matrix4f getGlobalInterpolator(Matrix4f interpolator)
+	{
+		Matrix4f glbInt = new Matrix4f(interpolator);
+		if(parent == null)
+		{
+			return glbInt;
+		}
+		Matrix4f.mul(parent.getGlobalInterpolator(glbInt), glbInt, glbInt);
+		return glbInt;
+	}
 	
 	
 	Rectangle proxemity; // if no objects in this area than don't process any children unless it is null
@@ -478,6 +499,10 @@ public class GameObject
 	// transformation matrix for 2d transformations
 	Matrix4f transform; // location/orientation/scale of obj relative to parent
 	Matrix4f interpolator; // used for interpolating between frames
+	
+	// global transform
+	Matrix4f glbTransform;
+	Matrix4f glbInterpolator;
 	
 	// I think this is used to draw objects...
 	ITexture texture;
@@ -493,7 +518,9 @@ public class GameObject
 	ArrayList<GameObject> children;
 	
 	Vector2f velocity;
+	Vector2f deltaX;
 	float rotationalVelocity;
-			
 	boolean collidable = false;
+	
+	static final Vector3f zaxis = new Vector3f(0,0,1);
 }

@@ -2,9 +2,12 @@
 package GameStates;
 
 
+import org.lwjgl.util.vector.Vector2f;
+
 import Actions.MouseTracker;
 import Actions.ObjectFollower;
 import Actions.PCControl;
+import Actions.Physics;
 import AudioEngine.IAudioEngine;
 import Drawing.SimpleDraw;
 import Drawing.TileDraw;
@@ -82,12 +85,16 @@ public class StartGame implements IGameState
 		universe.addAction(objFollower);
 		
 		
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 100; i++)
 		{
 			GameObject obj1 = new GameObject();
 			obj1.translate((float)(Math.random()-.5)* 10, (float)(Math.random()-.5) * 10);
 			obj1.rotate((float)(Math.random()*2*Math.PI));
 			obj1.setDrawingInterface(new SimpleDraw(obj1, gfx.LoadTexture("image.bmp", 0)));
+			Physics p = new Physics(obj1, game);
+			p.applyForce(new Vector2f((float)(Math.random()-.5)*2, (float)(Math.random()-.5)*2));
+			obj1.addAction(p);
+			
 			universe.addChild(obj1);
 		}
 		

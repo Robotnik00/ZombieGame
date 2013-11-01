@@ -22,22 +22,8 @@ public class TileDraw implements DrawObject
 	
 	
 	@Override
-	public void draw(float deltaT) {
-		// TODO Auto-generated method stub
-		
-		Matrix4f interpolator = obj.getInterpolator();
-		
-		Vector2f velocity = new Vector2f(obj.getTranslationalVelocity());
-		float rotVelocity = obj.getRotationalVelocity();
-		
-		velocity.scale(deltaT);
-		rotVelocity *= deltaT;
-		
-		//interpolator.rotate(rotVelocity, new Vector3f(0,0,1));
-		//interpolator.translate(velocity);
-		
-		interpolator = obj.getGlobalTransform(interpolator);
-		
+	public void draw(Matrix4f interpolator) {
+
 		interpolator.translate(new Vector2f(-cols/2, -rows/2));
 		
 		for(int i = 0; i < rows; i++)
