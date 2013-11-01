@@ -91,8 +91,10 @@ public class StartGame implements IGameState
 			obj1.translate((float)(Math.random()-.5)* 10, (float)(Math.random()-.5) * 10);
 			obj1.rotate((float)(Math.random()*2*Math.PI));
 			obj1.setDrawingInterface(new SimpleDraw(obj1, gfx.LoadTexture("image.bmp", 0)));
+			obj1.rotate((float)Math.PI/2);
 			Physics p = new Physics(obj1, game);
-			p.applyForce(new Vector2f((float)(Math.random()-.5)*2, (float)(Math.random()-.5)*2));
+			p.applyForce(new Vector2f((float)(Math.random()-.5)*5, (float)(Math.random()-.5)*5));
+			p.applyTorque((float)(Math.random()));
 			obj1.addAction(p);
 			
 			universe.addChild(obj1);
