@@ -8,6 +8,7 @@ import Actions.Action;
 import Actions.MouseTracker;
 import Actions.PCControl;
 import Actions.Physics;
+import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import Engine.IGameEngine;
 /**
@@ -66,6 +67,17 @@ public class ExampleObject
 		child3.translate(-.4f, -.5f); // object location
 		handle.addChild(child3); // add to node
 		
+		someText = new GameObject();
+		someText.rotate((float)-Math.PI/2);
+		someText.scale(.3f, .3f);
+		someText.translate(-.4f, .7f);
+		
+		
+		DrawText textrenderer = new DrawText(gfx, "font1.png");
+		textrenderer.setText("helloworld");
+		someText.setDrawingInterface(textrenderer);
+		handle.addChild(someText);
+		
 		loadTexture(gfx);
 	}
 	public void loadTexture(ITextureEngine gfx) 
@@ -96,5 +108,6 @@ public class ExampleObject
 	GameObject child1;
 	GameObject child2;
 	GameObject child3;
+	GameObject someText;
 	GameObject universe;
 }

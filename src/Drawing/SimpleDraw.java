@@ -20,13 +20,15 @@ public class SimpleDraw implements DrawObject
 	}
 	
 	@Override
-	public void draw(Matrix4f interpolator) {
-				
-		interpolator.translate(new Vector2f(-.5f, -.5f));
+	public void draw(Matrix4f interpolator) 
+	{
+		
+		interpolator.translate(center);
 		tex.Draw(interpolator);
 		
 		
 	}
+	Vector2f center = new Vector2f(-.5f,-.5f);
 	ITexture tex;
 	GameObject obj;
 }

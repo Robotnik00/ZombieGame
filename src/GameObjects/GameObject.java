@@ -45,7 +45,6 @@ public class GameObject
 		
 		parent = null;
 		children = new ArrayList<GameObject>();
-		texture = null; // no default texture
 		drawing = null;
 		proxemity = null;
 		
@@ -60,6 +59,7 @@ public class GameObject
 	 */
 	public void update(float deltaT)
 	{
+		
 		//boundingBox.transform(getGlobalTransform());
 		float x = getGlobalX();
 		float y = getGlobalY();
@@ -90,6 +90,7 @@ public class GameObject
 
 		updateChildren(deltaT);
 		updateThis(deltaT);
+		glbTransformCalculated = false;
 	}
 	
 	// update children's position
@@ -116,6 +117,7 @@ public class GameObject
 	{
 		if(drawing != null)
 		{
+			glbInterpolatorCalculated = false;
 			// express time in same units as Physics(time seconds).
 			float deltaT = delta * (1/25f); // this should prob be done in GameEngine
 
@@ -219,24 +221,29 @@ public class GameObject
 	 * calculates the transform of the object with respect to the root node(universe)
 	 * used to determine 'Actual' coordinates for drawing and collision detection
 	 */
-	public Matrix4f getGlobalTransform(Matrix4f transform)
+	public Matrix4f getGlobalTransform()
 	{
-		//Matrix4f glbTrans = new Matrix4f();
-		glbTransform.load(transform);
-		if(parent != null)
+		if(!glbTransformCalculated)
 		{
-			Matrix4f.mul(parent.getGlobalTransform(parent.transform), glbTransform, glbTransform);
+			//Matrix4f glbTrans = new Matrix4f();
+			glbTransform.load(transform);
+			if(parent != null)
+			{
+				Matrix4f.mul(parent.getGlobalTransform(), glbTransform, glbTransform);
+			}
 		}
-		
 		
 		return glbTransform;
 	}
 	public Matrix4f getGlobalInterpolator()
 	{
-		glbInterpolator.load(transform);
-		if(parent != null)
+		if(!glbInterpolatorCalculated)
 		{
-			Matrix4f.mul(parent.getGlobalInterpolator(), glbInterpolator, glbInterpolator);
+			glbInterpolator.load(transform);
+			if(parent != null)
+			{
+				Matrix4f.mul(parent.getGlobalInterpolator(), glbInterpolator, glbInterpolator);
+			}
 		}
 		return glbInterpolator;
 	}
@@ -244,12 +251,12 @@ public class GameObject
 	// gets x relative to 'Universe'
 	public float getGlobalX()
 	{
-		return getGlobalTransform(transform).m30;
+		return getGlobalTransform().m30;
 	}
 	// gets y relatice to 'Universe'
 	public float getGlobalY()
 	{
-		return getGlobalTransform(transform).m31;
+		return getGlobalTransform().m31;
 	}
 
 	/**
@@ -359,9 +366,9 @@ public class GameObject
 	 */
 	public Matrix4f getRelativeTransform(GameObject obj, GameObject wrt)
 	{
-		Matrix4f glbtranthis = getGlobalTransform(transform);
-		Matrix4f glbtranobj  = obj.getGlobalTransform(transform);
-		Matrix4f glbtranwrt  = wrt.getGlobalTransform(transform);
+		Matrix4f glbtranthis = getGlobalTransform();
+		Matrix4f glbtranobj  = obj.getGlobalTransform();
+		Matrix4f glbtranwrt  = wrt.getGlobalTransform();
 		
 		
 		Matrix4f transform = new Matrix4f();
@@ -377,19 +384,7 @@ public class GameObject
 		return transform;
 	}
 	
-	/**
-	 *
-	 * sets the texture for this object for drawing
-	 */
-	@Deprecated
-	public void setTexture(ITexture tex)
-	{
-		this.texture = tex;
-	}
-	public ITexture getTexture()
-	{
-		return this.texture;
-	}
+
 	/**
 	 *
 	 * sets the velocity of this object with respect to parent
@@ -428,7 +423,7 @@ public class GameObject
 		{
 			return glbVelocity;
 		}
-		Matrix4f transform = parent.getGlobalTransform(parent.transform);
+		Matrix4f transform = parent.getGlobalTransform();
 		transform.m30 = 0;
 		transform.m31 = 0;
 		Matrix4f.transform(transform, glbVelocity, glbVelocity);
@@ -474,7 +469,7 @@ public class GameObject
 	public float getGlobalOrientation()
 	{
 		Vector4f xaxis = new Vector4f(1,0,0,0);
-		Matrix4f tranform = getGlobalTransform(this.transform);
+		Matrix4f tranform = getGlobalTransform();
 		
 		
 		Matrix4f.transform(tranform, xaxis, xaxis);
@@ -504,8 +499,11 @@ public class GameObject
 	Matrix4f glbTransform;
 	Matrix4f glbInterpolator;
 	
-	// I think this is used to draw objects...
-	ITexture texture;
+	protected boolean glbTransformCalculated = false;
+	protected boolean glbInterpolatorCalculated = false;
+	
+	
+	
 	
 	DrawObject drawing;
 	

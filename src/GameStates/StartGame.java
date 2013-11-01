@@ -4,9 +4,7 @@ package GameStates;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import Actions.MouseTracker;
 import Actions.ObjectFollower;
-import Actions.PCControl;
 import Actions.Physics;
 import AudioEngine.IAudioEngine;
 import Drawing.SimpleDraw;
@@ -14,8 +12,6 @@ import Drawing.TileDraw;
 import Engine.IGameEngine;
 import GameObjects.ExampleObject;
 import GameObjects.GameObject;
-import InputCallbacks.MouseEvent;
-import InputCallbacks.MouseEventListener;
 import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
 
