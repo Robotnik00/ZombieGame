@@ -100,6 +100,16 @@ public class StartGame implements IGameState
 			universe.addChild(obj1);
 		}
 		
+		for(int i = 0; i < 10; i++)
+		{
+			GameObject obj2 = new GameObject();
+			obj2.translate((float)(Math.random()-.5)* 10, (float)(Math.random()-.5) * 10);
+			obj2.rotate((float)(Math.random()*2*Math.PI));
+			obj2.setDrawingInterface(new SimpleDraw(obj2, gfx.LoadTexture("image2.png", 0)));
+			universe.addChild(obj2);
+		}
+		
+		
 	}
 	ITexture test;
 	
