@@ -13,6 +13,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import Actions.Action;
 import Drawing.DrawObject;
+import Geometry.AABB;
 import TextureEngine.ITexture;
 
 
@@ -60,19 +61,20 @@ public class GameObject
 	public void update(float deltaT)
 	{
 		
-		//boundingBox.transform(getGlobalTransform());
-		float x = getGlobalX();
-		float y = getGlobalY();
-		
 		if(boundingBox != null)
 		{
-			boundingBox.setLocation((int)x, (int)y);
+			boundingBox.transform(getGlobalTransform());
 		}
 		if(proxemity != null)
 		{
-			proxemity.setLocation((int)x, (int)y);
+			proxemity.transform(getGlobalTransform());
 		}
-		
+
+		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
+		for(int i = 0; i < actions.size(); i++)
+		{
+			actions.get(i).performAction();
+		}
 		
 		deltaX.x = velocity.x;
 		deltaX.y = velocity.y;
@@ -82,11 +84,6 @@ public class GameObject
 		
 		rotate(rotationalVelocity*deltaT);
 
-		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
-		for(int i = 0; i < actions.size(); i++)
-		{
-			actions.get(i).performAction();
-		}
 
 		updateChildren(deltaT);
 		updateThis(deltaT);
@@ -130,7 +127,7 @@ public class GameObject
 			interpolator.rotate(rotationalVelocity*deltaT, zaxis);
 			
 	
-			drawing.draw(getGlobalInterpolator()); // note need to store transform interpolator then store it for children.
+			drawing.draw(getGlobalInterpolator()); 
 			
 		}
 		drawChildren(delta);
@@ -232,7 +229,7 @@ public class GameObject
 				Matrix4f.mul(parent.getGlobalTransform(), glbTransform, glbTransform);
 			}
 		}
-		
+		//glbTransformCalculated = true;
 		return glbTransform;
 	}
 	public Matrix4f getGlobalInterpolator()
@@ -245,6 +242,7 @@ public class GameObject
 				Matrix4f.mul(parent.getGlobalInterpolator(), glbInterpolator, glbInterpolator);
 			}
 		}
+		//glbInterpolatorCalculated = true;
 		return glbInterpolator;
 	}
 	
@@ -283,11 +281,11 @@ public class GameObject
 	 * sets the BoundingBox of the object for collision detections
 	 * 
 	 */
-	public void setBoundingBox(Rectangle box)
+	public void setBoundingBox(AABB box)
 	{
 		boundingBox = box;
 	}
-	public Rectangle getBoundingBox()
+	public AABB getBoundingBox()
 	{
 		return boundingBox;
 	}
@@ -298,11 +296,11 @@ public class GameObject
 	 * sets proximity bounds for optimizing collisions
 	 * 
 	 */
-	public void setProxemityBounds(Rectangle bounds)
+	public void setProxemityBounds(AABB bounds)
 	{
 		this.proxemity = bounds;
 	}
-	public Rectangle getProxemityBounds()
+	public AABB getProxemityBounds()
 	{
 		return proxemity;
 	}
@@ -488,8 +486,8 @@ public class GameObject
 	}
 	
 	
-	Rectangle proxemity; // if no objects in this area than don't process any children unless it is null
-	Rectangle boundingBox; // if object in this area notify a collision
+	AABB proxemity; // if no objects in this area than don't process any children unless it is null
+	AABB boundingBox; // if object in this area notify a collision
 	
 	// transformation matrix for 2d transformations
 	Matrix4f transform; // location/orientation/scale of obj relative to parent

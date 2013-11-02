@@ -13,8 +13,12 @@ import GameObjects.GameObject;
 
 /**
 *
-* processes collisions and responds to them
+* processes collisions and responds to them. 
+* 
 */
+// What needs to be done here:
+//  - respond to collisions that are cause by rotating objects.
+//  - make it so the collisions result in accurate velocity based on momentum, instead of just negating it.
 public class CollidablePhysics extends Physics
 {
 
