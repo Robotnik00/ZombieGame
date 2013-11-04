@@ -152,8 +152,8 @@ public class ALAudioEngine implements IAudioEngine
 			soundSources_[i] = sourceid;
 		}
 		
-		// sound volume will not drop off over distance
-		//alDistanceModel(AL_NONE);
+		// disable sound volume from dropping off over distance
+		alDistanceModel(AL_NONE);
 		
 		// initial listener stuff
 		alListener3f(AL_POSITION, listenX_, listenY_, 0.0f);

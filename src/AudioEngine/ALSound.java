@@ -65,15 +65,15 @@ public class ALSound implements ISound
 	
 	public void	Loop()
 	{
-		if (channelId_ == -1)
-		{
-			channelId_ = al_.PlaySound(bufferId_, x_, y_, true);
-			ResetParams();
-		}
-		else
+		if (channelId_ != -1)
 		{
 			// resume
 			alSourcePlay(channelId_);
+		}
+		else
+		{
+			channelId_ = al_.PlaySound(bufferId_, x_, y_, true);
+			ResetParams();
 		}
 	}
 	

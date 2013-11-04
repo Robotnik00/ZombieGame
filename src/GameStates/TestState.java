@@ -55,10 +55,10 @@ public class TestState implements IGameState
 		image3_ = gfx_.LoadTexture("image3.bmp", 0x00000001);
 		font_ = gfx_.LoadTexture("font1.png", 0);
 		
-		music_ = snd_.LoadSound("music.wav");
-		sfx1_ = snd_.LoadSound("sfx1.wav");
-		sfx2_ = snd_.LoadSound("sfx2.wav");
-		sfx3_ = snd_.LoadSound("sfx3.wav");
+		music_ = snd_.LoadSound("music.wav");	musicx_=9.5f;	musicy_=7.0f;
+		sfx1_ = snd_.LoadSound("sfx1.wav");		sfx1x_ =0.0f;	sfx1y_ =3.0f;
+		sfx2_ = snd_.LoadSound("sfx2.wav");		sfx2x_ =9.5f;	sfx2y_ =12.0f;
+		sfx3_ = snd_.LoadSound("sfx3.wav");		sfx3x_ =19.0f;	sfx3y_ =3.0f;
 		
 		bitmapFont_ = new BitmapFont();
 		bitmapFont_.SetFont(font_);
@@ -74,6 +74,9 @@ public class TestState implements IGameState
 		
 	public void	Update()
 	{
+		int mus=0,s1=0,s2=0,s3=0;
+		float v=0;
+		
 		// move
 		x_ += vx_; 
 		y_ += vy_;
@@ -99,12 +102,14 @@ public class TestState implements IGameState
 	        case Keyboard.KEY_D:	moveRight_ = true;	break;
 	        case -Keyboard.KEY_D:	moveRight_ = false;	break;
 	        
-	        case Keyboard.KEY_1:	music_.Loop();	game_.LogMessage("KEY_1"); 	break;
-	        case Keyboard.KEY_2:	music_.Pause();	game_.LogMessage("KEY_2");	break;
-	        case Keyboard.KEY_3:	music_.Stop();	game_.LogMessage("KEY_3");	break;
-	        case Keyboard.KEY_4:	sfx1_.Play();	game_.LogMessage("KEY_4");	break;
-	        case Keyboard.KEY_5:	sfx2_.Play();	game_.LogMessage("KEY_5");	break;
-	        case Keyboard.KEY_6:	sfx3_.Play();	game_.LogMessage("KEY_6");	break;
+	        case Keyboard.KEY_1:	mus=1;			game_.LogMessage("Loop music."); 	break;
+	        case Keyboard.KEY_2:	music_.Pause();	game_.LogMessage("Pause music.");	break;
+	        case Keyboard.KEY_3:	music_.Stop();	game_.LogMessage("Stop music.");	break;
+	        case Keyboard.KEY_4:	s1=1;			game_.LogMessage("Play SFX 1");		break;
+	        case Keyboard.KEY_5:	s2=1;			game_.LogMessage("Play SFX 2");		break;
+	        case Keyboard.KEY_6:	s3=1;			game_.LogMessage("Play SFX 3");		break;
+	        case Keyboard.KEY_7:	v=-0.1f;		game_.LogMessage("Decreasing volume by 0.1."); break;
+	        case Keyboard.KEY_8:	v=0.1f;			game_.LogMessage("Increasing volume by 0.1."); break;
 	        
 	        case Keyboard.KEY_ESCAPE:        
 	                game_.EndGameLoop();
@@ -118,6 +123,21 @@ public class TestState implements IGameState
         if (moveDown_)	vy_ += -moveSpeed;
         if (moveLeft_)	vx_ += -moveSpeed;
         if (moveRight_)	vx_ += moveSpeed;
+        
+        // play sounds
+        if (mus==1)	{music_.SetPos(musicx_,musicy_); 	music_.Loop();}
+        if (s1==1)	{sfx1_.SetPos(sfx1x_,sfx1y_); 		sfx1_.Play();}
+        if (s2==1)	{sfx2_.SetPos(sfx2x_,sfx2y_); 		sfx2_.Play();}
+        if (s3==1)	{sfx3_.SetPos(sfx3x_,sfx3y_); 		sfx3_.Play();}
+        
+        // adjust volume
+        if (v != 0.0f)
+        {
+        	v += snd_.GetVolume();
+        	if (v < 0.0f)	v = 0.0f;
+        	if (v > 1.0f)	v = 1.0f;
+        	snd_.SetVolume(v);
+        }
 		
 		// display the frame rate
 		game_.SetWindowTitle("FPS: "+game_.GetFrameRate());
@@ -170,35 +190,36 @@ public class TestState implements IGameState
 		image1_.Draw();
 		
 		// draw font
-		bitmapFont_.SetPosition(0.0f, 14.0f);
+		bitmapFont_.SetPosition(0.0f, 14.5f);
 		bitmapFont_.SetScale(0.5f,0.5f);
 		bitmapFont_.SetKerning(0.4f);
 		bitmapFont_.DrawString(
+			"Audio engine: "+snd_.GetAudioInfo()+"\n" +
 			"1) Play music (loop).		\n" +
 			"2) Pause music.			\n" +
 			"3) Stop music.				\n" +
 			"4) Play sound 1 (left).	\n" +
 			"5) Play sound 2 (center).	\n" +
-			"6) Play sound 3 (right).	\n"
+			"6) Play sound 3 (right).	\n" +
+			"Current volume: "+snd_.GetVolume()+"\n" +
+			"7) Increase volume.		\n" +
+			"8) Decrease volume.		\n"
 		);
 		
 		// draw primitive shapes
 		
 		// sound 1 marker
 		gfx_.SetDrawColor(1.0f, 0.0f, 0.0f, 1.0f);
-		gfx_.DrawRectangle(1.0f, 8.0f, 2.0f, 9.0f);
-		
+		gfx_.DrawRectangle(sfx1x_, sfx1y_, sfx1x_+1.0f, sfx1y_+1.0f);
 		// sound 2
 		gfx_.SetDrawColor(0.0f, 1.0f, 0.0f, 1.0f);
-		gfx_.DrawRectangle(10.0f, 8.0f, 11.0f, 9.0f);
-		
+		gfx_.DrawRectangle(sfx2x_, sfx2y_, sfx2x_+1.0f, sfx2y_+1.0f);
 		// sound 3
 		gfx_.SetDrawColor(0.0f, 0.0f, 1.0f, 1.0f);
-		gfx_.DrawRectangle(18.0f, 8.0f, 19.0f, 9.0f);
-		
+		gfx_.DrawRectangle(sfx3x_, sfx3y_, sfx3x_+1.0f, sfx3y_+1.0f);
 		// music
 		gfx_.SetDrawColor(1.0f, 1.0f, 1.0f, 1.0f);
-		gfx_.DrawRectangle(10.0f, 2.0f, 11.0f, 3.0f);
+		gfx_.DrawRectangle(musicx_, musicy_, musicx_+1.0f, musicy_+1.0f);
 		
 		//gfx_.SetDrawColor(0.0f, 1.0f, 0.0f, 1.0f);
 		//gfx_.DrawLine(0, 0, 2.0f, 2.0f);
@@ -222,9 +243,13 @@ public class TestState implements IGameState
 	protected BitmapFont		bitmapFont_;
 	
 	protected ISound			music_;
+	protected float				musicx_,musicy_;
 	protected ISound			sfx1_;
+	protected float				sfx1x_,sfx1y_;
 	protected ISound			sfx2_;
+	protected float				sfx2x_,sfx2y_;
 	protected ISound			sfx3_;
+	protected float				sfx3x_,sfx3y_;
 	
 	protected float				x_,y_;
 	protected float				vx_,vy_;
