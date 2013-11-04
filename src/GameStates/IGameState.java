@@ -47,7 +47,7 @@ public interface IGameState
 	 * @param snd IAudioEngine
 	 * @param game IGameEngine
 	 */
-	public void	Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game);
+	public void	Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game) throws Exception;
 	
 	/**
 	 * Called when the gamestate is destroyed, or when the program exits.

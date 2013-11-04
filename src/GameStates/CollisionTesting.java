@@ -47,8 +47,17 @@ public class CollisionTesting implements IGameState
 		universe.draw(delta);
 		if(obj1.getBoundingBox().bl != null)
 		{
-			gfx.DrawRectangle(obj1.getBoundingBox().bl.x, obj1.getBoundingBox().bl.y, obj1.getBoundingBox().tr.x, obj1.getBoundingBox().tr.y);
-			gfx.DrawRectangle(obj1child.getBoundingBox().bl.x, obj1child.getBoundingBox().bl.y, obj1child.getBoundingBox().tr.x, obj1child.getBoundingBox().tr.y);
+			gfx.DrawRectangle(
+					obj1.getBoundingBox().bl.x, 
+					obj1.getBoundingBox().bl.y, 
+					obj1.getBoundingBox().tr.x, 
+					obj1.getBoundingBox().tr.y);
+			
+			gfx.DrawRectangle(
+					obj1child.getBoundingBox().bl.x, 
+					obj1child.getBoundingBox().bl.y, 
+					obj1child.getBoundingBox().tr.x, 
+					obj1child.getBoundingBox().tr.y);
 		}
 		
 	}
@@ -59,7 +68,7 @@ public class CollisionTesting implements IGameState
 		universe.scale(.2f, .2f);
 		obj1 = new GameObject();
 		obj1.setBoundingBox(new AABB(.5f, .5f)); 
-		obj1.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0))); 
+		obj1.setDrawingInterface(new SimpleDraw(obj1, gfx.LoadTexture("image.bmp", 0))); 
 		obj1.setCollidable(true); // makes it so other objects can collide with obj1. not nessessary for this example 
 								  // but for more complex scenes it will allow other collidablePhysics objects to collide with obj1
 		obj1.addAction(new PCControl(obj1, universe, game)); // PCControl extends CollidablePhysics.
@@ -67,7 +76,7 @@ public class CollisionTesting implements IGameState
 		
 		obj1child = new GameObject();
 		obj1child.setBoundingBox(new AABB(.5f,.5f));
-		obj1child.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0)));
+		obj1child.setDrawingInterface(new SimpleDraw(obj1child, gfx.LoadTexture("image.bmp", 0)));
 		obj1.addChild(obj1child);
 		obj1child.translate(1f, 1f);
 		
@@ -75,7 +84,7 @@ public class CollisionTesting implements IGameState
 		obj2 = new GameObject();
 		obj2.setBoundingBox(new AABB(.5f, .5f)); // set objects bounds. units in global coordinates.
 		obj2.translate(3, 0);
-		obj2.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0)));
+		obj2.setDrawingInterface(new SimpleDraw(obj2, gfx.LoadTexture("image.bmp", 0)));
 		obj2.setCollidable(true); // makes it so other objects can collide with obj2.
 		
 		universe.addChild(obj2);

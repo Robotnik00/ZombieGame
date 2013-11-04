@@ -20,21 +20,25 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.input.Keyboard;
 
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL31.*;
+import static org.lwjgl.opengl.GL32.*;
+
 import AudioEngine.IAudioEngine;
 import AudioEngine.NullAudioEngine;
+import AudioEngine.ALAudioEngine;
 import GameStates.IGameState;
 import GameStates.InputExample;
 import GameStates.StartGame;
 import GameStates.TestState;
+import GameStates.CollisionTesting;
 import InputCallbacks.KeyEventListener;
 import InputCallbacks.MouseEvent;
 import InputCallbacks.MouseEventListener;
 import TextureEngine.GLTextureEngine;
 import TextureEngine.ITextureEngine;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL31.*;
-import static org.lwjgl.opengl.GL32.*;
+
 
 
 
@@ -140,6 +144,7 @@ public class GameEngine implements IGameEngine
 		ChangeGameState(new TestState());
 		//ChangeGameState(new StartGame());
 		//ChangeGameState(new InputExample());
+		//ChangeGameState(new CollisionTesting());
 		
 		// run the game loop
 		GameLoop();
@@ -155,7 +160,7 @@ public class GameEngine implements IGameEngine
 	// IGameEngine methods
 	//
 	
-	public void	ChangeGameState(IGameState state)
+	public void	ChangeGameState(IGameState state) throws Exception
 	{
 		LogMessage("GameEngine::ChangeGameState: Switching contexts...");
 		
@@ -565,7 +570,9 @@ public class GameEngine implements IGameEngine
 	 */
 	protected void 	InitOpenALAudioEngine() throws Exception
 	{
-		throw new Exception("InitOpenALAudioEngine: Not implemented yet!", null);
+		//throw new Exception("InitOpenALAudioEngine: Not implemented yet!", null);
+		audioEngine_ = new ALAudioEngine();
+		audioEngine_.Init(this);
 	}
 	
 	/**

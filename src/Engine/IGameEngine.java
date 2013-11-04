@@ -33,7 +33,7 @@ public interface IGameEngine
 	 * 
 	 * @param state	IGameState 
 	 */
-	public void	ChangeGameState(IGameState state);
+	public void	ChangeGameState(IGameState state) throws Exception;
 	
 	/**
 	 * Ends the game loop and cause the program to shutdown.

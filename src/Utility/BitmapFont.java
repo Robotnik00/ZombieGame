@@ -31,8 +31,10 @@ public class BitmapFont
 		xs_			= 1.0f;
 		ys_			= 1.0f;
 		
-		mat_ = new Matrix4f();
-		mat_.setIdentity();
+		mmat_ = new Matrix4f();
+		mmat_.setIdentity();
+		vmat_ = new Matrix4f();
+		vmat_.setIdentity();
 	}
 	
 	public void	SetFont(ITexture font)
@@ -57,9 +59,14 @@ public class BitmapFont
 		int charCode;
 		int lineChar=0;
 		
-		mat_.setIdentity();
-		mat_.scale(new Vector3f(xs_,ys_,1.0f));
-		mat_.translate(new Vector2f(x_,y_));
+		Matrix4f finalMat_ = new Matrix4f(); 
+		
+		mmat_.setIdentity();
+		mmat_.scale(new Vector3f(xs_,ys_,1.0f));
+		//mmat_.translate(new Vector2f(x_,y_));
+		
+		vmat_.setIdentity();
+		vmat_.translate(new Vector2f(x_,y_));
 		
 		for (int i=0; i < s.length(); i++)
 		{
@@ -68,7 +75,7 @@ public class BitmapFont
 			// check special characters and translate
 			if (charCode == '\n')
 			{
-				mat_.translate(new Vector2f(-xpos,-1.0f));
+				mmat_.translate(new Vector2f(-xpos,-1.0f));
 				xpos = 0.0f;
 				lineChar = 0;
 				continue;
@@ -81,7 +88,7 @@ public class BitmapFont
 				lineChar += offset;
 				xpos += (float)offset - kerning_*(float)offset;
 						
-				mat_.translate(
+				mmat_.translate(
 					new Vector2f(
 						(float)offset - kerning_*(float)offset,
 						0.0f)
@@ -96,10 +103,11 @@ public class BitmapFont
 			font_.SetSrcRect(dx, dy, dx+charWidth_, dy+charHeight_);
 			
 			// only use model matrix to move
-			font_.Draw(mat_);
+			Matrix4f.mul(vmat_, mmat_, finalMat_);
+			font_.Draw(finalMat_);
 			
 			// move to the next drawing position
-			mat_.translate(new Vector2f(1.0f - kerning_,0.0f));
+			mmat_.translate(new Vector2f(1.0f - kerning_,0.0f));
 			xpos += (1.0f - kerning_);
 			
 			lineChar++;
@@ -121,7 +129,7 @@ public class BitmapFont
 		int charCode;
 		int lineChar=0;
 		
-		mat_ = interpolator;
+		mmat_ = interpolator;
 		
 		for (int i=0; i < s.length(); i++)
 		{
@@ -130,7 +138,7 @@ public class BitmapFont
 			// check special characters and translate
 			if (charCode == '\n')
 			{
-				mat_.translate(new Vector2f(-xpos,-1.0f));
+				mmat_.translate(new Vector2f(-xpos,-1.0f));
 				xpos = 0.0f;
 				lineChar = 0;
 				continue;
@@ -143,7 +151,7 @@ public class BitmapFont
 				lineChar += offset;
 				xpos += (float)offset - kerning_*(float)offset;
 						
-				mat_.translate(
+				mmat_.translate(
 					new Vector2f(
 						(float)offset - kerning_*(float)offset,
 						0.0f)
@@ -158,10 +166,10 @@ public class BitmapFont
 			font_.SetSrcRect(dx, dy, dx+charWidth_, dy+charHeight_);
 			
 			// only use model matrix to move
-			font_.Draw(mat_);
+			font_.Draw(mmat_);
 			
 			// move to the next drawing position
-			mat_.translate(new Vector2f(1.0f - kerning_,0.0f));
+			mmat_.translate(new Vector2f(1.0f - kerning_,0.0f));
 			xpos += (1.0f - kerning_);
 			
 			lineChar++;
@@ -181,7 +189,8 @@ public class BitmapFont
 	//
 	
 	protected float			x_,y_,xs_,ys_;
-	protected Matrix4f		mat_;
+	protected Matrix4f		mmat_;
+	protected Matrix4f		vmat_;
 	
 	protected ITexture		font_;
 	protected float			charWidth_;

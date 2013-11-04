@@ -12,11 +12,18 @@ package AudioEngine;
 // imports
 
 
-/** NullSound
- * 
+/** 
  * 	Empty sound created by NullAudioEngine.
  */
 public class NullSound implements ISound
 {
-	//
+	public void	SetPos(float x, float y) {}
+	
+	public void	Play() {}
+	
+	public void	Loop() {}
+	
+	public void Pause() {}
+	
+	public void Stop() {}
 }

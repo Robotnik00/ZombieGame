@@ -11,16 +11,16 @@ WHAT IS DONE (tested and working!):
 * Physics action that can be applied to GameObjects  
 * Collisions using bounding volume hierarchy with AABBs   
 * Alpha transparency, color blending, colorkey, drawing a portion of a texture.  
-* Input callbacks.
+* Input callbacks.  
 * Bitmapped font drawing.
+* Drawing primitive shapes (points, lines, rectangles).  
 
 WORK IN PROGRESS:  
-* Drawing primitive shapes (points, lines, rectangles). (jacob)  
 * Collisions with OBB trees. (Jack)  
-* GUI stuff.
+* GUI stuff.  
+* Sound back-end. (jacob)  
 
 WHAT NEEDS TO BE DONE:  
-* Sound back-end. (jacob)  
 * Most game logic [expand on this].  
 * fix interpolator in gameobject  
 * Action to control object based on keys pressed.(already have one, but it needs to be revisited)  

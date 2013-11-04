@@ -14,8 +14,8 @@ package AudioEngine;
 import Engine.IGameEngine;
 
 
-/** NullAudioEngine
- *
+
+/** 
  *	An empty sound engine for when sound is disabled or unneeded
  */
 
@@ -32,15 +32,34 @@ public class NullAudioEngine implements IAudioEngine
 		system_.LogMessage("NullAudioEngine::Quit");
 	}
 	
-	public ISound LoadSound(String filename)
+	public String	GetAudioInfo()
+	{
+		return "NULL";
+	}
+	
+	public void		SetVolume(float volume)
+	{
+		// herp derp
+	}
+	
+	public float	GetVolume()
+	{
+		return 1.0f;
+	}
+	
+	public void		SetListenerPosition(float x, float y)
+	{
+		// whatever bro.
+	}
+	
+	public ISound LoadSound(String filename) throws Exception
 	{
 		return new NullSound();
 	}
 	
 	//
-	//
+	// protected members
 	//
 	
 	protected IGameEngine	system_;
-
 }
