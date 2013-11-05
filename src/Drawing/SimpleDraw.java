@@ -13,9 +13,8 @@ import TextureEngine.ITexture;
 */
 public class SimpleDraw implements DrawObject
 {
-	public SimpleDraw(GameObject obj, ITexture tex)
+	public SimpleDraw(ITexture tex)
 	{
-		this.obj = obj;
 		this.tex = tex;
 	}
 	
@@ -30,5 +29,4 @@ public class SimpleDraw implements DrawObject
 	}
 	Vector2f center = new Vector2f(-.5f,-.5f);
 	ITexture tex;
-	GameObject obj;
 }
