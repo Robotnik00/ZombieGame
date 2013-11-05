@@ -33,7 +33,7 @@ public class ExampleObject
 		// this is where the controls for the object 'grab hold'
 		handle = new GameObject(); // create node
 		universe.addChild(handle); // add to universe
-		//handle.addAction(new MouseTracker(handle, game)); 
+		handle.addAction(new MouseTracker(handle, game)); 
 		PCControl pc = new PCControl(handle, universe, game);
 		pc.setMass(.1f);    // set this so that the object accelerates quickly
 		pc.setForceScale(3f); // max force applied by pc. thus max velocity = 3.0/1.0(with respect to universe.)
