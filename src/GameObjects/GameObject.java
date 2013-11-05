@@ -112,21 +112,17 @@ public class GameObject
 	// draws this object and its children
 	public void draw(float delta)
 	{
+
+		glbInterpolatorCalculated = false;
+		interpolator.load(transform);
+		
+		deltaX.x = velocity.x;
+		deltaX.y = velocity.y;
+		deltaX.scale(delta);
+		interpolator.translate(deltaX);
+		interpolator.rotate(rotationalVelocity*delta, zaxis);
 		if(drawing != null)
 		{
-			glbInterpolatorCalculated = false;
-			// express time in same units as Physics(time seconds).
-			float deltaT = delta * (1/25f); // this should prob be done in GameEngine
-
-			interpolator.load(transform);
-			
-			deltaX.x = velocity.x;
-			deltaX.y = velocity.y;
-			deltaX.scale(deltaT);
-			interpolator.translate(deltaX);
-			interpolator.rotate(rotationalVelocity*deltaT, zaxis);
-			
-	
 			drawing.draw(getGlobalInterpolator()); 
 			
 		}
@@ -192,6 +188,14 @@ public class GameObject
 	{
 		this.transform = transform;
 	}
+	public void setLocalX(float x)
+	{
+		transform.m30 = x;
+	}
+	public void setLocalY(float y)
+	{
+		transform.m31 = y;
+	}
 	// get x relative to parent
 	public float getLocalX()
 	{
@@ -236,7 +240,7 @@ public class GameObject
 	{
 		if(!glbInterpolatorCalculated)
 		{
-			glbInterpolator.load(transform);
+			glbInterpolator.load(interpolator);
 			if(parent != null)
 			{
 				Matrix4f.mul(parent.getGlobalInterpolator(), glbInterpolator, glbInterpolator);
