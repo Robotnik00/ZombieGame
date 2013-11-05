@@ -11,6 +11,7 @@ import Actions.Physics;
 import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import Engine.IGameEngine;
+import Geometry.AABB;
 /**
  * Example of how to build models out of GameObjects
  * 
@@ -32,11 +33,14 @@ public class ExampleObject
 		// this is where the controls for the object 'grab hold'
 		handle = new GameObject(); // create node
 		universe.addChild(handle); // add to universe
-		handle.addAction(new MouseTracker(handle, game)); 
+		//handle.addAction(new MouseTracker(handle, game)); 
 		PCControl pc = new PCControl(handle, universe, game);
 		pc.setMass(.1f);    // set this so that the object accelerates quickly
 		pc.setForceScale(3f); // max force applied by pc. thus max velocity = 3.0/1.0(with respect to universe.)
 		handle.addAction(pc);
+		handle.setBoundingBox(new AABB(1.5f,1.5f));
+		handle.setCollidable(true);
+		
 		
 		
 		// create a rotating node to attach child1 to. 
@@ -86,9 +90,9 @@ public class ExampleObject
 		tex2 = gfx.LoadTexture("image.bmp", 0x000000); // load texture
 		tex3 = gfx.LoadTexture("image.bmp", 0x000000); // load texture
 
-		SimpleDraw drawing1 = new SimpleDraw(child1, tex1);
-		SimpleDraw drawing2 = new SimpleDraw(child2, tex2);
-		SimpleDraw drawing3 = new SimpleDraw(child3, tex3);
+		SimpleDraw drawing1 = new SimpleDraw(tex1);
+		SimpleDraw drawing2 = new SimpleDraw(tex2);
+		SimpleDraw drawing3 = new SimpleDraw(tex3);
 
 		child1.setDrawingInterface(drawing1);
 		child2.setDrawingInterface(drawing2);
