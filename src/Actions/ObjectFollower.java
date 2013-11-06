@@ -22,9 +22,9 @@ public class ObjectFollower extends Physics
 	{
 		super.performAction();
 		
-		Vector2f loc = new Vector2f(toFollow.getGlobalX(), toFollow.getGlobalY());
+		Vector2f loc = new Vector2f((toFollow.getGlobalX() + eng.GetMouseX())/2,(toFollow.getGlobalY() + eng.GetMouseY())/2);
 		
-		if(loc.length() > deadZone)
+		if(loc.lengthSquared() > deadZone)
 		{
 			loc.normalise();
 			loc.scale(forceScale);
@@ -42,7 +42,7 @@ public class ObjectFollower extends Physics
 		
 	}
 	
-	float deadZone = 0.05f;
+	float deadZone = 0.01f;
 	float forceScale = 3f;
 	
 	GameObject toFollow;

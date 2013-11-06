@@ -8,6 +8,7 @@ import Actions.CollidablePhysics;
 import Actions.ObjectFollower;
 import Actions.Physics;
 import AudioEngine.IAudioEngine;
+import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import Drawing.TileDraw;
 import Engine.IGameEngine;
@@ -16,6 +17,7 @@ import GameObjects.GameObject;
 import Geometry.AABB;
 import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
+import Utility.BitmapFont;
 
 /// example of making a scene. Creates ExampleObject and adds action to it
 
@@ -24,7 +26,7 @@ import TextureEngine.ITextureEngine;
  * 
  * 
  */
-public class StartGame implements IGameState
+public class StartGame extends EventListenerState
 {
 	public StartGame()
 	{
@@ -32,11 +34,11 @@ public class StartGame implements IGameState
 	}
 	
 	@Override
-	public void Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game) {
+	public void Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game) throws Exception 
+	{
 		// TODO Auto-generated method stub
-		this.gfx  = gfx;
-		this.snd  = snd;
-		this.game = game;
+		super.Init(gfx, snd, game);
+		
 		buildUniverse();
 		
 		//game.EndGameLoop(); // quits immediately.
@@ -52,6 +54,7 @@ public class StartGame implements IGameState
 	@Override
 	public void Update() {
 		// TODO Auto-generated method stub]
+		super.Update();
 		universe.update((float)1/game.GetTickFrequency());
 		game.SetWindowTitle(""+game.GetFrameRate());
 	}
@@ -61,6 +64,7 @@ public class StartGame implements IGameState
 	{
 		gfx.ClearScreen();
 		universe.draw((float)delta/game.GetTickFrequency());
+		HUD.draw(delta);
 	}
 
 
@@ -73,58 +77,43 @@ public class StartGame implements IGameState
 		universe.setDrawingInterface(new TileDraw(universe, test));
 		universe.translate(0, -.5f); 
 		universe.scale(.2f, .2f);
-		ExampleObject obj = new ExampleObject(universe, game, gfx);
+		ExampleObject obj = new ExampleObject(universe, game, gfx, this);
 		obj.getHandle().translate(0, 0);
 		//obj.getHandle().setCollidable(true);
 		ObjectFollower objFollower = new ObjectFollower(universe, obj.getHandle(), game);
 		objFollower.setMass(.1f);
 		objFollower.setFrictionConstant(1f);
+		universe.translate(-obj.getHandle().getGlobalX(), -obj.getHandle().getGlobalY());
 		
 		universe.addAction(objFollower);
 		
 		
 		for(int i = 0; i < 10; i++)
 		{
-			GameObject obj1 = new GameObject();
-			obj1.translate((float)(Math.random()-.5)* 20, (float)(Math.random()-.5) * 20);
-			obj1.rotate((float)(Math.random()*2*Math.PI));
-			obj1.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0)));
-			obj1.rotate((float)Math.PI/2);
-			Physics p = new CollidablePhysics(obj1, universe, game);
-			p.applyForce(new Vector2f((float)(Math.random()-.5)*5, (float)(Math.random()-.5)*5));
-			p.setMass(.1f);
-			p.applyTorque((float)(Math.random()));
-			obj1.setBoundingBox(new AABB(.5f,.5f));
-			obj1.setCollidable(true);
-			obj1.addAction(p);
-			
-			
-			universe.addChild(obj1);
-		}
-		
-		for(int i = 0; i < 10; i++)
-		{
 			GameObject obj2 = new GameObject();
-			obj2.translate((float)(Math.random()-.5)* 50, (float)(Math.random()-.5) * 50);
+			obj2.translate((float)(Math.random()-.5)* 10, (float)(Math.random()-.5) * 10);
 			obj2.rotate((float)(Math.random()*2*Math.PI));
 			obj2.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image2.png", 0)));
 			obj2.setCollidable(true);
-			obj2.setBoundingBox(new AABB(.3f, .3f));
+			obj2.setBoundingBox(new AABB(.5f, .5f));
 			universe.addChild(obj2);
 		}
-		
-		
+
+		DrawText textrenderer = new DrawText(gfx, "font1.png");
+	
+		HUD = new GameObject();
+		HUD.setDrawingInterface(textrenderer);
+		textrenderer.setText("right click to move.");
+		HUD.scale(.05f, .05f);
+		HUD.translate(-1f, .65f);
 	}
 	ITexture test;
 	
-	ITextureEngine	gfx;
-	IAudioEngine	snd;
-	IGameEngine		game;
+
 	
-	GameObject obj1, obj2, obj3;
 	
 	GameObject universe;
-
+	GameObject HUD;
 	
 	
 }

@@ -7,15 +7,16 @@ import InputCallbacks.MouseEvent;
 import InputCallbacks.MouseEventListener;
 import TextureEngine.ITextureEngine;
 
-public class InputExample implements IGameState, MouseEventListener, KeyEventListener
+public class InputExample extends EventListenerState implements MouseEventListener, KeyEventListener
 {
 
 	@Override
-	public void Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game) {
+	public void Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game) throws Exception 
+	{
 		// TODO Auto-generated method stub
-
-		game.addKeyEventListener(this);
-		game.addMouseEventListener(this);
+		super.Init(gfx, snd, game);
+		addKeyEventListener(this);
+		addMouseEventListener(this);
 	}
 
 	@Override
@@ -27,7 +28,7 @@ public class InputExample implements IGameState, MouseEventListener, KeyEventLis
 	@Override
 	public void Update() {
 		// TODO Auto-generated method stub
-		
+		super.Update();
 	}
 
 	@Override
@@ -60,6 +61,12 @@ public class InputExample implements IGameState, MouseEventListener, KeyEventLis
 		// TODO Auto-generated method stub
 		System.out.printf("button released(button: %d X: %d Y: %d)\n", event.getButton(), event.getX(), event.getY());
 		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent event) {
+		// TODO Auto-generated method stub
+		System.out.printf("mouse moved %d %d\n", event.getX(), event.getY());
 	}
 	
 }

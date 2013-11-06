@@ -119,16 +119,5 @@ public interface IGameEngine
 	 * @return keyboard events
 	 */
 	public int[] GetKeyEvents();
-	
-	/** 
-	 * Alternatively, callback classes can be registered to receive mouse events.
-	 * @param mouseListener
-	 */
-	public void addMouseEventListener(MouseEventListener mouseListener);
-	
-	/** 
-	 * Alternatively, callback classes can be registered to receive keyboard events.
-	 * @param mouseListener
-	 */
-	public void addKeyEventListener(KeyEventListener keyListener);
+
 }

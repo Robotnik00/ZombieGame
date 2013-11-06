@@ -59,7 +59,7 @@ public class GameEngine implements IGameEngine
 	 * This is how many game logic updates occur per second, independent of the frame rate.
 	 * Try to pick values that divide into 1000 nicely.
 	 */
-	final int		TICKS_PER_SECOND	= 25;
+	final int		TICKS_PER_SECOND	= 200;
 	
 	/** 
 	 * Time window for each game logic update to occur.
@@ -141,8 +141,8 @@ public class GameEngine implements IGameEngine
 		Keyboard.create();
 		
 		// start initial gamestate
-		ChangeGameState(new TestState());
-		//ChangeGameState(new StartGame());
+		//ChangeGameState(new TestState());
+		ChangeGameState(new StartGame());
 		// run the game loop
 		GameLoop();
 		
@@ -255,18 +255,6 @@ public class GameEngine implements IGameEngine
 		return lastKeyEvents_;
 	}
 	
-	@Override
-	public void addKeyEventListener(KeyEventListener keyListener) 
-	{
-		keyListeners.add(keyListener);
-	}
-	
-	@Override
-	public void addMouseEventListener(MouseEventListener mouseListener)
-	{
-		mouseListeners.add(mouseListener);
-	}
-	
 	
 	
 	//
@@ -334,10 +322,6 @@ public class GameEngine implements IGameEngine
 				PumpMouseButtonEvents();
 				PumpMouseMotionEvents();
 				
-				// notify event listeners
-				DispatchKeyEvents();
-				DispatchMouseEvents();
-				
 				// update
 				currentState_.Update();
 				updates++;
@@ -396,11 +380,11 @@ public class GameEngine implements IGameEngine
 	        }
         }
         
-        // don't create an empty array
-        if (events.size() == 0)
-        {
-        	events.add(Keyboard.KEY_NONE);
-        }
+        // don't create an empty array // why not?
+        //if (events.size() == 0)
+        //{
+        //	events.add(Keyboard.KEY_NONE); 
+        //}
         
         // pack button events into array
         lastKeyEvents_ = new int [events.size()];
@@ -442,47 +426,6 @@ public class GameEngine implements IGameEngine
 		for (int i=0; i < events.size(); i++)
 		{
 			lastMouseEvents_[i] = events.get(i);
-		}
-	}
-	
-	protected void	DispatchKeyEvents()
-	{
-		int[] keyEvents = GetKeyEvents();
-		
-		for(int i = 0; i < keyListeners.size(); i++)
-		{
-			for (int j=0; j < keyEvents.length; j++)
-			{
-				if (keyEvents[j] >= 0)	// pressed
-				{
-					keyListeners.get(i).keyPressed(keyEvents[j]);
-				}
-				else // released
-				{
-					keyListeners.get(i).keyReleased(-keyEvents[j]);
-				}
-			}
-		}
-	}
-	
-	protected void	DispatchMouseEvents()
-	{
-		int[] mouseEvents = GetMouseEvents();
-		
-		for (int j=0; j < mouseEvents.length; j++)
-		{
-			MouseEvent event = new MouseEvent(Mouse.getX(), Mouse.getY(), Math.abs(mouseEvents[j]));
-			
-			if (mouseEvents[j] >= 0)
-			{
-				for (int i = 0; i < mouseListeners.size(); i++)
-					mouseListeners.get(i).buttonPressed(event);
-			}
-			else
-			{
-				for (int i = 0; i < mouseListeners.size(); i++)
-					mouseListeners.get(i).buttonReleased(event);
-			}
 		}
 	}
 	

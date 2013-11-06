@@ -11,6 +11,7 @@ import Actions.Physics;
 import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import Engine.IGameEngine;
+import GameStates.EventListenerState;
 import Geometry.AABB;
 /**
  * Example of how to build models out of GameObjects
@@ -26,21 +27,25 @@ public class ExampleObject
 	 * @param  game
 	 * @param  gfx for loading textures
 	 */
-	public ExampleObject(GameObject universe, IGameEngine game, ITextureEngine gfx)
+	public ExampleObject(GameObject universe, IGameEngine game, ITextureEngine gfx, EventListenerState state)
 	{
 		this.universe = universe;
 		
 		// this is where the controls for the object 'grab hold'
 		handle = new GameObject(); // create node
 		universe.addChild(handle); // add to universe
-		handle.addAction(new MouseTracker(handle, game)); 
 		PCControl pc = new PCControl(handle, universe, game);
-		pc.setMass(.1f);    // set this so that the object accelerates quickly
+		pc.setMass(1f);    // set this so that the object accelerates quickly
 		pc.setForceScale(3f); // max force applied by pc. thus max velocity = 3.0/1.0(with respect to universe.)
 		handle.addAction(pc);
-		handle.setBoundingBox(new AABB(1.5f,1.5f));
+		handle.setBoundingBox(new AABB(1f,1f));
 		handle.setCollidable(true);
-		
+		handle.translate(-10, 0);
+		state.addKeyEventListener(pc);
+		state.addMouseEventListener(pc);
+		GameObject node = new GameObject();
+		node.addAction(new MouseTracker(node, game)); 
+		handle.addChild(node);
 		
 		
 		// create a rotating node to attach child1 to. 
@@ -52,7 +57,7 @@ public class ExampleObject
 		Physics action = new Physics(child1Node, game);
 		child1Node.addAction(action);
 		action.applyTorque(2f);
-		handle.addChild(child1Node);
+		node.addChild(child1Node);
 		child1Node.translate(-1f, -.2f); // sets the location of the axis to rotate child1 about. 
 		
 		// add child1 to child1Node with a scale in the x direction
@@ -65,11 +70,11 @@ public class ExampleObject
 		// child 2 and 3 have no animation so they are pretty easy to add
 		child2 = new GameObject(); // create node
 		child2.translate(0, .3f); // object location
-		handle.addChild(child2); // add to node
+		node.addChild(child2); // add to node
 		
 		child3 = new GameObject(); // create node
 		child3.translate(-.4f, -.5f); // object location
-		handle.addChild(child3); // add to node
+		node.addChild(child3); // add to node
 		
 		someText = new GameObject();
 		someText.rotate((float)-Math.PI/2);
@@ -80,7 +85,7 @@ public class ExampleObject
 		DrawText textrenderer = new DrawText(gfx, "font1.png");
 		textrenderer.setText("helloworld");
 		someText.setDrawingInterface(textrenderer);
-		handle.addChild(someText);
+		node.addChild(someText);
 		
 		loadTexture(gfx);
 	}

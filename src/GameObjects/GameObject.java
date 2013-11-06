@@ -214,7 +214,12 @@ public class GameObject
 		clonedTransform.load(transform);
 		return clonedTransform;
 	}
-	
+	public float getLocalOrientation()
+	{
+		Vector4f xaxis = new Vector4f(1,0,0,0);
+		Matrix4f.transform(transform, xaxis, xaxis);
+		return (float)Math.atan2(xaxis.y, xaxis.x);
+	}
 
 	/**
 	 *

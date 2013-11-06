@@ -33,6 +33,8 @@ public class CollidablePhysics extends Physics
 	{
 		super.performAction();
 		GameObject[] collisions = CollisionDetection.getCollisions(obj, universe);
+		
+		
 		if(collisions.length > 0)
 		{
 			Vector2f velocity = obj.getTranslationalVelocity();
