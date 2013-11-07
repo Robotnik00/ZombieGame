@@ -39,6 +39,7 @@ public class GameObject
 		transform.setIdentity();
 		
 		velocity = new Vector2f();
+		
 		deltaX = new Vector2f();
 		rotationalVelocity = 0;
 		actions = new ArrayList<Action>();
@@ -50,6 +51,10 @@ public class GameObject
 		proxemity = null;
 		
 		boundingBox = null;
+		
+		Matrix4f initscreen = new Matrix4f();
+		initscreen.setIdentity();
+		screen.transform(initscreen);
 		
 	}
 	/**
@@ -75,19 +80,17 @@ public class GameObject
 		{
 			actions.get(i).performAction();
 		}
-
 		prevX = transform.m30;
 		prevY = transform.m31;
-		
+			
 		deltaX.x = velocity.x;
 		deltaX.y = velocity.y;
 		deltaX.scale(deltaT);
-		
+			
 		transform.translate(deltaX);
-		
+			
 		rotate(rotationalVelocity*deltaT);
-
-
+		
 		if(boundingBox != null)
 		{
 			boundingBox.transform(getGlobalTransform());
@@ -130,12 +133,17 @@ public class GameObject
 		deltaX.scale(delta);
 		interpolator.translate(deltaX);
 		interpolator.rotate(rotationalVelocity*delta, zaxis);
-		if(drawing != null)
+		if(proxemity == null || proxemity.intersects(screen) || !drawingInitialized)
 		{
-			drawing.draw(getGlobalInterpolator()); 
-			
+			if(drawing != null)
+			{
+	
+				drawing.draw(getGlobalInterpolator()); 
+	
+			}
+			drawingInitialized = true;
+			drawChildren(delta);
 		}
-		drawChildren(delta);
 	}
 	// draw children
 	protected void drawChildren(float delta)
@@ -574,5 +582,9 @@ public class GameObject
 	float prevX = 0;
 	float prevY = 0;
 	
+	private boolean drawingInitialized = false;
+	private int cacheUpdating = 0;
+	private static final int updates = 5;
 	static final Vector3f zaxis = new Vector3f(0,0,1);
+	static final AABB screen = new AABB(2,2);
 }

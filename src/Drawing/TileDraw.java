@@ -17,6 +17,7 @@ public class TileDraw implements DrawObject
 	{
 		this.tex = tex;
 		this.obj = obj;
+		nextRow = new Vector2f(-cols, 1);
 	}
 	
 	
@@ -31,9 +32,9 @@ public class TileDraw implements DrawObject
 			for(int j = 0; j < cols; j++)
 			{
 				tex.Draw(interpolator);
-				interpolator.translate(new Vector2f(1, 0));
+				interpolator.translate(xaxis);
 			}
-			interpolator.translate(new Vector2f(-cols, 1));
+			interpolator.translate(nextRow);
 		}
 		
 		
@@ -42,4 +43,6 @@ public class TileDraw implements DrawObject
 	GameObject obj;
 	int rows = 15;
 	int cols = 20;
+	Vector2f nextRow;
+	static final Vector2f xaxis = new Vector2f(1,0);
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import GameObjects.GameObject;
 /**
 *
-* Provides algorithms for detecting of objects are colliding 
+* Provides algorithms for detecting if objects are colliding 
 */
 public class CollisionDetection 
 {

@@ -15,13 +15,13 @@ public class AABB
 		scale = new Vector4f();
 		bl.w = 1;
 		tr.w = 1;
-		
+		cpy = new Matrix4f();
 	}
 	
 	public void transform(Matrix4f transform)
 	{
 
-		Matrix4f cpy = new Matrix4f(transform);
+		cpy.load(transform); 
 		cpy.m30 = 0;
 		cpy.m31 = 0;
 		Matrix4f.transform(cpy, xaxis, scale);
@@ -53,5 +53,6 @@ public class AABB
 	public float w, h;
 	public Vector4f bl, tr;
 	Vector4f scale;
+	Matrix4f cpy;
 	public static final Vector4f xaxis = new Vector4f(1,0,0,0);
 }
