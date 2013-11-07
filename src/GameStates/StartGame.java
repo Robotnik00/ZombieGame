@@ -79,7 +79,6 @@ public class StartGame extends EventListenerState
 		universe.scale(.1f, .1f);
 		ExampleObject obj = new ExampleObject(universe, game, gfx, this);
 		obj.getHandle().translate(0, 0);
-		//obj.getHandle().setCollidable(true);
 		ObjectFollower objFollower = new ObjectFollower(universe, obj.getHandle(), game);
 		objFollower.setMass(.1f);
 		objFollower.setFrictionConstant(1f);
@@ -94,13 +93,12 @@ public class StartGame extends EventListenerState
 			{
 				GameObject obj2 = new GameObject();
 				obj2.translate(i*2+(float)Math.random(), j*2+(float)Math.random());
-				//obj2.rotate((float)(Math.random()*2*Math.PI));
 				obj2.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image2.png", 0)));
 				obj2.setCollidable(true);
 				obj2.setStatic(false);
 				obj2.setBoundingBox(new AABB(1f, 1f));
 				CollidablePhysics a = new CollidablePhysics(obj2, universe, game);
-				obj2.setTranslationalVelocity(new Vector2f(-obj2.getLocalX()*.3f, -obj2.getLocalY()*.3f));
+				obj2.setTranslationalVelocity(new Vector2f(-obj2.getLocalX()*.2f, -obj2.getLocalY()*.2f));
 				a.setMass(5f);
 				obj2.addAction(a);
 				obj2.setProxemityBounds(new AABB(1.5f,1.5f));

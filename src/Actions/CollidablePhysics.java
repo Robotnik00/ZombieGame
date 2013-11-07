@@ -43,8 +43,18 @@ public class CollidablePhysics extends Physics
 		if(collisions.length > 0)
 		{
 			Vector2f velocity = collisions[0].getTranslationalVelocity();
-			collisions[0].setTranslationalVelocity(obj.getTranslationalVelocity());
-			obj.setTranslationalVelocity(velocity);
+			if(!collisions[0].isStatic()) // object is colliding with another object
+			{
+				collisions[0].setTranslationalVelocity(obj.getTranslationalVelocity());
+				obj.setTranslationalVelocity(velocity);
+			}
+			else // object is colliding with a wall.
+			{
+				// this prob could be handled better but it will work for now.
+				obj.setLocalX(obj.getPrevX());
+				obj.setLocalY(obj.getPrevY());
+				obj.setTranslationalVelocity(zero);
+			}
 		}
 		prevX = obj.getLocalX();
 		prevY = obj.getLocalY();
@@ -54,4 +64,5 @@ public class CollidablePhysics extends Physics
 	float prevX = 0;
 	float prevY = 0;
 	GameObject universe;
+	static final Vector2f zero = new Vector2f();
 }

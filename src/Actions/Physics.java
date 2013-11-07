@@ -12,7 +12,6 @@ import GameStates.IGameState;
 */
 public class Physics implements Action
 {
-	// takes in a deltaT so that if the update rate changes objects will still move at same speed
 	public Physics(GameObject obj, IGameEngine eng)
 	{
 		this.obj = obj;
@@ -25,24 +24,11 @@ public class Physics implements Action
 	@Override
 	public void performAction() 
 	{		
-		//if(eng instanceof GameEngine) // blah
-		//{
-		//		float tdeltaT =(float)((GameEngine)this.eng).GetFrameRate();
-		//		if(tdeltaT > 0)
-		//		{
-		//			deltaT = 1/tdeltaT;
-		//		}
-		//}
-		
 
 		obj.setRotationalVelocity(obj.getRotationalVelocity() + deltaRotVel);
 		float frictionTorque = obj.getRotationalVelocity() * rotationalFrictionConstant;
 		float effectiveTorque = appliedTorque - frictionTorque;
 		deltaRotVel = effectiveTorque / momentOfInertia * deltaT;
-		//float deltaAngle = obj.getRotationalVelocity() * deltaT;
-		//obj.addRotationalVelocity(deltaAngle);
-		//obj.rotate(deltaAngle);
-		
 		
 		// translational stuff
 		Vector2f.add(deltaV, obj.getTranslationalVelocity(), obj.getTranslationalVelocity());
@@ -55,9 +41,6 @@ public class Physics implements Action
 		deltaV = new Vector2f(effectiveForce);
 		deltaV.scale(deltaT/mass);
 		
-		//Vector2f deltaX = new Vector2f(obj.getTranslationalVelocity());
-		//deltaX.scale(deltaT);
-		//obj.translate(deltaX.x, deltaX.y);
 		
 	}
 	public void setAppliedForce(Vector2f force)

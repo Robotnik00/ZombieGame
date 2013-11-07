@@ -40,6 +40,7 @@ public class ExampleObject
 		handle.addAction(pc);
 		handle.translate(-12, 0);
 		handle.setCollidable(true);
+		handle.setStatic(false);
 		state.addKeyEventListener(pc);
 		state.addMouseEventListener(pc);
 		GameObject node = new GameObject();
@@ -103,11 +104,6 @@ public class ExampleObject
 		child1.setDrawingInterface(drawing1);
 		child2.setDrawingInterface(drawing2);
 		child3.setDrawingInterface(drawing3);
-		
-		//child1.setTexture(tex1); // set texture to draw
-		//child2.setTexture(tex2); // set texture to draw
-		//child3.setTexture(tex3); // set texture to draw
-		
 	}
 	public GameObject getHandle()
 	{
