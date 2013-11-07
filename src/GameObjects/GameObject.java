@@ -434,7 +434,8 @@ public class GameObject
 	 */
 	public void setTranslationalVelocity(Vector2f velocity)
 	{
-		this.velocity = velocity;
+		this.velocity.x = velocity.x;
+		this.velocity.y = velocity.y;
 	}
 	/**
 	 *
@@ -545,6 +546,23 @@ public class GameObject
 	{
 		return prevY;
 	}
+	public void setMass(float mass)
+	{
+		this.mass = mass;
+	}
+	public void setMomentOfInertia(float moment)
+	{
+		momentOfInertia = moment;
+	}
+	public float getMass()
+	{
+		return mass;
+	}
+	public float getMomentOfInertia()
+	{
+		return momentOfInertia;
+	}
+	
 	
 	AABB proxemity; // if no objects in this area than don't process any children unless it is null
 	AABB boundingBox; // if object in this area notify a collision
@@ -576,6 +594,10 @@ public class GameObject
 	Vector2f velocity;
 	Vector2f deltaX;
 	float rotationalVelocity;
+
+	float mass = 1;
+	float momentOfInertia = 1;
+	
 	boolean collidable = false;
 	boolean isStatic = true;
 	

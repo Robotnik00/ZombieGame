@@ -28,7 +28,7 @@ public class Physics implements Action
 		obj.setRotationalVelocity(obj.getRotationalVelocity() + deltaRotVel);
 		float frictionTorque = obj.getRotationalVelocity() * rotationalFrictionConstant;
 		float effectiveTorque = appliedTorque - frictionTorque;
-		deltaRotVel = effectiveTorque / momentOfInertia * deltaT;
+		deltaRotVel = effectiveTorque / obj.getMomentOfInertia() * deltaT;
 		
 		// translational stuff
 		Vector2f.add(deltaV, obj.getTranslationalVelocity(), obj.getTranslationalVelocity());
@@ -39,7 +39,7 @@ public class Physics implements Action
 		Vector2f.sub(appliedForce, frictionForce, effectiveForce);
 		
 		deltaV = new Vector2f(effectiveForce);
-		deltaV.scale(deltaT/mass);
+		deltaV.scale(deltaT/obj.getMass());
 		
 		
 	}
@@ -68,10 +68,6 @@ public class Physics implements Action
 		appliedTorque -= torque;
 	}
 
-	public void setMass(float mass)
-	{
-		this.mass = mass;
-	}
 	public void setFrictionConstant(float friction)
 	{
 		this.frictionConstant = friction;
@@ -88,10 +84,6 @@ public class Physics implements Action
 	{
 		return frictionConstant;
 	}
-	public float getMass()
-	{
-		return mass;
-	}
 	public Vector2f getAppliedForce()
 	{
 		return appliedForce;
@@ -105,8 +97,6 @@ public class Physics implements Action
 	
 	float appliedTorque;
 	float deltaRotVel = 0;
-	float mass = 1f;
-	float momentOfInertia = 1;
 	
 	float frictionConstant = 1;
 	float rotationalFrictionConstant = 1;

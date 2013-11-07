@@ -38,7 +38,6 @@ public class StartGame extends EventListenerState
 	{
 		// TODO Auto-generated method stub
 		super.Init(gfx, snd, game);
-		
 		buildUniverse();
 		
 		//game.EndGameLoop(); // quits immediately.
@@ -76,11 +75,10 @@ public class StartGame extends EventListenerState
 		test = gfx.LoadTexture("image3.bmp", 1);
 		universe.setDrawingInterface(new TileDraw(universe, test));
 		universe.translate(0, -.5f); 
-		universe.scale(.1f, .1f);
+		universe.scale(.2f, .2f);
 		ExampleObject obj = new ExampleObject(universe, game, gfx, this);
 		obj.getHandle().translate(0, 0);
 		ObjectFollower objFollower = new ObjectFollower(universe, obj.getHandle(), game);
-		objFollower.setMass(.1f);
 		objFollower.setFrictionConstant(1f);
 		universe.translate(-obj.getHandle().getGlobalX(), -obj.getHandle().getGlobalY());
 		
@@ -99,7 +97,7 @@ public class StartGame extends EventListenerState
 				obj2.setBoundingBox(new AABB(1f, 1f));
 				CollidablePhysics a = new CollidablePhysics(obj2, universe, game);
 				obj2.setTranslationalVelocity(new Vector2f(-obj2.getLocalX()*.2f, -obj2.getLocalY()*.2f));
-				a.setMass(5f);
+				obj2.setMass((float)Math.random()*5 + 2);
 				obj2.addAction(a);
 				obj2.setProxemityBounds(new AABB(1.5f,1.5f));
 				universe.addChild(obj2);
