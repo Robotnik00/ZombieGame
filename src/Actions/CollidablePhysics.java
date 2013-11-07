@@ -35,17 +35,17 @@ public class CollidablePhysics extends Physics
 		super.performAction();
 		GameObject[] collisions = CollisionDetection.getCollisions(obj, universe);
 		
-		
+		for(int i = 0; i < collisions.length; i++)
+		{
+			collisions[i].setLocalX(collisions[i].getPrevX());
+			collisions[i].setLocalY(collisions[i].getPrevY());
+		}
 		if(collisions.length > 0)
 		{
-			Vector2f velocity = new Vector2f(collisions[0].getTranslationalVelocity());
-			collisions[0].setTranslationalVelocity(new Vector2f(obj.getTranslationalVelocity()));
+			Vector2f velocity = collisions[0].getTranslationalVelocity();
+			collisions[0].setTranslationalVelocity(obj.getTranslationalVelocity());
 			obj.setTranslationalVelocity(velocity);
-			obj.setLocalX(prevX);
-			obj.setLocalY(prevY);
-			obj.translate(velocity.x/eng.GetTickFrequency(), velocity.y/eng.GetTickFrequency());
 		}
-		
 		prevX = obj.getLocalX();
 		prevY = obj.getLocalY();
 	}

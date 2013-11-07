@@ -75,6 +75,9 @@ public class GameObject
 		{
 			actions.get(i).performAction();
 		}
+
+		prevX = transform.m30;
+		prevY = transform.m31;
 		
 		deltaX.x = velocity.x;
 		deltaX.y = velocity.y;
@@ -89,6 +92,8 @@ public class GameObject
 		{
 			boundingBox.transform(getGlobalTransform());
 		}
+		
+		
 		updateChildren(deltaT);
 		updateThis(deltaT);
 		glbTransformCalculated = false;
@@ -524,6 +529,14 @@ public class GameObject
 	{
 		this.isStatic = isStatic;
 	}
+	public float getPrevX()
+	{
+		return prevX;
+	}
+	public float getPrevY()
+	{
+		return prevY;
+	}
 	
 	AABB proxemity; // if no objects in this area than don't process any children unless it is null
 	AABB boundingBox; // if object in this area notify a collision
@@ -557,6 +570,9 @@ public class GameObject
 	float rotationalVelocity;
 	boolean collidable = false;
 	boolean isStatic = true;
+	
+	float prevX = 0;
+	float prevY = 0;
 	
 	static final Vector3f zaxis = new Vector3f(0,0,1);
 }

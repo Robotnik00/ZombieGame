@@ -91,13 +91,15 @@ public class StartGame extends EventListenerState
 		for(int i = 0; i < 3; i++)
 		{
 			GameObject obj2 = new GameObject();
-			obj2.translate(i*2, 0);
+			obj2.translate(-i*2, 0);
 			//obj2.rotate((float)(Math.random()*2*Math.PI));
 			obj2.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image2.png", 0)));
 			obj2.setCollidable(true);
 			obj2.setStatic(false);
 			obj2.setBoundingBox(new AABB(1f, 1f));
-			obj2.addAction(new CollidablePhysics(obj2, universe, game));
+			CollidablePhysics a = new CollidablePhysics(obj2, universe, game);
+			a.setMass(.3f);
+			obj2.addAction(a);
 			universe.addChild(obj2);
 		}
 
