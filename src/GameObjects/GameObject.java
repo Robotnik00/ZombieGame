@@ -434,8 +434,7 @@ public class GameObject
 	 */
 	public void setTranslationalVelocity(Vector2f velocity)
 	{
-		this.velocity.x = velocity.x;
-		this.velocity.y = velocity.y;
+		this.velocity = velocity;
 	}
 	/**
 	 *

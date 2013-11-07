@@ -97,7 +97,7 @@ public class StartGame extends EventListenerState
 				obj2.setBoundingBox(new AABB(1f, 1f));
 				CollidablePhysics a = new CollidablePhysics(obj2, universe, game);
 				obj2.setTranslationalVelocity(new Vector2f(-obj2.getLocalX()*.2f, -obj2.getLocalY()*.2f));
-				obj2.setMass((float)Math.random()*5 + 2);
+				obj2.setMass((float)5);
 				obj2.addAction(a);
 				obj2.setProxemityBounds(new AABB(1.5f,1.5f));
 				universe.addChild(obj2);
