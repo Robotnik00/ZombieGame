@@ -17,14 +17,15 @@ WHAT IS DONE (tested and working!):
 * Elastic collisions. note: faster the update freq the better collisions will look. Let jack know if you ever notice any bugs!
 
 WORK IN PROGRESS:  
-* Collisions with OBB trees. (Jack)  
 * GUI stuff.  
 * Sound back-end. (jacob)  
-
+* Perhaps better collisions with walls? (jack)  
 WHAT NEEDS TO BE DONE:  
 * Most game logic [expand on this].  
 * fix interpolator in gameobject  
 * Action to control object based on keys pressed.(already have one, but it needs to be revisited)  
+* building levels and characters (everyone)  
+* making the game. (everyone)  
 
 
 =====  
