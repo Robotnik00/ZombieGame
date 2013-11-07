@@ -14,6 +14,7 @@ WHAT IS DONE (tested and working!):
 * Input callbacks.  
 * Bitmapped font drawing.
 * Drawing primitive shapes (points, lines, rectangles).  
+* Elastic collisions. Let jack know if you ever notice any bugs!
 
 WORK IN PROGRESS:  
 * Collisions with OBB trees. (Jack)  
