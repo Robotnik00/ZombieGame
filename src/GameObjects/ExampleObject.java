@@ -35,10 +35,10 @@ public class ExampleObject
 		handle = new GameObject(); // create node
 		universe.addChild(handle); // add to universe
 		PCControl pc = new PCControl(handle, universe, game);
-		pc.setMass(1f);    // set this so that the object accelerates quickly
+		pc.setMass(.5f);    // set this so that the object accelerates quickly
 		pc.setForceScale(3f); // max force applied by pc. thus max velocity = 3.0/1.0(with respect to universe.)
 		handle.addAction(pc);
-		handle.translate(-10, 0);
+		handle.translate(-12, 0);
 		handle.setCollidable(true);
 		state.addKeyEventListener(pc);
 		state.addMouseEventListener(pc);

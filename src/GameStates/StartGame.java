@@ -76,7 +76,7 @@ public class StartGame extends EventListenerState
 		test = gfx.LoadTexture("image3.bmp", 1);
 		universe.setDrawingInterface(new TileDraw(universe, test));
 		universe.translate(0, -.5f); 
-		universe.scale(.2f, .2f);
+		universe.scale(.1f, .1f);
 		ExampleObject obj = new ExampleObject(universe, game, gfx, this);
 		obj.getHandle().translate(0, 0);
 		//obj.getHandle().setCollidable(true);
@@ -88,19 +88,24 @@ public class StartGame extends EventListenerState
 		universe.addAction(objFollower);
 		
 		
-		for(int i = 0; i < 3; i++)
+		for(int i = -5; i < 5; i++)
 		{
-			GameObject obj2 = new GameObject();
-			obj2.translate(-i*2, 0);
-			//obj2.rotate((float)(Math.random()*2*Math.PI));
-			obj2.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image2.png", 0)));
-			obj2.setCollidable(true);
-			obj2.setStatic(false);
-			obj2.setBoundingBox(new AABB(1f, 1f));
-			CollidablePhysics a = new CollidablePhysics(obj2, universe, game);
-			a.setMass(1f);
-			obj2.addAction(a);
-			universe.addChild(obj2);
+			for(int j = -5; j < 5; j++)
+			{
+				GameObject obj2 = new GameObject();
+				obj2.translate(i*2+(float)Math.random(), j*2+(float)Math.random());
+				//obj2.rotate((float)(Math.random()*2*Math.PI));
+				obj2.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image2.png", 0)));
+				obj2.setCollidable(true);
+				obj2.setStatic(false);
+				obj2.setBoundingBox(new AABB(1f, 1f));
+				CollidablePhysics a = new CollidablePhysics(obj2, universe, game);
+				obj2.setTranslationalVelocity(new Vector2f(-obj2.getLocalX()*.5f, -obj2.getLocalY()*.5f));
+				a.setMass(5f);
+				obj2.addAction(a);
+				universe.addChild(obj2);
+			}
+			
 		}
 
 		DrawText textrenderer = new DrawText(gfx, "font1.png");
