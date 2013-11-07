@@ -98,7 +98,7 @@ public class StartGame extends EventListenerState
 			obj2.setStatic(false);
 			obj2.setBoundingBox(new AABB(1f, 1f));
 			CollidablePhysics a = new CollidablePhysics(obj2, universe, game);
-			a.setMass(.3f);
+			a.setMass(1f);
 			obj2.addAction(a);
 			universe.addChild(obj2);
 		}
