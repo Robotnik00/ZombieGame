@@ -88,14 +88,16 @@ public class StartGame extends EventListenerState
 		universe.addAction(objFollower);
 		
 		
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 3; i++)
 		{
 			GameObject obj2 = new GameObject();
-			obj2.translate((float)(Math.random()-.5)* 10, (float)(Math.random()-.5) * 10);
-			obj2.rotate((float)(Math.random()*2*Math.PI));
+			obj2.translate(i*2, 0);
+			//obj2.rotate((float)(Math.random()*2*Math.PI));
 			obj2.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image2.png", 0)));
 			obj2.setCollidable(true);
-			obj2.setBoundingBox(new AABB(.5f, .5f));
+			obj2.setStatic(false);
+			obj2.setBoundingBox(new AABB(1f, 1f));
+			obj2.addAction(new CollidablePhysics(obj2, universe, game));
 			universe.addChild(obj2);
 		}
 
@@ -103,7 +105,7 @@ public class StartGame extends EventListenerState
 	
 		HUD = new GameObject();
 		HUD.setDrawingInterface(textrenderer);
-		textrenderer.setText("right click to move.");
+		textrenderer.setText("right click to move.\n(go right!)");
 		HUD.scale(.05f, .05f);
 		HUD.translate(-1f, .65f);
 	}

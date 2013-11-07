@@ -85,6 +85,10 @@ public class GameObject
 		rotate(rotationalVelocity*deltaT);
 
 
+		if(boundingBox != null)
+		{
+			boundingBox.transform(getGlobalTransform());
+		}
 		updateChildren(deltaT);
 		updateThis(deltaT);
 		glbTransformCalculated = false;
@@ -191,14 +195,23 @@ public class GameObject
 	public void setLocalX(float x)
 	{
 		transform.m30 = x;
+		if(boundingBox != null)
+		{
+			boundingBox.transform(getGlobalTransform());
+		}
 	}
 	public void setLocalY(float y)
 	{
 		transform.m31 = y;
+		if(boundingBox != null)
+		{
+			boundingBox.transform(getGlobalTransform());
+		}
 	}
 	// get x relative to parent
 	public float getLocalX()
 	{
+		
 		return transform.m30;
 	}
 	// get y relative to parent
@@ -282,6 +295,11 @@ public class GameObject
 	{
 		transform.m30 += x;
 		transform.m31 += y;
+
+		if(boundingBox != null)
+		{
+			boundingBox.transform(getGlobalTransform());
+		}
 	}
 
 	/**
@@ -292,10 +310,15 @@ public class GameObject
 	 */
 	public void setBoundingBox(AABB box)
 	{
+		box.transform(getGlobalTransform());
 		boundingBox = box;
 	}
 	public AABB getBoundingBox()
 	{
+		if(boundingBox!=null)
+		{
+			boundingBox.transform(getGlobalTransform());
+		}
 		return boundingBox;
 	}
 
@@ -493,7 +516,14 @@ public class GameObject
 		Matrix4f.mul(parent.getGlobalInterpolator(glbInt), glbInt, glbInt);
 		return glbInt;
 	}
-	
+	public boolean isStatic()
+	{
+		return isStatic;
+	}
+	public void setStatic(boolean isStatic)
+	{
+		this.isStatic = isStatic;
+	}
 	
 	AABB proxemity; // if no objects in this area than don't process any children unless it is null
 	AABB boundingBox; // if object in this area notify a collision
@@ -526,6 +556,7 @@ public class GameObject
 	Vector2f deltaX;
 	float rotationalVelocity;
 	boolean collidable = false;
+	boolean isStatic = true;
 	
 	static final Vector3f zaxis = new Vector3f(0,0,1);
 }

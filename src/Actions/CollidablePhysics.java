@@ -2,6 +2,7 @@ package Actions;
 
 import java.util.ArrayList;
 
+import org.lwjgl.examples.spaceinvaders.Game;
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -37,14 +38,20 @@ public class CollidablePhysics extends Physics
 		
 		if(collisions.length > 0)
 		{
-			Vector2f velocity = obj.getTranslationalVelocity();
-			velocity.negate();
+			Vector2f velocity = new Vector2f(collisions[0].getTranslationalVelocity());
+			collisions[0].setTranslationalVelocity(new Vector2f(obj.getTranslationalVelocity()));
 			obj.setTranslationalVelocity(velocity);
+			obj.setLocalX(prevX);
+			obj.setLocalY(prevY);
+			obj.translate(velocity.x/eng.GetTickFrequency(), velocity.y/eng.GetTickFrequency());
 		}
 		
+		prevX = obj.getLocalX();
+		prevY = obj.getLocalY();
 	}
 	
 
-	
+	float prevX = 0;
+	float prevY = 0;
 	GameObject universe;
 }

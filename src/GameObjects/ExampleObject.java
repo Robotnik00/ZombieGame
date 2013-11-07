@@ -38,14 +38,14 @@ public class ExampleObject
 		pc.setMass(1f);    // set this so that the object accelerates quickly
 		pc.setForceScale(3f); // max force applied by pc. thus max velocity = 3.0/1.0(with respect to universe.)
 		handle.addAction(pc);
-		handle.setBoundingBox(new AABB(1f,1f));
-		handle.setCollidable(true);
 		handle.translate(-10, 0);
+		handle.setCollidable(true);
 		state.addKeyEventListener(pc);
 		state.addMouseEventListener(pc);
 		GameObject node = new GameObject();
 		node.addAction(new MouseTracker(node, game)); 
 		handle.addChild(node);
+		handle.setBoundingBox(new AABB(.3f,.3f));
 		
 		
 		// create a rotating node to attach child1 to. 
@@ -86,6 +86,7 @@ public class ExampleObject
 		textrenderer.setText("helloworld");
 		someText.setDrawingInterface(textrenderer);
 		node.addChild(someText);
+		
 		
 		loadTexture(gfx);
 	}
