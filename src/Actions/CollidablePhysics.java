@@ -2,7 +2,7 @@ package Actions;
 
 import java.util.ArrayList;
 
-import org.lwjgl.examples.spaceinvaders.Game;
+//import org.lwjgl.examples.spaceinvaders.Game;
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Vector2f;
 
