@@ -9,6 +9,7 @@ import Actions.CollidablePhysics;
 import Actions.ObjectFollower;
 import Actions.Physics;
 import AudioEngine.IAudioEngine;
+import Drawing.CameraView;
 import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import Drawing.TileDraw;
@@ -57,6 +58,7 @@ public class StartGame extends EventListenerState
 		super.Update();
 		universe.update((float)1/game.GetTickFrequency());
 		game.SetWindowTitle(""+game.GetFrameRate());
+		
 	}
 
 	@Override
@@ -74,19 +76,23 @@ public class StartGame extends EventListenerState
 	{
 		universe = new GameObject(); // create universe
 		test = gfx.LoadTexture("image3.bmp", 1);
-		universe.setDrawingInterface(new TileDraw(universe, test));
 		universe.translate(0, -.5f); 
 		universe.scale(.5f, .5f);
+		background = new GameObject();
+		background.setDrawingInterface(new TileDraw(test));
+		universe.addChild(background);
+		
 		ExampleObject obj = new ExampleObject(universe, game, gfx, this);
 		obj.getHandle().translate(0, 0);
 		//ObjectFollower objFollower = new ObjectFollower(universe, obj.getHandle(), game);
 		//objFollower.setFrictionConstant(1f);
 		//universe.addAction(objFollower);
 		
+		
+		
+		
 		CameraController cam = new CameraController(universe, obj.getHandle(), game);
-		universe.addAction(cam);
-		
-		
+		//universe.addAction(cam);
 		
 		for(int i = -5; i < 5; i++)
 		{
@@ -115,6 +121,9 @@ public class StartGame extends EventListenerState
 		textrenderer.setText("right click to move.\n(go right!)");
 		HUD.scale(.05f, .05f);
 		HUD.translate(-1f, .65f);
+		
+		
+		universe.setDrawingInterface(new CameraView(universe, obj.getHandle(), game));
 	}
 	ITexture test;
 	
@@ -122,6 +131,7 @@ public class StartGame extends EventListenerState
 	
 	
 	GameObject universe;
+	GameObject background;
 	GameObject HUD;
 	
 	

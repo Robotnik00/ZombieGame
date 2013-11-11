@@ -15,10 +15,9 @@ import TextureEngine.ITexture;
 // universe. 
 public class TileDraw implements DrawObject
 {
-	public TileDraw(GameObject obj, ITexture tex)
+	public TileDraw(ITexture tex)
 	{
 		this.tex = tex;
-		this.obj = obj;
 		nextRow = new Vector2f(-cols, 1);
 	}
 	
@@ -42,7 +41,6 @@ public class TileDraw implements DrawObject
 		
 	}
 	ITexture tex;
-	GameObject obj;
 	int rows = 15;
 	int cols = 20;
 	Vector2f nextRow;
