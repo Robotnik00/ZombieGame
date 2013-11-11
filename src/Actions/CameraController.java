@@ -24,7 +24,7 @@ public class CameraController implements Action
 		universe.translate(prevX, prevY);
 		mouseLoc.x  = game.GetMouseX()/2;
 		mouseLoc.y = game.GetMouseY()/2;
-		universe.translate(-mouseLoc.x, -mouseLoc.y);
+		universe.translate(-mouseLoc.x-objToFollow.getGlobalX(), -mouseLoc.y - objToFollow.getGlobalY());
 		velocity.x = -objToFollow.getTranslationalVelocity().x;
 		velocity.y = -objToFollow.getTranslationalVelocity().y;
 		universe.setTranslationalVelocity(velocity);
@@ -45,9 +45,6 @@ public class CameraController implements Action
 		universe.scale(1/prevScale, 1/prevScale);
 		universe.scale(scale, scale);
 		prevScale = scale;
-		
-		
-		
 	}
 	Vector2f mouseLoc = new Vector2f();
 	float prevX = 0;
