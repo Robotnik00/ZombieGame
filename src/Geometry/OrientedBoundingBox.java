@@ -16,10 +16,19 @@ public class OrientedBoundingBox
 	public OrientedBoundingBox(Vector4f[] verts)
 	{
 		normals = new Vector4f[verts.length];
+		float avgX = 0;
+		float avgY = 0;
 		for(int i = 0; i < normals.length; i++)
 		{
 			normals[i] = new Vector4f();
+			avgX += verts[i].x;
+			avgY += verts[i].y;
 		}
+		avgX /= verts.length;
+		avgY /= verts.length;
+		center = new Vector4f();
+		center.x = avgX;
+		center.y = avgY;
 		this.verts = verts;
 	}
 	
@@ -82,55 +91,39 @@ public class OrientedBoundingBox
 	
 	private Vector4f lineOverlap(Vector4f[] line1, Vector4f[] line2, Vector4f axis)
 	{
-		float line1x1 = line1[0].length();
-		if(Vector4f.dot(line1[0], axis) < 0)
-		{
-			line1x1 *= -1;
-		}
-		float line1x2 = line1[1].length();
-		if(Vector4f.dot(line1[1], axis) < 0)
-		{
-			line1x2 *= -1;
-		}
-		float line2x1 = line2[0].length();
-		if(Vector4f.dot(line2[0], axis) < 0)
-		{
-			line2x1 *= -1;
-		}
-		float line2x2 = line2[1].length();
-		if(Vector4f.dot(line2[1], axis) < 0)
-		{
-			line2x2 *= -1;
-		}
+		float line1dot1 = Vector4f.dot(axis, line1[0]);
+		float line1dot2 = Vector4f.dot(axis, line1[1]);
+		float line2dot1 = Vector4f.dot(axis, line2[0]);
+		float line2dot2 = Vector4f.dot(axis, line2[1]);
+		Vector4f out = new Vector4f();
 		
-		float magnitude = 0;
-		if(line1x2 < line2x1 || line1x1 > line2x2)
+		if(line1dot2 < line2dot1 || line1dot1 > line2dot2)
 		{
 			return null;
 		}
-		else if(line1x1 >= line2x1 && line1x2 <= line2x2)
+		else if(line1dot1 >= line2dot1 && line1dot2 <= line2dot2)
 		{
-			magnitude = line1x2 - line1x1;
+			out.x = line1[1].x - line1[0].x;
+			out.y = line1[1].y - line1[0].y;
 		}
-		else if(line1x1 <= line2x1 && line1x2 <= line2x2)
+		else if(line1dot1 <= line2dot1 && line1dot2 <= line2dot2)
 		{
-			magnitude = line1x2 - line2x1;
+			out.x = line1[1].x - line2[0].x;
+			out.y = line1[1].y - line2[0].y;
 		}
-		else if(line1x1 >= line2x1 && line1x2 >= line2x2)
+		else if(line1dot1 >= line2dot1 && line1dot2 >= line2dot2)
 		{
-			magnitude = line2x2 - line1x1;
+			out.x = line2[1].x - line1[0].x;
+			out.y = line2[1].y - line1[0].y;
 		}
-		else if(line1x1 <= line2x1 && line1x2 >= line2x2)
+		else if(line1dot1 <= line2dot1 && line1dot2 >= line2dot2)
 		{
-			magnitude = line2x2 - line2x1;
+			out.x = line2[1].x - line2[0].x;
+			out.y = line2[1].y - line2[0].y;
 		}
 		
-		Vector4f outof = new Vector4f(axis);
-		outof.normalise();
-		outof.scale(magnitude);
 		
-		
-		return outof;
+		return out;
 	}
 	
 	
@@ -148,40 +141,31 @@ public class OrientedBoundingBox
 		projectedPoints[0] = projectPoint(verts[0], axis);
 		projectedPoints[1] = new Vector4f(projectedPoints[0]);
 
-		float maxMagnitude = projectedPoints[1].length();
-		if(Vector4f.dot(projectedPoints[1], axis) < 0)
-		{
-			maxMagnitude *= -1;
-		}
+		float maxDotprod = Vector4f.dot(projectedPoints[1], axis);
 		
-		float minMagnitude = maxMagnitude;
-		
+		float minDotprod = maxDotprod;
 		
 		for(int i = 1; i < verts.length; i++)
 		{
 			Vector4f projectedPoint = projectPoint(verts[i], axis);
 			
-			float magnitude = projectedPoint.length();
-			if( Vector4f.dot(axis, projectedPoint) < 0)
-			{
-				magnitude *= -1;
-			}
+			float dotprod = Vector4f.dot(axis, projectedPoint);
 			
 			//System.out.printf("%f %f\n", projectedPoint.x, projectedPoint.y);
-			if(magnitude > maxMagnitude)
+			if(dotprod > maxDotprod)
 			{
 				projectedPoints[1] = projectedPoint;
-				maxMagnitude = magnitude;
+				maxDotprod = dotprod;
 			}
-			else if(magnitude < minMagnitude)
+			else if(dotprod < minDotprod)
 			{
 				projectedPoints[0] = projectedPoint;
-				minMagnitude = magnitude;
+				minDotprod = dotprod;
 			}
 		}
-
-		//System.out.printf("%f %f\n", projectedPoints[0].x, projectedPoints[0].y);
-		//System.out.printf("%f %f\n\n", projectedPoints[1].x, projectedPoints[1].y);
+		
+		
+		
 		return projectedPoints;
 	}
 	
@@ -200,12 +184,12 @@ public class OrientedBoundingBox
 		normals[0].y = verts[verts.length - 1].x - verts[0].x;
 		normals[0].x = verts[0].y - verts[verts.length-1].y;
 		normals[0].normalise();
-		
 		for(int i = 1; i < verts.length; i++)
 		{
 			normals[i].y = verts[i-1].x - verts[i].x;
 			normals[i].x = verts[i].y - verts[i-1].y;
 			normals[i].normalise();
+			
 		}
 	}
 	
@@ -227,14 +211,26 @@ public class OrientedBoundingBox
 	
 	public void transform(Matrix4f transform)
 	{
+		center.x = 0;
+		center.y = 0;
 		for(int i = 0; i < verts.length; i++)
 		{
 			verts[i].w = 1;
 			Matrix4f.transform(transform, verts[i], verts[i]);
 			verts[i].w = 0;
+			center.x += verts[i].x;
+			center.y += verts[i].y;
 		}
+		center.x /= verts.length;
+		center.y /= verts.length;
 	}
 	// list of vertices of convex shape. verts[i] connects to verts[i+1] first connects to last
 	Vector4f[] verts;
 	Vector4f[] normals;
+
+	Vector4f center;
+	
+	static final Vector4f xaxis = new Vector4f(1,0,0,0);
+	static final Vector4f yaxis = new Vector4f(0,1,0,0);
 }
+
