@@ -12,6 +12,8 @@ import java.io.*;
 
 /**
  * Create, load, and save a simple configuration file with int, float, and string values attached to keys.
+ * 
+ * FIXME: return values should be Integer vs int (to handle NULL). 
  */
 public class ConfigData
 {
@@ -33,13 +35,13 @@ public class ConfigData
 		// parse a save file: ints, floats, then strings
 		int numKeys, intValue;
 		float floatValue;
-		String stringKey, stringValue;
+		String stringValue;
 		String line;
 		
 		BufferedReader fin;
 		fin = new BufferedReader(new FileReader(filename));
 		
-		// save file name for saving later
+		// save file name for saving later (if we were able to open the file)
 		filename_ = filename;
 		
 		// read # of keys
@@ -141,11 +143,11 @@ public class ConfigData
 	}
 	
 	/**
-	 * Add an integer config variable.
+	 * Set an integer config variable. If the key is not found, it will be added with the associated value given.
 	 * @param key
 	 * @param value
 	 */
-	public void	AddIntValue(String key, int value)
+	public void	SetIntValue(String key, int value)
 		{	intValues_.put(key, value);	}
 	
 	/**
@@ -157,11 +159,11 @@ public class ConfigData
 		{	return intValues_.get(key);	}
 	
 	/**
-	 * Add a float config variable.
+	 * Set a float config variable. If the key is not found, it will be added with the associated value given.
 	 * @param key
 	 * @param value
 	 */
-	public void	AddFloatValue(String key, float value)
+	public void	SetFloatValue(String key, float value)
 		{	floatValues_.put(key, value);	}
 	
 	/**
@@ -173,11 +175,11 @@ public class ConfigData
 		{	return floatValues_.get(key);	}
 	
 	/**
-	 * Add a string config variable.
+	 * Set a string config variable. If the key is not found, it will be added with the associated value given.
 	 * @param key
 	 * @param value
 	 */
-	public void	AddStringValue(String key, String value)
+	public void	SetStringValue(String key, String value)
 		{	stringValues_.put(key, value);	}
 	
 	/**

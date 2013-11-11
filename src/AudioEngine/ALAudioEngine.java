@@ -126,6 +126,16 @@ public class ALAudioEngine implements IAudioEngine
 		// init openal
 		AL.create();
 		
+		// Sometimes openAL is failing *without* an exception: (logs don't report a fallback to NullAudioEngine)
+		// AL lib: (EE) MMDevApiOpenPlayback: Device init failed: 0x80004005
+		// It's hard to find info on this bug, mostly people saying to update LWJGL. This is really weird, 
+		// it doesn't happen all the time. Hopefully this will capture the error.
+		int err = alGetError();
+		if (err != AL_NO_ERROR)
+		{
+			throw new Exception("ALAudioEngine::Init: OpenAL failed to initialize: error code = "+err);
+		}
+		
 		// allocate sound channels
 		for (int i=0; i < soundSources_.length; i++)
 		{

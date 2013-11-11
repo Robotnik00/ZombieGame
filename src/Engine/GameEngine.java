@@ -10,6 +10,7 @@ package Engine;
 
 import java.util.*;
 import java.text.*;
+import java.io.*;
 
 import org.lwjgl.Sys;
 import org.lwjgl.LWJGLException;
@@ -32,13 +33,14 @@ import GameStates.IGameState;
 import GameStates.InputExample;
 import GameStates.StartGame;
 import GameStates.TestState;
+import GameStates.MenuState;
 import GameStates.CollisionTesting;
 import InputCallbacks.KeyEventListener;
 import InputCallbacks.MouseEvent;
 import InputCallbacks.MouseEventListener;
 import TextureEngine.GLTextureEngine;
 import TextureEngine.ITextureEngine;
-
+import Utility.ConfigData;
 
 
 
@@ -59,7 +61,7 @@ public class GameEngine implements IGameEngine
 	 * This is how many game logic updates occur per second, independent of the frame rate.
 	 * Try to pick values that divide into 1000 nicely.
 	 */
-	final int		TICKS_PER_SECOND	= 100;
+	final int		TICKS_PER_SECOND	= 25;
 	
 	/** 
 	 * Time window for each game logic update to occur.
@@ -92,15 +94,28 @@ public class GameEngine implements IGameEngine
 	 */
 	public static void main(String[] args)
 	{
+		PrintWriter logFile = null;
+		
+		try {
+			logFile = new PrintWriter(new FileWriter("log.txt"));
+		} catch (Exception e) {
+			System.out.println("How the fuck could this fail?");
+		}
+		
 		try
 		{
-			GameEngine game = new GameEngine(args);
+			GameEngine game = new GameEngine(args, logFile);
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			logFile.println(e.getMessage());
+			logFile.println(e.getStackTrace());
+			
 			System.out.println(e.getMessage());
+			System.out.println(e.getStackTrace());
 		}
+		
+		logFile.close();
 	}
 	
 	
@@ -114,7 +129,7 @@ public class GameEngine implements IGameEngine
 	 * @param args Command line arguments.
 	 * @throws Exception
 	 */
-	public GameEngine(String[] args) throws Exception
+	public GameEngine(String[] args, PrintWriter log) throws Exception
 	{
 		// init members
 		textureEngine_		= null;
@@ -127,8 +142,15 @@ public class GameEngine implements IGameEngine
 		// copy arguments
 		arguments_ = args;
 
+		// event listeners
 		keyListeners = new ArrayList<KeyEventListener>();
 		mouseListeners = new ArrayList<MouseEventListener>();
+		
+		// LogMessage output can also go to a file
+		logFile_ = log;
+		
+		// setup game configuration file.
+		SetupConfig();
 		
 		// setup window w/LWJGL, init opengl
 		SetupDisplay(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -142,7 +164,8 @@ public class GameEngine implements IGameEngine
 		
 		// start initial gamestate
 		//ChangeGameState(new TestState());
-		ChangeGameState(new StartGame());
+		//ChangeGameState(new StartGame());
+		ChangeGameState(new MenuState());
 		//ChangeGameState(new CollisionTesting());
 		// run the game loop
 		GameLoop();
@@ -150,6 +173,9 @@ public class GameEngine implements IGameEngine
 		// clean up resources (tex, audio, etc)
 		ShutdownAudio();
 		ShutdownDisplay();
+		
+		// save stuff
+		gameConfig_.SaveFile("config.cfg");
 	}
 	
 	
@@ -177,6 +203,11 @@ public class GameEngine implements IGameEngine
 	{
 		LogMessage("EndGameLoop");
 		runGame_ = false;
+	}
+	
+	public ConfigData	GetGameConfig()
+	{
+		return gameConfig_;
 	}
 	
 	// information
@@ -211,9 +242,17 @@ public class GameEngine implements IGameEngine
 	
 	public void	LogMessage(String message)
 	{
+		// add a timestamp to the message
 		Date date = new Date();
 		SimpleDateFormat sf = new SimpleDateFormat("HH:mm:ss");
-		System.out.println("[" + sf.format(date) + "] " + message);
+		String m = "[" + sf.format(date) + "] " + message;
+		
+		// print to standard out
+		System.out.println(m);
+		
+		// print to the log if present
+		if (logFile_ != null)
+			logFile_.println(m);
 	}
 		
 	public void	SetWindowTitle(String str)
@@ -267,6 +306,10 @@ public class GameEngine implements IGameEngine
 	
 	protected IGameState		currentState_;
 	protected boolean			runGame_=true;
+	
+	protected PrintWriter		logFile_;
+	
+	protected ConfigData		gameConfig_;
 	
 	protected int				framesPerSecond_;
 	
@@ -405,19 +448,28 @@ public class GameEngine implements IGameEngine
 	{
 		// can't use native data types on containers, that would be too simple.
 		ArrayList<Integer> events = new ArrayList<Integer>();
+		int buttonId;
 		
 		while (Mouse.next())
 		{
+			buttonId = Mouse.getEventButton();
+			
+			// no button, don't add the event
+			if (buttonId == -1)
+				continue;
+			
+			buttonId++;
+			
 			// pressed = positive button id
 			// released = negative button id
 			// add 1 because 0 is neither +/-
 			if (Mouse.getEventButtonState())        // pressed
 			{        
-				events.add(Mouse.getEventButton()+1);
+				events.add(buttonId);
 			}
 			else // released
 			{
-				events.add(-(Mouse.getEventButton()+1));
+				events.add(-buttonId);
 			}
 		}
 		
@@ -438,6 +490,37 @@ public class GameEngine implements IGameEngine
 	protected void	PumpMouseMotionEvents()
 	{
 		lastMousePosition_ = textureEngine_.ScaleWindowCoordinates(Mouse.getX(), Mouse.getY());
+	}
+	
+	/**
+	 * 
+	 */
+	protected void	SetupConfig() throws Exception
+	{
+		gameConfig_	= new ConfigData();
+		
+		try {
+			gameConfig_.LoadFile("config.cfg");
+		} catch (Exception e) {
+			LogMessage("GameEngine::SetupConfig: Couldn't find config file, creating default profile.");
+			
+			// fill in default values for controls
+			gameConfig_.SetIntValue("move_up", Keyboard.KEY_W);
+			gameConfig_.SetIntValue("move_down", Keyboard.KEY_S);
+			gameConfig_.SetIntValue("move_left", Keyboard.KEY_A);
+			gameConfig_.SetIntValue("move_right", Keyboard.KEY_D);
+			
+			// default sound volume
+			gameConfig_.SetFloatValue("sound_volume", 1.0f);
+			
+			// empty high score table with 10 slots
+			for (int i=0; i < 10; i++)
+			{
+				// scoreX_name and scoreX_points
+				gameConfig_.SetStringValue("score"+i+"_name", "AAA");
+				gameConfig_.SetIntValue("score"+i+"_points", i*1000);
+			}
+		}
 	}
 	
 	/** 
@@ -503,6 +586,9 @@ public class GameEngine implements IGameEngine
 			LogMessage("Falling back to NullAudioEngine.");
 			InitNullAudioEngine();
 		}
+		
+		// set volume from config file
+		audioEngine_.SetVolume(gameConfig_.GetFloatValue("sound_volume"));
 	}
 	
 	/**
