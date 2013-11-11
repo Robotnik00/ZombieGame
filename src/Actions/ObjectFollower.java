@@ -42,7 +42,7 @@ public class ObjectFollower extends Physics
 		
 	}
 	
-	float deadZone = 0.01f;
+	float deadZone = 0.00005f;
 	float forceScale = 3f;
 	
 	GameObject toFollow;

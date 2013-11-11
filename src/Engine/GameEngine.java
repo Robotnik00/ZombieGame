@@ -143,6 +143,7 @@ public class GameEngine implements IGameEngine
 		// start initial gamestate
 		//ChangeGameState(new TestState());
 		ChangeGameState(new StartGame());
+		//ChangeGameState(new CollisionTesting());
 		// run the game loop
 		GameLoop();
 		
