@@ -41,7 +41,6 @@ public class CameraController implements Action
 		{
 			scale = .5f;
 		}
-		//scale = 1 - scale;
 		universe.scale(1/prevScale, 1/prevScale);
 		universe.scale(scale, scale);
 		prevScale = scale;

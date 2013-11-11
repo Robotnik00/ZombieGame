@@ -41,6 +41,17 @@ public class ObjectFollower extends Physics
 		
 		
 	}
+	// the distance from center of screen before the screen moves.
+	public void setDeadZone(float deadZone)
+	{
+		this.deadZone = deadZone;
+	}
+	// the amount of force applied to move the screen
+	// normally this should be set equal to the max velocity of the object to follow
+	public void setForceScale(float force)
+	{
+		this.forceScale = force;
+	}
 	
 	float deadZone = 0.00005f;
 	float forceScale = 3f;

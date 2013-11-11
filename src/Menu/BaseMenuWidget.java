@@ -95,9 +95,13 @@ public class BaseMenuWidget implements IMenuWidget
 				actn.OnHover(false);
 			}
 			
-			// check if clicking too, any button
-			if (triggerNow && game_.GetMouseEvents().length > 0)
-				actn.OnClick();
+			// process mouse events
+			int[] mouseEvents = game_.GetMouseEvents();
+			for(int j = 0; j < mouseEvents.length; j++)
+			{
+				if (triggerNow && mouseEvents[j] == 1) // left click
+					actn.OnClick();
+			}
 		}
 		
 		xprev_ = mx;
@@ -130,7 +134,7 @@ public class BaseMenuWidget implements IMenuWidget
 	
 	protected float						xprev_,yprev_;
 	
-	
+	protected int[] mouseEvents;
 	
 	//
 	// protected methods

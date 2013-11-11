@@ -61,7 +61,7 @@ public class GameEngine implements IGameEngine
 	 * This is how many game logic updates occur per second, independent of the frame rate.
 	 * Try to pick values that divide into 1000 nicely.
 	 */
-	final int		TICKS_PER_SECOND	= 25;
+	final int		TICKS_PER_SECOND	= 100;
 	
 	/** 
 	 * Time window for each game logic update to occur.
@@ -455,21 +455,23 @@ public class GameEngine implements IGameEngine
 			buttonId = Mouse.getEventButton();
 			
 			// no button, don't add the event
-			if (buttonId == -1)
-				continue;
+			//if (buttonId == -1)
+			//	continue;
 			
-			buttonId++;
+			//buttonId++;
 			
 			// pressed = positive button id
 			// released = negative button id
 			// add 1 because 0 is neither +/-
 			if (Mouse.getEventButtonState())        // pressed
 			{        
-				events.add(buttonId);
+				events.add(Mouse.getEventButton()+1);
+				//events.add(buttonId);
 			}
 			else // released
 			{
-				events.add(-buttonId);
+				events.add(-(Mouse.getEventButton()+1));
+				//events.add(-buttonId);
 			}
 		}
 		

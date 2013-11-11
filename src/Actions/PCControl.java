@@ -15,6 +15,9 @@ import InputCallbacks.MouseEventListener;
 *
 * allows for a PC to control an object with a keyboard and mouse ect
 */
+
+// havent done key input yet, but that should be easy.
+
 public class PCControl extends PhysicsObjectController implements KeyEventListener, MouseEventListener
 {
 
@@ -40,6 +43,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		unitDirection.normalise();
 		if(keyPressed == FORWARD_KEY)
 		{
+			
 		}
 		else if(keyPressed == REVERSE_KEY)
 		{

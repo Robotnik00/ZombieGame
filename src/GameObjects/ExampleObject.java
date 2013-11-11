@@ -48,7 +48,6 @@ public class ExampleObject
 		handle.addChild(node);
 		handle.setBoundingBox(new AABB(.3f,.3f));
 		
-		
 		// create a rotating node to attach child1 to. 
 		// The reason this is required is because child1 has a scale applied to it.
 		// since the scale is already applied, we have to create a node in order to 

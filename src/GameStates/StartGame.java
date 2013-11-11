@@ -4,6 +4,7 @@ package GameStates;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import Actions.CameraController;
 import Actions.CollidablePhysics;
 import Actions.ObjectFollower;
 import Actions.Physics;
@@ -75,14 +76,16 @@ public class StartGame extends EventListenerState
 		test = gfx.LoadTexture("image3.bmp", 1);
 		universe.setDrawingInterface(new TileDraw(universe, test));
 		universe.translate(0, -.5f); 
-		universe.scale(.2f, .2f);
+		universe.scale(.5f, .5f);
 		ExampleObject obj = new ExampleObject(universe, game, gfx, this);
 		obj.getHandle().translate(0, 0);
-		ObjectFollower objFollower = new ObjectFollower(universe, obj.getHandle(), game);
-		objFollower.setFrictionConstant(1f);
-		universe.translate(-obj.getHandle().getGlobalX(), -obj.getHandle().getGlobalY());
+		//ObjectFollower objFollower = new ObjectFollower(universe, obj.getHandle(), game);
+		//objFollower.setFrictionConstant(1f);
+		//universe.addAction(objFollower);
 		
-		universe.addAction(objFollower);
+		CameraController cam = new CameraController(universe, obj.getHandle(), game);
+		universe.addAction(cam);
+		
 		
 		
 		for(int i = -5; i < 5; i++)
@@ -115,7 +118,7 @@ public class StartGame extends EventListenerState
 	}
 	ITexture test;
 	
-
+	
 	
 	
 	GameObject universe;

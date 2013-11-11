@@ -18,8 +18,8 @@ import GameObjects.GameObject;
 * 
 */
 // What needs to be done here:
-//  - respond to collisions that are cause by rotating objects.
-//  - make it so the collisions result in accurate velocity based on momentum, instead of just negating it.
+// right now collisions are modeled as if just a collision between two points even tho bounds are a rectangle.
+// need a better response to collisions with walls
 public class CollidablePhysics extends Physics
 {
 
@@ -42,7 +42,6 @@ public class CollidablePhysics extends Physics
 		}
 		if(collisions.length > 0)
 		{
-			//Vector2f velocity = collisions[0].getTranslationalVelocity();
 			if(!collisions[0].isStatic()) // object is colliding with another object
 			{
 				
@@ -67,10 +66,6 @@ public class CollidablePhysics extends Physics
 				v1.scale(2*obj.getMass()/(obj.getMass() + collisions[0].getMass()));
 				Vector2f.add(v1, v2, result);
 				collisions[0].setTranslationalVelocity(result);				 
-
-
-				//collisions[0].setTranslationalVelocity(obj.getTranslationalVelocity());
-				//obj.setTranslationalVelocity(velocity);
 			}
 			else // object is colliding with a wall.
 			{

@@ -6,6 +6,7 @@ package Actions;
 */
 public interface Action
 {
+	// called from GameObjects
 	public void performAction();
 	
 }

@@ -11,6 +11,8 @@ import TextureEngine.ITexture;
 *
 * draws a texture in a tiled array centered at the GameObject
 */
+// it may be more efficient to make a 2d array of GameObjects and add them to 
+// universe. 
 public class TileDraw implements DrawObject
 {
 	public TileDraw(GameObject obj, ITexture tex)
