@@ -13,6 +13,8 @@ package Engine;
 import GameStates.IGameState;
 import InputCallbacks.KeyEventListener;
 import InputCallbacks.MouseEventListener;
+import Utility.ConfigData;
+
 
 
 /**
@@ -41,6 +43,10 @@ public interface IGameEngine
 	 */
 	public void	EndGameLoop();
 	
+	/**
+	 * Request the handle to the game's configuration file.
+	 */
+	public ConfigData	GetGameConfig();
 	
 	//
 	// information

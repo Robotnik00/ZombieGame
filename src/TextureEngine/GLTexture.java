@@ -162,9 +162,10 @@ public class GLTexture implements ITexture
 		// - set shader params (alpha, blend, blend color)
 		
 		// setup model transformation (scaling, rotation, offset)
+		float ratio = (float)height_ / (float)width_;
 		Matrix4f m = new Matrix4f();
 		m.setIdentity();
-		m.scale(new Vector3f(sx_,sy_,1.0f));
+		m.scale(new Vector3f(sx_,ratio*sy_,1.0f));
 		m.rotate(rad_, new Vector3f(0.0f, 0.0f, 1.0f));
 		m.translate(new Vector2f(ox_,oy_));
 		m.store(matrixBuffer_); matrixBuffer_.flip();

@@ -3,29 +3,29 @@ ZombieGame
 Status of major features (keep this list updated!):
 
 WHAT IS DONE (tested and working!):  
-* Keyboard and Mouse input.  
+* Keyboard and Mouse input, input callbacks.  
 * IGamestate management / game loop.  
-* Loading and displaying textures (images).  
-* Scaling, rotation, translation on textures.  
+* Graphics back-end.  
+* Sound back-end.  
 * Scene graph for representing objects in game (GameObject class)  
 * Physics action that can be applied to GameObjects  
-* Collisions using bounding volume hierarchy with AABBs   
-* Alpha transparency, color blending, colorkey, drawing a portion of a texture.  
-* Input callbacks.  
-* Bitmapped font drawing.
-* Drawing primitive shapes (points, lines, rectangles).  
+* Collisions using bounding volume hierarchy with AABBs     
+* Bitmapped font drawing.  
 * Elastic collisions. note: faster the update freq the better collisions will look. Let jack know if you ever notice any bugs!
 
 WORK IN PROGRESS:  
-* GUI stuff.  
-* Sound back-end. (jacob)  
+* GUI/Menu stuff.  
+* Configuration file (needs testing).  
 * Perhaps better collisions with walls? (jack)  
+
 WHAT NEEDS TO BE DONE:  
-* Most game logic [expand on this].  
+* ART AND SOUNDS  
+* Player (movement, more).  
+* Weapons (firing, collecting, more).  
+* Enemies (spawning, moving, attacking, more).  
+* Levels (tileset, solid walls, spawning enemies, transitions, more).  
 * fix interpolator in gameobject  
 * Action to control object based on keys pressed.(already have one, but it needs to be revisited)  
-* building levels and characters (everyone)  
-* making the game. (everyone)  
 
 
 =====  

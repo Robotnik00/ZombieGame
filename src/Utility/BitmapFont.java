@@ -118,7 +118,7 @@ public class BitmapFont
 		y_			= 0.0f;
 		xs_			= 1.0f;
 		ys_			= 1.0f;
-		kerning_	= 0.0f;
+		//kerning_	= 0.0f;
 	}
 	
 	// added for drawing text to scene graph
