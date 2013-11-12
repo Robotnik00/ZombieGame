@@ -82,7 +82,7 @@ public class StartGame extends EventListenerState
 		background.setDrawingInterface(new TileDraw(test));
 		universe.addChild(background);
 		
-		ExampleObject obj = new ExampleObject(universe, game, gfx, this);
+		ExampleObject obj = new ExampleObject(background, game, gfx, this);
 		obj.getHandle().translate(0, 0);
 		//ObjectFollower objFollower = new ObjectFollower(universe, obj.getHandle(), game);
 		//objFollower.setFrictionConstant(1f);
@@ -91,7 +91,7 @@ public class StartGame extends EventListenerState
 		
 		
 		
-		CameraController cam = new CameraController(universe, obj.getHandle(), game);
+		//CameraController cam = new CameraController(universe, obj.getHandle(), game);
 		//universe.addAction(cam);
 		
 		for(int i = -5; i < 5; i++)
@@ -104,12 +104,12 @@ public class StartGame extends EventListenerState
 				obj2.setCollidable(true);
 				obj2.setStatic(false);
 				obj2.setBoundingBox(new AABB(1f, 1f));
-				CollidablePhysics a = new CollidablePhysics(obj2, universe, game);
+				CollidablePhysics a = new CollidablePhysics(obj2, background, game);
 				obj2.setTranslationalVelocity(new Vector2f(-obj2.getLocalX()*.2f, -obj2.getLocalY()*.2f));
 				obj2.setMass((float)Math.random()*5 + 3);
 				obj2.addAction(a);
 				obj2.setProxemityBounds(new AABB(1.5f,1.5f));
-				universe.addChild(obj2);
+				background.addChild(obj2);
 			}
 			
 		}
