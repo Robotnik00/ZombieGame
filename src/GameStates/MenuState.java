@@ -17,6 +17,9 @@ import Menu.IMenuScreen;
 import Menu.IMenuWidget;
 import Menu.MainMenuScreen;
 
+import Engine.GameEngine;
+
+
 
 /**
  * The menu gamestate.
@@ -47,13 +50,27 @@ public class MenuState implements IGameState, IMenuController
 		
 		// setup new menu
 		currentMenu_ = menu;
-		currentMenu_.Init(this);
 		
+		// initialize the menu only once:
+		// FIXME: menu screens can create other menu screen (as part of a menu transition action, for example),
+		// and sometimes these menus are initialized twice because they are fed into this function each time a
+		// transition is performed.
+		// Option A: have menus clear their state on each init, before setting up again
+		// Option B: menus keep track of if they have initialized, and that signals this function to not init again
+		// I chose option B.
+		if (currentMenu_.IsInitialized() == false)
+			currentMenu_.Init(this);
 	}
 	
 	public void	PreviousMenu()
 	{
 		// FIXME: setup transition stuff here!
+		
+		if (menuStack_.size() == 0)
+		{
+			game_.LogMessage("MenuState::PreviousMenu: WARNING: Stack size zero!");
+			return;
+		}
 		
 		// kill current menu
 		currentMenu_.Quit();

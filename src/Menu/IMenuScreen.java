@@ -26,6 +26,11 @@ public interface IMenuScreen
 	public void	Init(IMenuController menuController) throws Exception;
 	
 	/**
+	 * Returns whether this menu screen has been initialized already
+	 */
+	public boolean IsInitialized();
+	
+	/**
 	 * Clean up menu state, destroy the menu.
 	 */
 	public void	Quit();

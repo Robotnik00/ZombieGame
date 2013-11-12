@@ -89,6 +89,29 @@ public class GameEngine implements IGameEngine
 	//
 	
 	/**
+	 * Dumps a detailed stack trace, incase of a crash.
+	 * Outputs to standard out and a log file.
+	 */
+	public static void DumpStackTrace(StackTraceElement[] stackTrace, PrintWriter log)
+	{
+		String line;
+		
+		for (int i=0; i < stackTrace.length; i++)
+		{
+			line = "["+i+"]: " +
+					stackTrace[i].getFileName() + "::" +
+					stackTrace[i].getClassName() + "::" +
+					stackTrace[i].getMethodName() + "::" +
+					stackTrace[i].getLineNumber();
+			
+			System.out.println(line);
+			
+			if (log != null)
+				log.println(line);
+		}
+	}
+	
+	/**
 	 * Program entry point.
 	 * @param args Command line arguments.
 	 */
@@ -113,6 +136,8 @@ public class GameEngine implements IGameEngine
 			
 			System.out.println(e.getMessage());
 			System.out.println(e.getStackTrace());
+			
+			DumpStackTrace(e.getStackTrace(), logFile);
 		}
 		
 		logFile.close();

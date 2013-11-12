@@ -27,6 +27,7 @@ public class BaseMenuWidget implements IMenuWidget
 	{
 		menuController_ = null;
 		parentMenu_ = null;
+		mousePrev_ = false;
 		
 		actions_ = new ArrayList<IWidgetAction>();
 		
@@ -69,6 +70,7 @@ public class BaseMenuWidget implements IMenuWidget
 		float mx, my;
 		boolean triggerNow=false;
 		boolean triggerPrev=false;
+		boolean mouseNow=false;
 		
 		mx = game_.GetMouseX();
 		my = game_.GetMouseY();
@@ -96,12 +98,14 @@ public class BaseMenuWidget implements IMenuWidget
 			}
 			
 			// check if clicking too, any button
-			if (triggerNow && game_.GetMouseEvents().length > 0)
+			mouseNow = CheckMouseButtonDown(game_.GetMouseEvents());
+			if (triggerNow == true && mousePrev_ == false && mouseNow == true)
 				actn.OnClick();
 		}
 		
 		xprev_ = mx;
 		yprev_ = my;
+		mousePrev_ = mouseNow;
 	}
 	
 	public void	Draw(float delta)
@@ -129,6 +133,7 @@ public class BaseMenuWidget implements IMenuWidget
 	protected ArrayList<IWidgetAction>	actions_;
 	
 	protected float						xprev_,yprev_;
+	protected boolean					mousePrev_;
 	
 	
 	
@@ -141,6 +146,20 @@ public class BaseMenuWidget implements IMenuWidget
 	{
 		float[] area = a.GetArea();
 		return (x >= area[0] && x < area[1] && y >= area[2] && y < area[3]);
+	}
+	
+	// returns true if there are any mouse button down events
+	protected boolean	CheckMouseButtonDown(int[] mouseEvents)
+	{
+		boolean ret = false;
+		
+		for (int i=0; i < mouseEvents.length; i++)
+		{
+			if (mouseEvents[i] > 0)
+				ret = true;
+		}
+		
+		return ret;
 	}
 	
 }

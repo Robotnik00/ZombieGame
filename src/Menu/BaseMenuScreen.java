@@ -25,6 +25,7 @@ public class BaseMenuScreen implements IMenuScreen
 	{
 		widgets_ = new ArrayList<IMenuWidget>();
 		focusedWidget_ = null;
+		isInitialized_ = false;
 	}
 	
 	
@@ -36,8 +37,14 @@ public class BaseMenuScreen implements IMenuScreen
 	public void	Init(IMenuController menuController) throws Exception
 	{
 		menuController_ = menuController;
+		isInitialized_ = true;
 		
 		// create widgets here in child classes
+	}
+	
+	public boolean IsInitialized()
+	{
+		return isInitialized_;
 	}
 	
 	public void	Quit()
@@ -99,6 +106,7 @@ public class BaseMenuScreen implements IMenuScreen
 	protected IMenuController			menuController_;
 	protected ArrayList<IMenuWidget>	widgets_;
 	protected IMenuWidget				focusedWidget_;
+	protected boolean					isInitialized_;
 	
 	
 	
