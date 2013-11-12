@@ -6,6 +6,7 @@ import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
 import Utility.BitmapFont;
 
+// draws text to the screen at objects location/orientation/scale.
 public class DrawText implements DrawObject
 {
 	public DrawText(ITextureEngine gfx, String font_name)

@@ -97,8 +97,8 @@ public class BaseMenuWidget implements IMenuWidget
 				actn.OnHover(false);
 			}
 			
-			// check if clicking too, any button
-			mouseNow = CheckMouseButtonDown(game_.GetMouseEvents());
+			// check if clicking too, left button
+			mouseNow = CheckMouseButtonDown(game_.GetMouseEvents(), 1);
 			if (triggerNow == true && mousePrev_ == false && mouseNow == true)
 				actn.OnClick();
 		}
@@ -135,7 +135,7 @@ public class BaseMenuWidget implements IMenuWidget
 	protected float						xprev_,yprev_;
 	protected boolean					mousePrev_;
 	
-	
+	protected int[] mouseEvents;
 	
 	//
 	// protected methods
@@ -149,13 +149,13 @@ public class BaseMenuWidget implements IMenuWidget
 	}
 	
 	// returns true if there are any mouse button down events
-	protected boolean	CheckMouseButtonDown(int[] mouseEvents)
+	protected boolean	CheckMouseButtonDown(int[] mouseEvents, int button)
 	{
 		boolean ret = false;
 		
 		for (int i=0; i < mouseEvents.length; i++)
 		{
-			if (mouseEvents[i] > 0)
+			if (mouseEvents[i] == button)
 				ret = true;
 		}
 		

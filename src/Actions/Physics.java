@@ -10,6 +10,8 @@ import GameStates.IGameState;
 *
 * gives an object Physics like behavior
 */
+
+// used to make objects accelerate and decelerate 
 public class Physics implements Action
 {
 	public Physics(GameObject obj, IGameEngine eng)
