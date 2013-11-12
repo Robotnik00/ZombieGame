@@ -40,8 +40,11 @@ public class MainMenuScreen extends BaseMenuScreen
 	{
 		super.Init(menuController);
 		
+		IGameEngine game = menuController_.GetGameController();
+		game.LogMessage("MainMenuScreen::Init");
+		
 		// get some resources
-		gfx_ = menuController.GetGraphicsController();
+		gfx_ = menuController_.GetGraphicsController();
 		
 		// load some images
 		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/game-title.png", 1);
@@ -96,11 +99,18 @@ public class MainMenuScreen extends BaseMenuScreen
 		// options
 		ImageWidget optionsButton = new ImageWidget(optionsImage, 0.25f, -0.1f, scale, scale);
 		imageArea = optionsButton.GetAreaOnScreen();
+		
 		HoverTextWidgetAction optionsDesc = new HoverTextWidgetAction(tooltip, 
 				"Configure game controls and audio/video settings.",
 				"Hover the mouse over a button to see a description!");
 		optionsDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		optionsButton.AddAction(optionsDesc);
+		
+		// click to change menu to options menu
+		ChangeMenuWidgetAction changeOptionsMenu = new ChangeMenuWidgetAction(new OptionsMenuScreen());
+		changeOptionsMenu.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		optionsButton.AddAction(changeOptionsMenu);
+		
 		AddWidget(optionsButton);
 		
 		// high scores
