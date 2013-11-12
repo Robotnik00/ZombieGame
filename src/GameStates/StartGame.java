@@ -4,10 +4,7 @@ package GameStates;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import Actions.CameraController;
 import Actions.CollidablePhysics;
-import Actions.ObjectFollower;
-import Actions.Physics;
 import AudioEngine.IAudioEngine;
 import Drawing.CameraView;
 import Drawing.DrawText;
@@ -19,7 +16,6 @@ import GameObjects.GameObject;
 import Geometry.AABB;
 import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
-import Utility.BitmapFont;
 
 /// example of making a scene. Creates ExampleObject and adds action to it
 
