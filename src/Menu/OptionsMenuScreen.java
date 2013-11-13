@@ -52,23 +52,47 @@ public class OptionsMenuScreen extends BaseMenuScreen
 		// title image
 		ImageWidget title = new ImageWidget(titleImage, -0.5f, 0.3f, 1.0f, 1.0f);
 		imageArea = title.GetAreaOnScreen();
-		
-		
-		
 		AddWidget(title);
 		
+		// controls
+		TextWidget labelControls = new TextWidget(
+				"Controls: (click key to set)\nMove Up\nMove Down\nMove Left\nMove Right\nAction", 
+				font, -0.5f, 0.15f, 0.05f, 0.05f);
+		AddWidget(labelControls);
+		
+		// control settings
+		KeyPressMenuWidget keyUpButton = new KeyPressMenuWidget(
+				font, "move_up",	0.3f, 0.1f, 0.05f, 0.05f);
+		AddWidget(keyUpButton);
+		
+		KeyPressMenuWidget keyDownButton = new KeyPressMenuWidget(
+				font, "move_down", 	0.3f, 0.05f, 0.05f, 0.05f);
+		AddWidget(keyDownButton);
+		
+		KeyPressMenuWidget keyLeftButton = new KeyPressMenuWidget(
+				font, "move_left", 	0.3f, 0.0f, 0.05f, 0.05f);
+		AddWidget(keyLeftButton);
+		
+		KeyPressMenuWidget keyRightButton = new KeyPressMenuWidget(
+				font, "move_right", 0.3f, -0.05f, 0.05f, 0.05f);
+		AddWidget(keyRightButton);
+		
+		KeyPressMenuWidget keyAction = new KeyPressMenuWidget(
+				font, "action", 	0.3f, -0.1f, 0.05f, 0.05f);
+		AddWidget(keyAction);
+		
 		// sound volume tag
-		TextWidget soundVolumeLabel = new TextWidget("Sound Volume", font, -0.5f, 0.0f, 0.05f, 0.05f);
+		TextWidget soundVolumeLabel = new TextWidget("Sound:\nVolume", font, -0.5f, -0.25f, 0.05f, 0.05f);
 		AddWidget(soundVolumeLabel);
 		
 		// sound volume display
 		FloatConfigMenuWidget volumeDisplay = new FloatConfigMenuWidget(
 				font, "sound_volume", 100.0f, "%.0f",
-				0.3f, 0.0f, 0.05f, 0.05f);
+				0.3f, -0.3f, 0.05f, 0.05f);
 		AddWidget(volumeDisplay);
 		
 		// Sound volume adjuster images
-		ImageWidget incVolumeButton = new ImageWidget(incVolume, 0.4f, 0.0f, 0.05f, 0.05f);
+		ImageWidget incVolumeButton = new ImageWidget(incVolume, 0.4f, -0.3f, 0.05f, 0.05f);
 		imageArea = incVolumeButton.GetAreaOnScreen();
 		AdjustFloatConfigWidgetAction incVolumeControl = 
 				new AdjustFloatConfigWidgetAction("sound_volume", 0.1f, 1.0f, 0.0f);
@@ -76,7 +100,7 @@ public class OptionsMenuScreen extends BaseMenuScreen
 		incVolumeButton.AddAction(incVolumeControl);
 		AddWidget(incVolumeButton);
 		
-		ImageWidget decVolumeButton = new ImageWidget(decVolume, 0.25f, 0.0f, 0.05f, 0.05f);
+		ImageWidget decVolumeButton = new ImageWidget(decVolume, 0.25f, -0.3f, 0.05f, 0.05f);
 		imageArea = decVolumeButton.GetAreaOnScreen();
 		AdjustFloatConfigWidgetAction decVolumeControl = 
 				new AdjustFloatConfigWidgetAction("sound_volume", -0.1f, 1.0f, 0.0f);

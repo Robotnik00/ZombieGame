@@ -52,6 +52,10 @@ public class BitmapFont
 	public void SetKerning(float kerning)
 		{	kerning_ = kerning;	}
 	
+	public float	GetKerning()
+		{	return kerning_; }
+	
+	
 	public void	DrawString(String s)
 	{
 		float xpos=0;

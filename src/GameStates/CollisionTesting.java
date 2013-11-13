@@ -18,16 +18,18 @@ import TextureEngine.ITextureEngine;
 // Second the objects don't respond to the collision correctly they just negate velocity. 
 // Third if you move keep colliding into the object until velocity goes to zero, you get stuck.
 // these are not collision detection problems however, that is working.
-public class CollisionTesting implements IGameState
+public class CollisionTesting extends EventListenerState implements IGameState
 {
 
 	@Override
-	public void Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game)
+	public void Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game) throws Exception
 	{
+		super.Init(gfx, snd, game);
 		this.gfx = gfx;
 		this.snd = snd;
 		this.game = game;
 		buildUniverse();
+		
 	}
 
 	@Override
@@ -37,6 +39,7 @@ public class CollisionTesting implements IGameState
 
 	@Override
 	public void Update() {
+		super.Update();
 		universe.update((float)1/game.GetTickFrequency());
 		game.SetWindowTitle("" + game.GetFrameRate());
 	}
@@ -52,12 +55,12 @@ public class CollisionTesting implements IGameState
 					obj1.getBoundingBox().bl.y, 
 					obj1.getBoundingBox().tr.x, 
 					obj1.getBoundingBox().tr.y);
-			
+
 			gfx.DrawRectangle(
-					obj1child.getBoundingBox().bl.x, 
-					obj1child.getBoundingBox().bl.y, 
-					obj1child.getBoundingBox().tr.x, 
-					obj1child.getBoundingBox().tr.y);
+					obj2.getBoundingBox().bl.x, 
+					obj2.getBoundingBox().bl.y, 
+					obj2.getBoundingBox().tr.x, 
+					obj2.getBoundingBox().tr.y);
 		}
 		
 	}
@@ -71,15 +74,10 @@ public class CollisionTesting implements IGameState
 		obj1.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0))); 
 		obj1.setCollidable(true); // makes it so other objects can collide with obj1. not nessessary for this example 
 								  // but for more complex scenes it will allow other collidablePhysics objects to collide with obj1
-		obj1.addAction(new PCControl(obj1, universe, game)); // PCControl extends CollidablePhysics.
-		obj1.addAction(new MouseTracker(obj1, game));
-		
-		obj1child = new GameObject();
-		obj1child.setBoundingBox(new AABB(.5f,.5f));
-		obj1child.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0)));
-		obj1.addChild(obj1child);
-		obj1child.translate(1f, 1f);
-		
+		PCControl pc = new PCControl(obj1, universe, game);
+		this.addMouseEventListener(pc);
+		this.addKeyEventListener(pc);
+		obj1.addAction(pc); // PCControl extends CollidablePhysics.
 		
 		obj2 = new GameObject();
 		obj2.setBoundingBox(new AABB(.5f, .5f)); // set objects bounds. units in global coordinates.

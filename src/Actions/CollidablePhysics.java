@@ -34,7 +34,19 @@ public class CollidablePhysics extends Physics
 	{
 		super.performAction();
 		GameObject[] collisions = CollisionDetection.getCollisions(obj, universe);
+		Vector2f moveTotal = new Vector2f(0.0f, 0.0f);
+		Vector2f move;
 		
+		for (int i=0; i < collisions.length; i++)
+		{
+			move = obj.getBoundingBox().solveCollision(collisions[i].getBoundingBox());
+			moveTotal.x += move.x;
+			moveTotal.y += move.y;
+		}
+		
+		obj.translate(moveTotal.x, moveTotal.y);
+		
+		/*
 		for(int i = 0; i < collisions.length; i++)
 		{
 			collisions[i].setLocalX(collisions[i].getPrevX());
@@ -73,11 +85,14 @@ public class CollidablePhysics extends Physics
 				obj.setLocalX(obj.getPrevX());
 				obj.setLocalY(obj.getPrevY());
 				obj.setTranslationalVelocity(zero);
-			}
+			}	
 		}
+		*/
+		
 		prevX = obj.getLocalX();
 		prevY = obj.getLocalY();
 	}
+	
     Vector2f u1 = new Vector2f();
     Vector2f u2 = new Vector2f();
     Vector2f v1 = new Vector2f();

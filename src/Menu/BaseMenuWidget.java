@@ -83,8 +83,8 @@ public class BaseMenuWidget implements IMenuWidget
 			// we remember the previous mouse coords, not the previous result,
 			// because results vary on the number and location of actions.
 			// these are cheap enough to re-calculate.
-			triggerNow = CheckActionArea(actn, mx, my);
-			triggerPrev = CheckActionArea(actn, xprev_, yprev_);
+			triggerNow = CheckArea(actn.GetArea(), mx, my);
+			triggerPrev = CheckArea(actn.GetArea(), xprev_, yprev_);
 			
 			if (triggerPrev == false && triggerNow == true)
 			{
@@ -135,16 +135,16 @@ public class BaseMenuWidget implements IMenuWidget
 	protected float						xprev_,yprev_;
 	protected boolean					mousePrev_;
 	
-	protected int[] mouseEvents;
+	
 	
 	//
 	// protected methods
 	//
 	
 	// FIXME: this can be static, but scope issues
-	protected boolean	CheckActionArea(IWidgetAction a, float x, float y)
+	protected boolean	CheckArea(float[] area, float x, float y)
 	{
-		float[] area = a.GetArea();
+		//float[] area = a.GetArea();
 		return (x >= area[0] && x < area[1] && y >= area[2] && y < area[3]);
 	}
 	

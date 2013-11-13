@@ -116,11 +116,18 @@ public class MainMenuScreen extends BaseMenuScreen
 		// high scores
 		ImageWidget scoresButton = new ImageWidget(scoresImage, -0.75f, -0.5f, scale, scale);
 		imageArea = scoresButton.GetAreaOnScreen();
+		
 		HoverTextWidgetAction scoresDesc = new HoverTextWidgetAction(tooltip, 
 				"View the Top 10 high scores!",
 				"Hover the mouse over a button to see a description!");
 		scoresDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		scoresButton.AddAction(scoresDesc);
+		
+		// click to change menu to options menu
+		ChangeMenuWidgetAction changeHighScoresMenu = new ChangeMenuWidgetAction(new HighScoresMenuScreen());
+		changeHighScoresMenu.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		scoresButton.AddAction(changeHighScoresMenu);
+				
 		AddWidget(scoresButton);
 		
 		// quit game

@@ -416,7 +416,7 @@ public class GLTextureEngine implements ITextureEngine
 		{
 			if (textures_.get(i).GetTextureName() == filename)
 			{
-				system_.LogMessage("GLTextureEngine::LoadTexture: Filename matched loaded texture: "+filename);
+				//system_.LogMessage("GLTextureEngine::LoadTexture: Filename matched loaded texture: "+filename);
 				return textures_.get(i);
 			}
 		}

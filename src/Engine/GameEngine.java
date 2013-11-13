@@ -190,8 +190,8 @@ public class GameEngine implements IGameEngine
 		// start initial gamestate
 		//ChangeGameState(new TestState());
 		//ChangeGameState(new StartGame());
-		ChangeGameState(new MenuState());
-		//ChangeGameState(new CollisionTesting());
+		//ChangeGameState(new MenuState());
+		ChangeGameState(new CollisionTesting());
 		// run the game loop
 		GameLoop();
 		
@@ -449,15 +449,8 @@ public class GameEngine implements IGameEngine
 	        }
         }
         
-        // don't create an empty array // why not?
-        //if (events.size() == 0)
-        //{
-        //	events.add(Keyboard.KEY_NONE); 
-        //}
-        
         // pack button events into array
         lastKeyEvents_ = new int [events.size()];
-        //LogMessage("PumpKeyboardEvents: " + events.size() + " events.");
         
         for (int i=0; i < events.size(); i++)
         {
@@ -480,23 +473,23 @@ public class GameEngine implements IGameEngine
 			buttonId = Mouse.getEventButton();
 			
 			// no button, don't add the event
-			//if (buttonId == -1)
-			//	continue;
+			if (buttonId == -1)
+				continue;
 			
-			//buttonId++;
+			buttonId++;
 			
 			// pressed = positive button id
 			// released = negative button id
 			// add 1 because 0 is neither +/-
 			if (Mouse.getEventButtonState())        // pressed
 			{        
-				events.add(Mouse.getEventButton()+1);
-				//events.add(buttonId);
+				//events.add(Mouse.getEventButton()+1);
+				events.add(buttonId);
 			}
 			else // released
 			{
-				events.add(-(Mouse.getEventButton()+1));
-				//events.add(-buttonId);
+				//events.add(-(Mouse.getEventButton()+1));
+				events.add(-buttonId);
 			}
 		}
 		
@@ -532,10 +525,11 @@ public class GameEngine implements IGameEngine
 			LogMessage("GameEngine::SetupConfig: Couldn't find config file, creating default profile.");
 			
 			// fill in default values for controls
-			gameConfig_.SetIntValue("move_up", Keyboard.KEY_W);
-			gameConfig_.SetIntValue("move_down", Keyboard.KEY_S);
-			gameConfig_.SetIntValue("move_left", Keyboard.KEY_A);
-			gameConfig_.SetIntValue("move_right", Keyboard.KEY_D);
+			gameConfig_.SetIntValue("move_up", 		Keyboard.KEY_W);
+			gameConfig_.SetIntValue("move_down", 	Keyboard.KEY_S);
+			gameConfig_.SetIntValue("move_left", 	Keyboard.KEY_A);
+			gameConfig_.SetIntValue("move_right", 	Keyboard.KEY_D);
+			gameConfig_.SetIntValue("action",		Keyboard.KEY_E);
 			
 			// default sound volume
 			gameConfig_.SetFloatValue("sound_volume", 1.0f);
@@ -545,7 +539,7 @@ public class GameEngine implements IGameEngine
 			{
 				// scoreX_name and scoreX_points
 				gameConfig_.SetStringValue("score"+i+"_name", "AAA");
-				gameConfig_.SetIntValue("score"+i+"_points", i*1000);
+				gameConfig_.SetIntValue("score"+i+"_points", (10-i)*1000);
 			}
 		}
 	}
