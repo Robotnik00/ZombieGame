@@ -61,7 +61,7 @@ public class GameEngine implements IGameEngine
 	 * This is how many game logic updates occur per second, independent of the frame rate.
 	 * Try to pick values that divide into 1000 nicely.
 	 */
-	final int		TICKS_PER_SECOND	= 100;
+	final int		TICKS_PER_SECOND	= 25;
 	
 	/** 
 	 * Time window for each game logic update to occur.
@@ -163,6 +163,7 @@ public class GameEngine implements IGameEngine
 		runGame_			= true;
 		framesPerSecond_	= 0;
 		lastMousePosition_	= new float[2];
+		lastMouseMotion_	= new float[2];
 		
 		// copy arguments
 		arguments_ = args;
@@ -188,10 +189,10 @@ public class GameEngine implements IGameEngine
 		Keyboard.create();
 		
 		// start initial gamestate
-		//ChangeGameState(new TestState());
+		ChangeGameState(new TestState());
 		//ChangeGameState(new StartGame());
 		//ChangeGameState(new MenuState());
-		ChangeGameState(new CollisionTesting());
+		//ChangeGameState(new CollisionTesting());
 		// run the game loop
 		GameLoop();
 		
@@ -307,6 +308,16 @@ public class GameEngine implements IGameEngine
 		//PumpMouseMotionEvents();
 		return lastMousePosition_[1];
 	}
+	
+	public float GetRelMouseX()
+	{
+		return lastMouseMotion_[0];
+	}
+	
+	public float GetRelMouseY()
+	{
+		return lastMouseMotion_[1];
+	}
 
 	@Override
 	public int[] GetMouseEvents() 
@@ -341,6 +352,7 @@ public class GameEngine implements IGameEngine
 	protected String[]			arguments_;
 	
 	protected float[]			lastMousePosition_;
+	protected float[]			lastMouseMotion_;
 	protected int[]				lastMouseEvents_;
 	protected int[]				lastKeyEvents_;
 	
@@ -509,7 +521,12 @@ public class GameEngine implements IGameEngine
 	 */
 	protected void	PumpMouseMotionEvents()
 	{
+		float xlast, ylast;
+		xlast = lastMousePosition_[0];
+		ylast = lastMousePosition_[1];
 		lastMousePosition_ = textureEngine_.ScaleWindowCoordinates(Mouse.getX(), Mouse.getY());
+		lastMouseMotion_[0] = lastMousePosition_[0] - xlast;
+		lastMouseMotion_[1] = lastMousePosition_[1] - ylast;
 	}
 	
 	/**

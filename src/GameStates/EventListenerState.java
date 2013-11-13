@@ -95,12 +95,11 @@ public abstract class EventListenerState implements IGameState
 				for (int i = 0; i < mouseListeners.size(); i++)
 					mouseListeners.get(i).buttonReleased(event);
 			}
-			else
-			{
-				for(int i = 0; i < mouseListeners.size(); i++)
-					mouseListeners.get(i).mouseMoved(event);
-			}
 		}
+		MouseEvent event = new MouseEvent(Mouse.getX(), Mouse.getY(), 0);
+		if(game.GetRelMouseX() != 0 || game.GetRelMouseY() != 0)
+		for(int i = 0; i < mouseListeners.size(); i++)
+			mouseListeners.get(i).mouseMoved(event);
 	}
 
 	protected ArrayList<KeyEventListener> 	keyListeners;

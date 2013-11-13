@@ -9,6 +9,8 @@ import java.util.*;
 import AudioEngine.IAudioEngine;
 import Engine.IGameEngine;
 
+import GameStates.StartGame;
+
 import TextureEngine.ITextureEngine;
 import TextureEngine.ITexture;
 
@@ -89,11 +91,17 @@ public class MainMenuScreen extends BaseMenuScreen
 		// newgame
 		ImageWidget newGameButton = new ImageWidget(newgameImage, -0.75f, -0.1f, scale, scale);
 		imageArea = newGameButton.GetAreaOnScreen();
+		
 		HoverTextWidgetAction newGameDesc = new HoverTextWidgetAction(tooltip, 
 				"The fight begins here! (eventually!)",
 				"Hover the mouse over a button to see a description!");
 		newGameDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		newGameButton.AddAction(newGameDesc);
+		
+		ChangeGameStateWidgetAction startGame = new ChangeGameStateWidgetAction(new StartGame());
+		startGame.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		newGameButton.AddAction(startGame);
+		
 		AddWidget(newGameButton);
 		
 		// options

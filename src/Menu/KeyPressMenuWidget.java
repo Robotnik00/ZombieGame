@@ -125,7 +125,7 @@ public class KeyPressMenuWidget extends IntConfigMenuWidget
 	protected void	CalculateClickArea(String s)
 	{
 		clickArea_[0] = x_;
-		clickArea_[1] = x_ + xs_ * s.length() * (1.0f - font_.GetKerning());
+		clickArea_[1] = x_ + xs_ * (s.length()+1) * (1.0f - font_.GetKerning());
 		clickArea_[2] = y_;
 		clickArea_[3] = y_ + ys_;
 	}

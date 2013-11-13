@@ -112,6 +112,16 @@ public interface IGameEngine
 	 */
 	public float GetMouseY();
 	
+	/**
+	 * Return the last relative mouse movement (x).
+	 */
+	public float GetRelMouseX();
+	
+	/**
+	 * Return the last relative mouse movement (y).
+	 */
+	public float GetRelMouseY();
+	
 	/** 
 	 * Returns the mouse buttons pressed/released this frame.
 	 * Positive values indicate pressed buttons, negative values are released buttons.

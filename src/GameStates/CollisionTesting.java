@@ -47,7 +47,7 @@ public class CollisionTesting extends EventListenerState implements IGameState
 	@Override
 	public void Draw(float delta) {
 		gfx.ClearScreen();
-		universe.draw(delta);
+		universe.draw((float)(delta/game.GetTickFrequency()));
 		if(obj1.getBoundingBox().bl != null)
 		{
 			gfx.DrawRectangle(

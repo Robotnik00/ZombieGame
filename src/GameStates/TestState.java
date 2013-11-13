@@ -13,11 +13,13 @@ package GameStates;
 import AudioEngine.IAudioEngine;
 import AudioEngine.ISound;
 import Engine.IGameEngine;
+import Geometry.AABB;
 import TextureEngine.ITextureEngine;
 import TextureEngine.ITexture;
 import Utility.BitmapFont;
 
 import org.lwjgl.input.*;
+import org.lwjgl.util.vector.Vector2f;
 
 
 
@@ -45,10 +47,15 @@ public class TestState implements IGameState
 		snd_ = snd;
 		game_ = game;
 		
-		x_ = 10.0f;
-		y_ = 10.0f;
-		vx_ = 0;
-		vy_ = 0;
+		x1_ = 10.0f;
+		y1_ = 10.0f;
+		vx1_ = 0;
+		vy1_ = 0;
+		bounds_ = new AABB(1.0f, 1.0f);
+		
+		x2_ = 4.0f;
+		y2_ = 10.0f;
+		wall_ = new AABB(1.0f, 1.0f);
 		
 		image1_ = gfx_.LoadTexture("image.bmp", 0x00000000);
 		image2_ = gfx_.LoadTexture("image2.png", 0x0000FFFF);
@@ -78,13 +85,13 @@ public class TestState implements IGameState
 		float v=0;
 		
 		// move
-		x_ += vx_; 
-		y_ += vy_;
+		x1_ += vx1_; 
+		y1_ += vy1_;
 		
-		snd_.SetListenerPosition(x_, y_);
+		snd_.SetListenerPosition(x1_, y1_);
 		
-		vx_ = 0;
-		vy_ = 0;
+		vx1_ = 0;
+		vy1_ = 0;
 		
 		// read input, determine movement vector for this frame
         int[] keys = game_.GetKeyEvents();
@@ -117,12 +124,26 @@ public class TestState implements IGameState
 	        }
         }
         
-        // move
+        // try to move
         float moveSpeed = 0.1f;
-        if (moveUp_)	vy_ += moveSpeed;
-        if (moveDown_)	vy_ += -moveSpeed;
-        if (moveLeft_)	vx_ += -moveSpeed;
-        if (moveRight_)	vx_ += moveSpeed;
+        if (moveUp_)	vy1_ += moveSpeed;
+        if (moveDown_)	vy1_ += -moveSpeed;
+        if (moveLeft_)	vx1_ += -moveSpeed;
+        if (moveRight_)	vx1_ += moveSpeed;
+        
+        // move aabbs
+        bounds_.simpleTransform(x1_+vx1_, y1_+vy1_);
+        wall_.simpleTransform(x2_, y2_);
+        
+        colliding_ = false;
+        if (bounds_.intersects(wall_))
+        {
+        	colliding_ = true;
+        	Vector2f move = bounds_.solveCollision(wall_);
+        	vx1_ += move.x;
+        	vy1_ += move.y;
+        	System.out.println("Moved: "+move.x+"x, "+move.y+"y.");
+        }
         
         // play sounds
         if (mus==1)	{music_.SetPos(musicx_,musicy_); 	music_.Loop();}
@@ -147,8 +168,8 @@ public class TestState implements IGameState
 	{
 		//gfx_.ClearScreen();
 		
-		float dx = x_ + vx_ * delta;
-		float dy = y_ + vy_ * delta;
+		float dx = x1_ + vx1_ * delta;
+		float dy = y1_ + vy1_ * delta;
 		
 		// draw a bunch of tiles
 		for (int x=0; x < 20; x++)
@@ -159,16 +180,8 @@ public class TestState implements IGameState
 				image3_.Draw();
 			}
 		}
-		//image3_.SetPos(0.0f,0.0f);
-		//image3_.SetScale(20.0f, 15.0f);
-		//image3_.SetSrcRect(0.0f, 0.0f, 20.0f, 15.0f);
-		//image3_.Draw();
-		
 		
 		// draw at the origin, and rotate toward the cursor
-		
-		//image2_.SetSrcRect(0.25f, 0.25f, 0.75f, 0.75f);
-		//image2_.SetScale(0.4f, 0.4f);
 		image2_.SetOrigin(-0.5f, -0.5f);
 		image2_.SetRotation((float)Math.atan2(dy-10.0f, dx-10.0f));
 		image2_.SetPos(10.0f, 10.0f);
@@ -176,7 +189,7 @@ public class TestState implements IGameState
 		
 		
 		// controlled by the keyboard
-		
+		/*
 		//image1_.SetScale(1.0f, 1.0f);
 		image1_.SetOrigin(-0.5f, -0.5f);
 		image1_.SetRotation(
@@ -188,6 +201,7 @@ public class TestState implements IGameState
 		//image1_.SetAlpha(0.5f);
 		image1_.SetPos(dx, dy);
 		image1_.Draw();
+		*/
 		
 		// draw font
 		bitmapFont_.SetPosition(0.0f, 14.5f);
@@ -207,7 +221,7 @@ public class TestState implements IGameState
 		);
 		
 		// draw primitive shapes
-		
+		/*
 		// sound 1 marker
 		gfx_.SetDrawColor(1.0f, 0.0f, 0.0f, 1.0f);
 		gfx_.DrawRectangle(sfx1x_, sfx1y_, sfx1x_+1.0f, sfx1y_+1.0f);
@@ -220,10 +234,38 @@ public class TestState implements IGameState
 		// music
 		gfx_.SetDrawColor(1.0f, 1.0f, 1.0f, 1.0f);
 		gfx_.DrawRectangle(musicx_, musicy_, musicx_+1.0f, musicy_+1.0f);
-		
+		*/
 		//gfx_.SetDrawColor(0.0f, 1.0f, 0.0f, 1.0f);
 		//gfx_.DrawLine(0, 0, 2.0f, 2.0f);
 		//gfx_.DrawLine(0, 2.0f, 2.0f, 0);
+		
+		// this object's bounding box
+		gfx_.SetDrawColor(1.0f, 0.0f, 0.0f, 1.0f);
+		bounds_.simpleTransform(dx, dy);
+		gfx_.DrawRectangle(
+			bounds_.bl.x,
+			bounds_.bl.y,
+			bounds_.tr.x,
+			bounds_.tr.y
+		);
+		
+		// a "wall"
+		gfx_.SetDrawColor(0.0f, 1.0f, 0.0f, 1.0f);
+		gfx_.DrawRectangle(
+			wall_.bl.x,
+			wall_.bl.y,
+			wall_.tr.x,
+			wall_.tr.y
+		);
+		
+		bitmapFont_.SetPosition(0.0f, 0.5f);
+		bitmapFont_.SetScale(0.5f,  0.5f);
+		
+		if (colliding_)	
+			bitmapFont_.DrawString("Colliding");
+		else
+			bitmapFont_.DrawString("Not colliding.");
+		
 	}
 	
 	
@@ -251,8 +293,14 @@ public class TestState implements IGameState
 	protected ISound			sfx3_;
 	protected float				sfx3x_,sfx3y_;
 	
-	protected float				x_,y_;
-	protected float				vx_,vy_;
+	protected float				x1_,y1_;
+	protected float				vx1_,vy1_;
+	protected AABB				bounds_;
+	
+	protected float				x2_,y2_;
+	protected AABB				wall_;
+	
+	protected boolean			colliding_;
 	
 	protected boolean			moveUp_;
 	protected boolean			moveDown_;

@@ -12,11 +12,11 @@ WHAT IS DONE (tested and working!):
 * Collisions using bounding volume hierarchy with AABBs     
 * Bitmapped font drawing.  
 * Elastic collisions. note: faster the update freq the better collisions will look. Let jack know if you ever notice any bugs!
+* Config file.  
 
 WORK IN PROGRESS:  
 * GUI/Menu stuff.  
-* Configuration file (needs testing).  
-* Perhaps better collisions with walls? (jack)  
+* AABB Collision detection and response (needs integration to GameObject).  
 
 WHAT NEEDS TO BE DONE:  
 * ART AND SOUNDS  

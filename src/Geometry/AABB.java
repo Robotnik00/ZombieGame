@@ -11,11 +11,11 @@ public class AABB
 	{
 		this.w = w;
 		this.h = h;
-		bl = new Vector4f();
-		tr = new Vector4f();
+		bl = new Vector4f(-w/2.0f, -h/2.0f, 0.0f, 1.0f);
+		tr = new Vector4f(w/2.0f, h/2.0f, 0.0f, 1.0f);
 		scale = new Vector4f();
-		bl.w = 1;
-		tr.w = 1;
+		//bl.w = 1;
+		//tr.w = 1;
 		cpy = new Matrix4f();
 	}
 	
@@ -34,13 +34,38 @@ public class AABB
 		tr.y = transform.m31 + scaley/2;		
 	}
 	
+	public void simpleTransform(float x, float y)
+	{
+		bl.x = x - w/2.0f;
+		bl.y = y - h/2.0f;
+		tr.x = x + w/2.0f;
+		tr.y = y + h/2.0f;
+		
+		System.out.println(
+				"simpleTransform: blx="+bl.x+", bly="+bl.y+", trx="+tr.x+", try="+tr.y);
+		
+	}
+	
 	public boolean intersects(AABB other)
 	{	
-		if (bl.x < other.tr.x && tr.x > other.bl.x && bl.y < other.tr.y && tr.y > other.bl.y)
+		if (bl.x > other.tr.x	// completely off right edge
+		||	tr.x < other.bl.x	// " off left edge
+		||	bl.y > other.tr.y	// " off top edge
+		||	tr.y < other.bl.y)	// " off bottom edge
+			return false;
+	
+		return true;
+		
+		/*
+		if (bl.x < other.tr.x 
+		&&	tr.x > other.bl.x 
+		&&	bl.y < other.tr.y 
+		&&	tr.y > other.bl.y)
 		{
 			return true;
 		}
 		return false;
+		*/
 	}
 	
 	/**
@@ -50,98 +75,114 @@ public class AABB
 	 */
 	public Vector2f solveCollision(AABB other)
 	{
-		float thisx = (tr.x - bl.x)/2;
-		float thisy = (tr.y - bl.y)/2;
-		float otherx = (other.tr.x - other.bl.x)/2;
-		float othery = (other.tr.y - other.bl.y)/2;
-		float intx=0.0f, inty=0.0f;
+		float thisx = (tr.x - bl.x)/2 + bl.x;
+		float thisy = (tr.y - bl.y)/2 + bl.y;
+		float otherx = (other.tr.x - other.bl.x)/2 + other.bl.x;
+		float othery = (other.tr.y - other.bl.y)/2 + other.bl.y;
+		float dx=0.0f, dy=0.0f;
 		
-		if (thisx > otherx)	// on right
+		if (!intersects(other))
+			return noCollision;
+		
+		/*
+		           tr.x
+		        1|2|3
+		        -+-+- tr.y
+		        4|5|6
+		   bl.y -+-+-
+		        7|8|9
+		      bl.x
+		*/
+		
+		if (thisy > other.tr.y)
 		{
-			intx = other.tr.x - bl.x;
+			dy = other.tr.y - bl.y;
 			
-			// other box is too far left, no collision
-			if (intx < 0.0f)
-				return noCollision;
+			// case 1: upper left corner
+			if (thisx < other.bl.x)
+			{
+				dx = -(tr.x - other.bl.x);
 			
-			if (thisy > othery)			// above
-			{
-				inty = other.tr.y - bl.y;
+				//System.out.println("Case 1: dx="+dx+", dy="+dy);
 				
-				if (inty < 0.0f)
-					return noCollision;
-			}
-			else if (thisy == othery)	// same position
-			{
-				return new Vector2f(intx/(scale.length()), 0.0f);
-			}
-			else	// thisy < othery	// below
-			{
-				inty = tr.y - other.bl.y;
-				
-				if (inty > 0.0f)
-					return noCollision;
-			}
-		}
-		else if (thisx == otherx)
-		{
-			if (thisy > othery)
-			{
-				inty = other.tr.y - bl.y;
-				
-				if (inty < 0.0f)
-					return noCollision;
+				if (Math.abs(dx) > Math.abs(dy))
+					return new Vector2f(0.0f, dy);
 				else
-					return new Vector2f(0.0f, inty/(scale.length()));
+					return new Vector2f(dx, 0.0f);
 			}
-			else if (thisy == othery)
+			
+			// case 3: upper right corner
+			if (thisx > other.tr.x)
 			{
-				// same coordinates, move it to the right slightly
-				return new Vector2f(0.1f, 0.0f);
-			}
-			else	// thisy < othery
-			{
-				inty = other.bl.y - tr.y;
+				dx = other.tr.x - bl.x;
 				
-				if (inty > 0.0f)
-					return noCollision;
+				//System.out.println("Case 3: dx="+dx+", dy="+dy);
+				
+				if (Math.abs(dx) > Math.abs(dy))
+					return new Vector2f(0.0f, dy);
 				else
-					return new Vector2f(0.0f, inty/(scale.length()));
+					return new Vector2f(dx, 0.0f);
 			}
-		}
-		else // thisx < otherx // on left
-		{
-			intx = other.bl.x - tr.x;
 			
-			if (intx > 0.0f)
-				return noCollision;
-			
-			if (thisy > othery)			// above
-			{
-				inty = other.tr.y - bl.y;
-				
-				if (inty < 0.0f)
-					return noCollision;
-			}
-			else if (thisy == othery)	// same position
-			{
-				return new Vector2f(intx/(scale.length()), 0.0f);
-			}
-			else	// thisy < othery	// below
-			{
-				inty = tr.y - other.bl.y;
-				
-				if (inty > 0.0f)
-					return noCollision;
-			}
+			// case 2: center top
+			//System.out.println("Case 2: dx="+dx+", dy="+dy);
+			return new Vector2f(0.0f, dy);	
 		}
 		
-		// intersections on both axis and no obvious winner, 
-		// return the axis with the least movement
-		if (Math.abs(intx) > Math.abs(inty))
-			return new Vector2f(0.0f, inty/(scale.length()));
-		else
-			return new Vector2f(intx/(scale.length()), 0.0f);
+		if (thisy < other.bl.y)
+		{
+			dy = -(tr.y - other.bl.y);
+			
+			// case 7: lower left corner
+			if (thisx < other.bl.x)
+			{
+				dx = -(tr.x - other.bl.x);
+				
+				//System.out.println("Case 7: dx="+dx+", dy="+dy);
+				
+				if (Math.abs(dx) > Math.abs(dy))
+					return new Vector2f(0.0f, dy);
+				else
+					return new Vector2f(dx, 0.0f);
+			}
+			
+			// case 9: lower right corner
+			if (thisx > other.tr.x)
+			{
+				dx = other.tr.x - bl.x;
+				
+				//System.out.println("Case 9: dx="+dx+", dy="+dy);
+				
+				if (Math.abs(dx) > Math.abs(dy))
+					return new Vector2f(0.0f, dy);
+				else
+					return new Vector2f(dx, 0.0f);
+			}
+			
+			// case 8: center bottom
+			//System.out.println("Case 8: dx="+dx+", dy="+dy);
+			return new Vector2f(0.0f, dy);	
+		}
+		
+		// case 4: center left
+		if (thisx < other.bl.x)
+		{
+			dx = -(tr.x - other.bl.x);
+			//System.out.println("Case 4: dx="+dx+", dy="+dy);
+			return new Vector2f(dx, 0.0f);
+		}
+		
+		// case 6: center right
+		if (thisx > other.tr.x)
+		{
+			dx = other.tr.x - bl.x;
+			//System.out.println("Case 6: dx="+dx+", dy="+dy);
+			return new Vector2f(dx, 0.0f);
+		}
+		
+		// case 5: do nothing!
+		//System.out.println("Case 5: dx="+dx+", dy="+dy);
+		return noCollision;
 	}
 	
 	public float w, h;

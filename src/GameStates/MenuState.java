@@ -12,6 +12,7 @@ import org.lwjgl.input.Keyboard;
 import AudioEngine.IAudioEngine;
 import Engine.IGameEngine;
 import TextureEngine.ITextureEngine;
+import TextureEngine.ITexture;
 import Menu.IMenuController;
 import Menu.IMenuScreen;
 import Menu.IMenuWidget;
@@ -110,6 +111,8 @@ public class MenuState implements IGameState, IMenuController
 		float ratio = (float)gfx_.GetScreenHeight() / (float)gfx_.GetScreenWidth();
 		gfx_.SetOrthoPerspective(-1.0f, 1.0f, -ratio, ratio);
 		
+		menuBackground_ = gfx_.LoadTexture("gfx/menu/menu-background.png", 1);//0x00FFFFFF);
+		
 		// create initial menu here
 		currentMenu_ = new MainMenuScreen();
 		currentMenu_.Init(this);
@@ -136,6 +139,12 @@ public class MenuState implements IGameState, IMenuController
 	public void	Draw(float delta)
 	{
 		gfx_.ClearScreen();
+		
+		// draw a background
+		menuBackground_.SetPos(-1.0f, -1.0f);
+		menuBackground_.SetScale(2.0f, 2.0f);
+		menuBackground_.Draw();
+		
 		currentMenu_.Draw(delta);
 	}
 	
@@ -148,6 +157,8 @@ public class MenuState implements IGameState, IMenuController
 	protected IGameEngine		game_;
 	protected ITextureEngine	gfx_;
 	protected IAudioEngine		sfx_;
+	
+	protected ITexture			menuBackground_;
 	
 	protected Stack<IMenuScreen>	menuStack_;
 	protected IMenuScreen			currentMenu_;
