@@ -66,8 +66,9 @@ public class ExampleEntity extends Entity
 		gimble.addChild(boxNode);
 		
 		
-		
+		// add the entity to the universe
 		universe.addEntity(this);
+		// set the camera to look at this
 		universe.setFocus(this);
 	}
 
