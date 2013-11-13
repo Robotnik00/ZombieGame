@@ -25,6 +25,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	{
 		super(obj, universe, eng); 
 		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override

@@ -40,9 +40,19 @@ public class TileDraw implements DrawObject
 		
 		
 	}
+	public void setRows(int rows)
+	{
+		this.rows = rows;
+	}
+	public void setCols(int cols)
+	{
+		this.cols = cols;
+		nextRow = new Vector2f(-cols, 1);
+	}
+	
 	ITexture tex;
-	int rows = 15;
-	int cols = 20;
+	int rows = 4;
+	int cols = 4;
 	Vector2f nextRow;
 	static final Vector2f xaxis = new Vector2f(1,0);
 }
