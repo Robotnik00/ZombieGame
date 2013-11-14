@@ -1,5 +1,7 @@
 package GameObjects;
 
+import Actions.Camera;
+import Actions.ObjectFollower;
 import AudioEngine.IAudioEngine;
 import Drawing.CameraView;
 import Engine.IGameEngine;
@@ -21,7 +23,11 @@ public abstract class Universe
 		this.game = game;
 		this.state = state;
 		
+		
+		
 		universeNode   = new GameObject();
+		cam = new Camera(universeNode, game);
+		universeNode.addAction(cam);
 		backgroundNode = new GameObject();
 		universeNode.addChild(backgroundNode);
 		HUD = new GameObject();
@@ -41,7 +47,7 @@ public abstract class Universe
 	 */
 	public void setFocus(Entity entity)
 	{
-		universeNode.setDrawingInterface(new CameraView(universeNode, entity.getRootNode(), game));
+		cam.setFocus(entity.getRootNode());
 	}
 	/**
 	 * scales the entire universe
@@ -83,6 +89,7 @@ public abstract class Universe
 	 */
 	public void update()
 	{
+		
 		deltaT = (float)1/game.GetTickFrequency();
 		universeNode.update(deltaT);
 		HUD.update(deltaT);
@@ -113,6 +120,9 @@ public abstract class Universe
 		this.universeNode = null;
 		System.gc();
 	}
+	Camera cam;
+	
+	
 	float deltaT = 1;
 	GameObject universeNode;
 	GameObject backgroundNode;

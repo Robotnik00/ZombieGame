@@ -40,11 +40,11 @@ public class StartGame extends EventListenerState
 		// initialize level
 		level = new ExampleLevel(gfx, snd, game, this);
 		// scale it down
-		level.scaleUniverse(.5f);
+		level.scaleUniverse(.3f);
 		
 		// create entity
 		entity = new ExampleEntity(level);
-		new Player(level);
+		//new Player(level);
 	}
 	
 	@Override

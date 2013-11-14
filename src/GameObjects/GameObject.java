@@ -31,12 +31,12 @@ public class GameObject
 	{
 		// set up default transformation matrix (loc: 0,0 rot: 0)
 		transform = new Matrix4f();
+		transform.setIdentity();
 		interpolator = new Matrix4f();
 		
 		glbTransform = new Matrix4f();
 		glbInterpolator = new Matrix4f();
 		
-		transform.setIdentity();
 		
 		velocity = new Vector2f();
 		
@@ -75,7 +75,6 @@ public class GameObject
 			proxemity.transform(getGlobalTransform());
 		}
 
-		
 
 		prevX = transform.m30;
 		prevY = transform.m31;
@@ -124,17 +123,18 @@ public class GameObject
 
 		glbInterpolatorCalculated = false;
 		interpolator.load(transform);
-		interpolator.m30 = prevX;
-		interpolator.m31 = prevY;
-		
 		//deltaX.x = velocity.x;
 		//deltaX.y = velocity.y;
-		deltaX.x = transform.m30 - prevX;
-		deltaX.y = transform.m31 - prevY;
-		
-		deltaX.scale(delta);
-		interpolator.translate(deltaX);
-		interpolator.rotate(rotationalVelocity*delta, zaxis);
+		interpolator.m30 = prevX;
+		interpolator.m31 = prevY;
+//		deltaX.x = transform.m30 - prevX;
+//		deltaX.y = transform.m31 - prevY;
+//		
+		intDelta.x = deltaX.x;
+		intDelta.y = deltaX.y;
+		intDelta.scale(delta);
+		interpolator.translate(intDelta);
+		//interpolator.rotate(rotationalVelocity*delta, zaxis);
 		if(proxemity == null || proxemity.intersects(screen) || !drawingInitialized)
 		{
 			if(drawing != null)
@@ -310,7 +310,8 @@ public class GameObject
 	{
 		transform.m30 += x;
 		transform.m31 += y;
-
+		deltaX.x += x;
+		deltaX.y += y;
 		if(boundingBox != null)
 		{
 			boundingBox.transform(getGlobalTransform());
@@ -500,6 +501,8 @@ public class GameObject
 		Matrix4f.mul(scale, transform, transform);
 		//transform.m30 = xcoor;
 		//transform.m31 = ycoor;
+		prevX *= x;
+		prevY *= y;
 	}
 	/**
 	 *
@@ -573,6 +576,8 @@ public class GameObject
 	// transformation matrix for 2d transformations
 	Matrix4f transform; // location/orientation/scale of obj relative to parent
 	Matrix4f interpolator; // used for interpolating between frames
+	Vector2f intDelta = new Vector2f();
+	
 	
 	// global transform
 	Matrix4f glbTransform;
