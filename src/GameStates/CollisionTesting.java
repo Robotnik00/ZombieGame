@@ -51,7 +51,7 @@ public class CollisionTesting extends EventListenerState
 	@Override
 	public void Draw(float delta) {
 		gfx.ClearScreen();
-		universe.draw((float)(delta/game.GetTickFrequency()));
+		universe.draw((float)(delta/*/game.GetTickFrequency()*/));
 	}
 	
 	private void buildUniverse()
@@ -74,7 +74,9 @@ public class CollisionTesting extends EventListenerState
 		obj2.translate(2, 0);
 		obj2.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0)));
 		obj2.setCollidable(true); // makes it so other objects can collide with obj2.
-		obj2.addAction(new CollidablePhysics(obj2, universe, game));
+		CollidablePhysics p = new CollidablePhysics(obj2, universe, game);
+		//p.applyForce(new Vector2f(-1,0));
+		obj2.addAction(p);
 		obj2.setMass(.1f);
 		universe.addChild(obj2);
 		

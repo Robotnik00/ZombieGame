@@ -33,6 +33,7 @@ public class CollidablePhysics extends Physics
 	@Override
 	public void performAction()
 	{
+		
 		super.performAction();
 		GameObject[] collisions = CollisionDetection.getCollisions(obj, universe);
 		Vector2f moveTotal = new Vector2f(0.0f, 0.0f);
@@ -44,13 +45,7 @@ public class CollidablePhysics extends Physics
 			moveTotal.x += move.x;
 			moveTotal.y += move.y;
 		}
-		
-		if(collisions.length > 0)
-		{
-			moveTotal.scale(eng.GetTickFrequency());
-			Vector2f.add(obj.getTranslationalVelocity(), moveTotal, moveTotal);
-			obj.setTranslationalVelocity(new Vector2f(moveTotal));
-		}
+		obj.translate(moveTotal.x, moveTotal.y);
 		
 		
 		/*
@@ -105,7 +100,8 @@ public class CollidablePhysics extends Physics
     Vector2f v1 = new Vector2f();
     Vector2f v2 = new Vector2f();
     Vector2f result = new Vector2f();
-
+    Vector2f prevVelocity = new Vector2f();
+    
 	float prevX = 0;
 	float prevY = 0;
 	GameObject universe;

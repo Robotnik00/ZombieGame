@@ -74,7 +74,7 @@ public abstract class Universe
 	public void draw(float delta)
 	{
 		gfx.ClearScreen();
-		deltaT = (float)delta/game.GetTickFrequency();
+		deltaT = (float)delta/*/game.GetTickFrequency()*/;
 		universeNode.draw(deltaT);
 		HUD.draw(deltaT);
 	}
