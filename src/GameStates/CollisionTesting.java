@@ -16,7 +16,8 @@ import Geometry.AABB;
 import TextureEngine.ITextureEngine;
 
 
-
+// current scene contains a controllable object, a static object, and a object that response to collisions.
+// note for more accurate collisions, higher update freq.
 public class CollisionTesting extends EventListenerState
 {
 
