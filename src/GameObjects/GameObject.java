@@ -74,6 +74,12 @@ public class GameObject
 		{
 			proxemity.transform(getGlobalTransform());
 		}
+		
+		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
+		for(int i = 0; i < actions.size(); i++)
+		{
+			actions.get(i).performAction();
+		}
 
 
 		prevX = transform.m30;
@@ -85,12 +91,6 @@ public class GameObject
 		transform.translate(deltaX);
 			
 		rotate(rotationalVelocity*deltaT);
-		
-		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
-		for(int i = 0; i < actions.size(); i++)
-		{
-			actions.get(i).performAction();
-		}
 
 			
 		updateChildren(deltaT);
@@ -123,13 +123,8 @@ public class GameObject
 
 		glbInterpolatorCalculated = false;
 		interpolator.load(transform);
-		//deltaX.x = velocity.x;
-		//deltaX.y = velocity.y;
 		interpolator.m30 = prevX;
 		interpolator.m31 = prevY;
-//		deltaX.x = transform.m30 - prevX;
-//		deltaX.y = transform.m31 - prevY;
-//		
 		intDelta.x = deltaX.x;
 		intDelta.y = deltaX.y;
 		intDelta.scale(delta);
@@ -501,8 +496,6 @@ public class GameObject
 		Matrix4f.mul(scale, transform, transform);
 		//transform.m30 = xcoor;
 		//transform.m31 = ycoor;
-		prevX *= x;
-		prevY *= y;
 	}
 	/**
 	 *
