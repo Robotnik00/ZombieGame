@@ -23,8 +23,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 
 	public PCControl(GameObject obj, GameObject universe, IGameEngine eng) 
 	{
-		super(obj, universe, eng); 
-		// TODO Auto-generated constructor stub
+		super(obj, universe, eng);
 		
 		
 		
@@ -41,20 +40,17 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	@Override
 	public void keyPressed(int keyPressed)
 	{
-		unitDirection.x = eng.GetMouseX() - obj.getGlobalX();
-		unitDirection.y = eng.GetMouseY() - obj.getGlobalY();
-		unitDirection.normalise();
-		if(keyPressed == FORWARD_KEY)
+		if(keyPressed == MOVE_UP)
 		{
 			
 		}
-		else if(keyPressed == REVERSE_KEY)
+		else if(keyPressed == MOVE_DOWN)
 		{
 		}
-		else if(keyPressed == LEFT_KEY)
+		else if(keyPressed == MOVE_LEFT)
 		{
 		}
-		else if(keyPressed == RIGHT_KEY)
+		else if(keyPressed == MOVE_RIGHT)
 		{
 		}
 		else if(keyPressed == ACTION_KEY)
@@ -67,19 +63,19 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	public void keyReleased(int keyReleased)
 	{
 
-		if(keyReleased == FORWARD_KEY)
+		if(keyReleased == MOVE_UP)
 		{
 			//removeForce(unitDirection);
 		}
-		else if(keyReleased == REVERSE_KEY)
+		else if(keyReleased == MOVE_DOWN)
 		{
 			//removeForce(new Vector2f(-forceScale,0));
 		}
-		else if(keyReleased == LEFT_KEY)
+		else if(keyReleased == MOVE_LEFT)
 		{
 			//removeForce(new Vector2f(0,forceScale));
 		}
-		else if(keyReleased == RIGHT_KEY)
+		else if(keyReleased == MOVE_RIGHT)
 		{
 			//removeForce(new Vector2f(0,-forceScale));
 		}
@@ -142,11 +138,11 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	
 	Vector2f unitDirection = new Vector2f(1,0);
 	
-	int FORWARD_KEY = Keyboard.KEY_W;
-	int REVERSE_KEY = Keyboard.KEY_S;
-	int LEFT_KEY    = Keyboard.KEY_A;
-	int RIGHT_KEY   = Keyboard.KEY_D;
-	int ACTION_KEY  = Keyboard.KEY_E;
+	int MOVE_UP    = Keyboard.KEY_W;
+	int MOVE_DOWN  = Keyboard.KEY_S;
+	int MOVE_LEFT  = Keyboard.KEY_A;
+	int MOVE_RIGHT = Keyboard.KEY_D;
+	int ACTION_KEY = Keyboard.KEY_E;
 	
 	
 	int MOVE_BUTTON = 2;
@@ -157,7 +153,4 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	
 	
 	float forceScale = 1; // amount of force to apply
-
-
-
 }

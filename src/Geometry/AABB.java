@@ -43,7 +43,7 @@ public class AABB
 		
 		System.out.println(
 				"simpleTransform: blx="+bl.x+", bly="+bl.y+", trx="+tr.x+", try="+tr.y);
-		
+		scale = xaxis;
 	}
 	
 	public boolean intersects(AABB other)
@@ -106,9 +106,9 @@ public class AABB
 				//System.out.println("Case 1: dx="+dx+", dy="+dy);
 				
 				if (Math.abs(dx) > Math.abs(dy))
-					return new Vector2f(0.0f, dy);
+					return new Vector2f(0.0f, dy/scale.length());
 				else
-					return new Vector2f(dx, 0.0f);
+					return new Vector2f(dx/scale.length(), 0.0f);
 			}
 			
 			// case 3: upper right corner
@@ -119,14 +119,14 @@ public class AABB
 				//System.out.println("Case 3: dx="+dx+", dy="+dy);
 				
 				if (Math.abs(dx) > Math.abs(dy))
-					return new Vector2f(0.0f, dy);
+					return new Vector2f(0.0f, dy/scale.length());
 				else
 					return new Vector2f(dx, 0.0f);
 			}
 			
 			// case 2: center top
 			//System.out.println("Case 2: dx="+dx+", dy="+dy);
-			return new Vector2f(0.0f, dy);	
+			return new Vector2f(0.0f, dy/scale.length());	
 		}
 		
 		if (thisy < other.bl.y)
@@ -141,9 +141,9 @@ public class AABB
 				//System.out.println("Case 7: dx="+dx+", dy="+dy);
 				
 				if (Math.abs(dx) > Math.abs(dy))
-					return new Vector2f(0.0f, dy);
+					return new Vector2f(0.0f, dy/scale.length());
 				else
-					return new Vector2f(dx, 0.0f);
+					return new Vector2f(dx/scale.length(), 0.0f);
 			}
 			
 			// case 9: lower right corner
@@ -154,14 +154,14 @@ public class AABB
 				//System.out.println("Case 9: dx="+dx+", dy="+dy);
 				
 				if (Math.abs(dx) > Math.abs(dy))
-					return new Vector2f(0.0f, dy);
+					return new Vector2f(0.0f, dy/scale.length());
 				else
-					return new Vector2f(dx, 0.0f);
+					return new Vector2f(dx/scale.length(), 0.0f);
 			}
 			
 			// case 8: center bottom
 			//System.out.println("Case 8: dx="+dx+", dy="+dy);
-			return new Vector2f(0.0f, dy);	
+			return new Vector2f(0.0f, dy/scale.length());	
 		}
 		
 		// case 4: center left
@@ -169,7 +169,7 @@ public class AABB
 		{
 			dx = -(tr.x - other.bl.x);
 			//System.out.println("Case 4: dx="+dx+", dy="+dy);
-			return new Vector2f(dx, 0.0f);
+			return new Vector2f(dx/scale.length(), 0.0f);
 		}
 		
 		// case 6: center right
@@ -177,7 +177,7 @@ public class AABB
 		{
 			dx = other.tr.x - bl.x;
 			//System.out.println("Case 6: dx="+dx+", dy="+dy);
-			return new Vector2f(dx, 0.0f);
+			return new Vector2f(dx/scale.length(), 0.0f);
 		}
 		
 		// case 5: do nothing!

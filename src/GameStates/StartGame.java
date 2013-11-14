@@ -14,6 +14,7 @@ import Engine.IGameEngine;
 import GameObjects.ExampleEntity;
 import GameObjects.ExampleLevel;
 import GameObjects.GameObject;
+import GameObjects.Player;
 import Geometry.AABB;
 import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
@@ -29,7 +30,7 @@ public class StartGame extends EventListenerState
 {
 	public StartGame()
 	{
-		
+		super();
 	}
 	
 	@Override
@@ -42,7 +43,8 @@ public class StartGame extends EventListenerState
 		level.scaleUniverse(.5f);
 		
 		// create entity
-		entity = new ExampleEntity(level);	
+		entity = new ExampleEntity(level);
+		new Player(level);
 	}
 	
 	@Override

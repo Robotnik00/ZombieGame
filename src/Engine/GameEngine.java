@@ -61,7 +61,7 @@ public class GameEngine implements IGameEngine
 	 * This is how many game logic updates occur per second, independent of the frame rate.
 	 * Try to pick values that divide into 1000 nicely.
 	 */
-	final int		TICKS_PER_SECOND	= 25;
+	final int		TICKS_PER_SECOND	= 100;
 	
 	/** 
 	 * Time window for each game logic update to occur.
@@ -189,10 +189,10 @@ public class GameEngine implements IGameEngine
 		Keyboard.create();
 		
 		// start initial gamestate
-		ChangeGameState(new TestState());
+		//ChangeGameState(new TestState());
 		//ChangeGameState(new StartGame());
 		//ChangeGameState(new MenuState());
-		//ChangeGameState(new CollisionTesting());
+		ChangeGameState(new CollisionTesting());
 		// run the game loop
 		GameLoop();
 		

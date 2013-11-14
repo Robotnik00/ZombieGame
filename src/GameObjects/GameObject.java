@@ -65,7 +65,7 @@ public class GameObject
 	 */
 	public void update(float deltaT)
 	{
-		
+
 		if(boundingBox != null)
 		{
 			boundingBox.transform(getGlobalTransform());
@@ -80,23 +80,18 @@ public class GameObject
 		{
 			actions.get(i).performAction();
 		}
+		
+
 		prevX = transform.m30;
 		prevY = transform.m31;
 			
 		deltaX.x = velocity.x;
 		deltaX.y = velocity.y;
 		deltaX.scale(deltaT);
-			
 		transform.translate(deltaX);
 			
 		rotate(rotationalVelocity*deltaT);
-		
-		if(boundingBox != null)
-		{
-			boundingBox.transform(getGlobalTransform());
-		}
-		
-		
+
 		updateChildren(deltaT);
 		updateThis(deltaT);
 		glbTransformCalculated = false;
