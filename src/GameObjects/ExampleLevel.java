@@ -41,9 +41,9 @@ public class ExampleLevel extends Universe
 		tileTexture.setRows(8);
 		tileTexture.setCols(8);
 		// make a 30x30 array of 8x8 arrays totaling 57,600 tiles!
-		for(int i = -50; i < 50; i++)
+		for(int i = -15; i < 15; i++)
 		{
-			for(int j = -50; j < 50; j++)
+			for(int j = -15; j < 15; j++)
 			{
 				// create a tileArrayNode
 				GameObject tileObj = new GameObject();
