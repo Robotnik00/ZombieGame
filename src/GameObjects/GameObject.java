@@ -77,6 +77,12 @@ public class GameObject
 
 		
 
+		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
+		for(int i = 0; i < actions.size(); i++)
+		{
+			actions.get(i).performAction();
+		}
+		
 		prevX = transform.m30;
 		prevY = transform.m31;
 			
@@ -87,11 +93,6 @@ public class GameObject
 			
 		rotate(rotationalVelocity*deltaT);
 
-		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
-		for(int i = 0; i < actions.size(); i++)
-		{
-			actions.get(i).performAction();
-		}
 		updateChildren(deltaT);
 		updateThis(deltaT);
 		glbTransformCalculated = false;
