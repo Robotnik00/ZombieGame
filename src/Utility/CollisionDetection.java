@@ -41,7 +41,8 @@ public class CollisionDetection
 				{
 					collisions.add(obj2);
 				}
-				getCollisionsRec(obj, obj2, collisions);
+				if(rootedCollisions)
+					getCollisionsRec(obj, obj2, collisions);
 			}
 		}
 	}
@@ -80,4 +81,5 @@ public class CollisionDetection
 		}
 		return false;
 	}
+	public static boolean rootedCollisions = false;
 }
