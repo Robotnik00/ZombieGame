@@ -49,18 +49,24 @@ public class StartGame extends EventListenerState
 //		entity = new ExampleEntity(level);
 		Player player = new Player(level);
 
-		Box b1 = new Box(level);
-		b1.setStartingLoc(1, 1);
-		Box b2 = new Box(level);
-		b2.setStartingLoc(1, -1);
-		
-		StaticBox sb1 = new StaticBox(level);
-		sb1.setStartingLoc(-1, 1);
-		
-		Zombie z1 = new Zombie(level);
-		z1.setStartingLoc(-1, -1);
-		z1.setTarget(player);
-		
+		for(int i = 0; i < 50; i++)
+		{
+			StaticBox sb = new StaticBox(level);
+			sb.setStartingLoc((float)(Math.random()-.5)*50, (float)(Math.random()-.5)*50);
+		}
+		for(int i = 0; i < 5; i++)
+		{
+
+			Box b = new Box(level);
+			b.setStartingLoc((float)(Math.random()-.5)*5, (float)(Math.random()-.5)*5);
+		}
+
+		for(int i = 0; i < 15; i++)
+		{
+			Zombie z1 = new Zombie(level);
+			z1.setStartingLoc((float)(Math.random()-.5)*20, (float)(Math.random()-.5)*20);
+			z1.setTarget(player);
+		}
 		
 	}
 	

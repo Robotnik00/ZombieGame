@@ -17,7 +17,9 @@ public class Zombie extends Entity
 	@Override
 	public void createObject(Universe universe) 
 	{
-		ITexture zombieTexture = universe.getTextureEngine().LoadTexture("gfx/Characters/zombie1.png", 0);
+		String textureName = "gfx/Characters/zombie" + ((int)(Math.random()*3+1)) + ".png";
+		System.out.printf("%s\n", textureName);
+		ITexture zombieTexture = universe.getTextureEngine().LoadTexture(textureName, 0);
 		rootNode.setBoundingBox(new AABB(.5f,.5f));
 		rootNode.setCollidable(true);
 		
