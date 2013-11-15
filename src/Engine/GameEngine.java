@@ -332,6 +332,11 @@ public class GameEngine implements IGameEngine
 		return lastKeyEvents_;
 	}
 	
+	public char[] GetKeyCharacters()
+	{
+		return lastKeyCharacters_;
+	}
+	
 	
 	
 	//
@@ -355,7 +360,9 @@ public class GameEngine implements IGameEngine
 	protected float[]			lastMousePosition_;
 	protected float[]			lastMouseMotion_;
 	protected int[]				lastMouseEvents_;
+	
 	protected int[]				lastKeyEvents_;
+	protected char[]			lastKeyCharacters_;
 	
 	protected ArrayList<KeyEventListener> 	keyListeners;
 	protected ArrayList<MouseEventListener> mouseListeners;
@@ -449,6 +456,7 @@ public class GameEngine implements IGameEngine
 	protected void	PumpKeyboardEvents()
 	{
 		ArrayList<Integer> events = new ArrayList<Integer>();
+		ArrayList<Character> charCodes = new ArrayList<Character>();
         
         while (Keyboard.next())
         {
@@ -460,15 +468,20 @@ public class GameEngine implements IGameEngine
 	        {
 	        	events.add(-Keyboard.getEventKey());
 	        }
+	        
+	        charCodes.add(Keyboard.getEventCharacter());
         }
         
-        // pack button events into array
+        // pack button events into arrays
         lastKeyEvents_ = new int [events.size()];
         
         for (int i=0; i < events.size(); i++)
-        {
         	lastKeyEvents_[i] = events.get(i);
-        }
+        
+        lastKeyCharacters_ = new char [events.size()];
+        
+        for (int i=0; i < charCodes.size(); i++)
+        	lastKeyCharacters_[i] = charCodes.get(i);
 	}
 
 	

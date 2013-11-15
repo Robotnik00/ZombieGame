@@ -129,8 +129,13 @@ public class MenuState implements IGameState, IMenuController
 		
 		for (int i=0; i < keys.length; i++)
 		{
+			// quit if escape is pressed, but not if there are any widgets currently in focus.
+			// *cough*TextFieldWidget*cough*
 			if (keys[i] == Keyboard.KEY_ESCAPE)
-				game_.EndGameLoop();
+			{
+				if (currentMenu_.IsFocused() == false)
+					game_.EndGameLoop();
+			}
 		}
 		
 		currentMenu_.Update();
@@ -141,9 +146,9 @@ public class MenuState implements IGameState, IMenuController
 		gfx_.ClearScreen();
 		
 		// draw a background
-		menuBackground_.SetPos(-1.0f, -1.0f);
-		menuBackground_.SetScale(2.0f, 2.0f);
-		menuBackground_.Draw();
+		//menuBackground_.SetPos(-1.0f, -1.0f);
+		//menuBackground_.SetScale(2.0f, 2.0f);
+		//menuBackground_.Draw();
 		
 		currentMenu_.Draw(delta);
 	}

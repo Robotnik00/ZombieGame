@@ -99,6 +99,11 @@ public class BaseMenuScreen implements IMenuScreen
 		focusedWidget_ = null;
 	}
 	
+	public boolean IsFocused()
+	{
+		return (focusedWidget_ != null);
+	}
+	
 	//
 	// protected members
 	//

@@ -63,8 +63,14 @@ public class HighScoresMenuScreen extends BaseMenuScreen
 			AddWidget(scorePoints);
 		}
 		
+		// temporary: text field
+		TextWidget labelTextField = new TextWidget("Enter your name below:", font, -0.5f, -0.45f, 0.05f, 0.05f);
+		AddWidget(labelTextField);
+		TextFieldWidget textField = new TextFieldWidget(font, "score0_name", -0.5f, -0.5f, 0.05f, 0.05f);
+		AddWidget(textField);
+		
 		// back button
-		ImageWidget backButton = new ImageWidget(backImage, -0.10f, -0.5f, 0.2f, 0.2f);
+		ImageWidget backButton = new ImageWidget(backImage, -0.10f, -0.6f, 0.2f, 0.2f);
 		imageArea = backButton.GetAreaOnScreen();
 		
 		PreviousMenuWidgetAction prevAction = new PreviousMenuWidgetAction();

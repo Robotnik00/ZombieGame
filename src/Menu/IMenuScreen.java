@@ -72,6 +72,11 @@ public interface IMenuScreen
 	 * Releases focus from any widgets that are focused.
 	 */
 	public void	ReleaseFocus();
+	
+	/**
+	 * Returns if there are any focused widgets.
+	 */
+	public boolean IsFocused();
 }
 
 

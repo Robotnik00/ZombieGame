@@ -135,5 +135,13 @@ public interface IGameEngine
 	 * @return keyboard events
 	 */
 	public int[] GetKeyEvents();
+	
+	/**
+	 * Returns the character values for the key events this frame.
+	 * NOTE: key codes are returned for key presses AND KEY RELEASES! 
+	 * This is done so the codes line up with the events returned by GetKeyEvents().
+	 * @return key codes for key events this frame.
+	 */
+	public char[] GetKeyCharacters();
 
 }
