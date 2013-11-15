@@ -25,6 +25,7 @@ public class Box extends Entity
 		rootNode.setMass(.1f);
 		rootNode.setDrawingInterface(new SimpleDraw(boxTexture));
 		rootNode.setBoundingBox(new AABB(1f,1f));
+		rootNode.setProxemityBounds(new AABB(1,1));
 		rootNode.setCollidable(true);
 		universe.addEntity(this);
 

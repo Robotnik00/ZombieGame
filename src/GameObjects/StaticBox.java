@@ -22,6 +22,7 @@ public class StaticBox extends Entity
 		ITexture boxTexture = universe.getTextureEngine().LoadTexture("gfx/Environment/box_whole.png", 0);
 		rootNode.setDrawingInterface(new SimpleDraw(boxTexture));
 		rootNode.setBoundingBox(new AABB(1f,1f));
+		rootNode.setProxemityBounds(new AABB(1,1));
 		rootNode.setCollidable(true);
 		universe.addEntity(this);
 

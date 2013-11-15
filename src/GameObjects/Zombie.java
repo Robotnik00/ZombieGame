@@ -21,6 +21,7 @@ public class Zombie extends Entity
 		System.out.printf("%s\n", textureName);
 		ITexture zombieTexture = universe.getTextureEngine().LoadTexture(textureName, 0);
 		rootNode.setBoundingBox(new AABB(.5f,.5f));
+		rootNode.setProxemityBounds(new AABB(1,1));
 		rootNode.setCollidable(true);
 		
 		gimble = new GameObject();
