@@ -13,7 +13,7 @@ public class Box extends Entity
 
 	public Box(Universe universe) {
 		super(universe);
-		// TODO Auto-generated constructor stub
+		hp = 10;
 	}
 
 	@Override
@@ -34,9 +34,9 @@ public class Box extends Entity
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+		universe.removeEntity(this);
 	}
-	
+
 	
 	
 }

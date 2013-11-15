@@ -36,7 +36,7 @@ public class ExampleEntity extends Entity
 		ITexture box = universe.getTextureEngine().LoadTexture("image2.png", 0);
 	
 		// add pc control to the root node of this object
-		PCControl pcc = new PCControl(rootNode, universe.getHandle(), universe.getGameEngine());
+		PCControl pcc = new PCControl(rootNode, universe, universe.getGameEngine());
 		universe.getState().addKeyEventListener(pcc);
 		universe.getState().addMouseEventListener(pcc);
 		// add action to the rootNode

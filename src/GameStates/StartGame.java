@@ -15,6 +15,7 @@ import GameObjects.Box;
 import GameObjects.ExampleEntity;
 import GameObjects.ExampleLevel;
 import GameObjects.GameObject;
+import GameObjects.HandGunProjectile;
 import GameObjects.Player;
 import GameObjects.StaticBox;
 import GameObjects.Zombie;
@@ -67,6 +68,8 @@ public class StartGame extends EventListenerState
 			z1.setStartingLoc((float)(Math.random()-.5)*20, (float)(Math.random()-.5)*20);
 			z1.setTarget(player);
 		}
+		
+		//new HandGunProjectile(level);
 		
 	}
 	

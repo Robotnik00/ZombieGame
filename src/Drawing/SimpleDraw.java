@@ -22,7 +22,7 @@ public class SimpleDraw implements DrawObject
 	@Override
 	public void draw(Matrix4f interpolator) 
 	{
-		
+		interpolator.scale(new Vector3f(scalex, scaley, 0));
 		interpolator.rotate(orientation, zaxis);
 		interpolator.translate(center);
 		
@@ -41,8 +41,15 @@ public class SimpleDraw implements DrawObject
 		offset.x = x;
 		offset.y = y;
 	}
+	public void setScale(float scalex, float scaley)
+	{
+		this.scalex = scalex;
+		this.scaley = scaley;
+	}
 	
 	float orientation = 0;
+	float scalex = 1;
+	float scaley = 1;
 	Vector2f offset;
 	Vector2f center = new Vector2f(-.5f,-.5f);
 	static Vector3f zaxis = new Vector3f(0,0,1);

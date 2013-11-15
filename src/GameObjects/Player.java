@@ -21,7 +21,7 @@ public class Player extends Entity
 	{
 		ITexture playerTexture = universe.getTextureEngine().LoadTexture("gfx/Characters/player1.png", 0);
 		// add pc control to the root node of this object
-		PCControl pcc = new PCControl(rootNode, universe.getHandle(), universe.getGameEngine());
+		PCControl pcc = new PCControl(rootNode, universe, universe.getGameEngine());
 		universe.getState().addKeyEventListener(pcc);
 		universe.getState().addMouseEventListener(pcc);
 		// add action to the rootNode

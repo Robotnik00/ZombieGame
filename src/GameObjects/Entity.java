@@ -11,15 +11,25 @@ public abstract class Entity
 	{
 		this.universe = universe;
 		rootNode = new GameObject();
-		
+		rootNode.setEntity(this);
 		createObject(universe);
-		
 	}
 	/**
 	 *  initializes the enitiy
 	 * @param level
 	 */
 	public abstract void createObject(Universe universe);
+	
+	public void damage(float dp)
+	{
+		hp -= dp;
+		if(hp < 0)
+		{
+			destroy();
+		}
+	}
+	
+	
 	public void setStartingLoc(float x, float y)
 	{
 		startingX = x;
@@ -47,4 +57,6 @@ public abstract class Entity
 	
 	float startingX;
 	float startingY;
+	
+	float hp = 1;
 }

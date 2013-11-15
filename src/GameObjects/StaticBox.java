@@ -14,6 +14,7 @@ public class StaticBox extends Entity
 	public StaticBox(Universe universe) {
 		super(universe);
 		// TODO Auto-generated constructor stub
+		hp = 10;
 	}
 
 	@Override
@@ -31,9 +32,8 @@ public class StaticBox extends Entity
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+		universe.removeEntity(this);
 	}
-	
 	
 	
 }

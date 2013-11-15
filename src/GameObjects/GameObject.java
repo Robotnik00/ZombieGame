@@ -191,8 +191,8 @@ public class GameObject
 	// remove object from child
 	public void removeChild(GameObject child)
 	{
-		child.removeParent();
 		children.remove(child);
+		//child.removeParent();
 	}
 
 
@@ -209,6 +209,7 @@ public class GameObject
 	public void setLocalX(float x)
 	{
 		transform.m30 = x;
+		prevTransform.m30 = x;
 		if(boundingBox != null)
 		{
 			boundingBox.transform(getGlobalTransform());
@@ -217,6 +218,7 @@ public class GameObject
 	public void setLocalY(float y)
 	{
 		transform.m31 = y;
+		prevTransform.m31 = y;
 		if(boundingBox != null)
 		{
 			boundingBox.transform(getGlobalTransform());
@@ -550,6 +552,14 @@ public class GameObject
 	{
 		return momentOfInertia;
 	}
+	public void setEntity(Entity entity)
+	{
+		this.entity = entity;
+	}
+	public Entity getEntity()
+	{
+		return this.entity;
+	}
 	
 	
 	AABB proxemity; // if no objects in this area than don't process any children unless it is null
@@ -595,4 +605,6 @@ public class GameObject
 	
 	static final Vector3f zaxis = new Vector3f(0,0,1);
 	static final AABB screen = new AABB(2,2);
+	
+	Entity entity = null;
 }

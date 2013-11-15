@@ -7,6 +7,8 @@ import org.lwjgl.util.vector.Vector4f;
 
 import Engine.IGameEngine;
 import GameObjects.GameObject;
+import GameObjects.HandGunProjectile;
+import GameObjects.Universe;
 import InputCallbacks.KeyEventListener;
 import InputCallbacks.MouseEvent;
 import InputCallbacks.MouseEventListener;
@@ -21,12 +23,12 @@ import InputCallbacks.MouseEventListener;
 public class PCControl extends PhysicsObjectController implements KeyEventListener, MouseEventListener
 {
 
-	public PCControl(GameObject obj, GameObject universe, IGameEngine eng) 
+	public PCControl(GameObject obj, Universe universe, IGameEngine eng) 
 	{
-		super(obj, universe, eng);
+		super(obj, universe.getHandle(), eng);
 		
 		
-		
+		this.universe = universe;
 	}
 
 	@Override
@@ -91,8 +93,28 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 			unitDirection.x = eng.GetMouseX() - obj.getGlobalX();
 			unitDirection.y = eng.GetMouseY() - obj.getGlobalY();
 			unitDirection.normalise();
-			unitDirection.scale(forceScale);
+			force.x = unitDirection.x;
+			force.y = unitDirection.y;
+			force.scale(forceScale);
 			appliedForce = unitDirection;
+		}
+		if(event.getButton() == FIRE_BUTTON)
+		{	
+			unitDirection.x = eng.GetMouseX() - obj.getGlobalX();
+			unitDirection.y = eng.GetMouseY() - obj.getGlobalY();
+			unitDirection.normalise();
+			HandGunProjectile projectile = new HandGunProjectile(universe);		
+			Vector2f projectileVelocity = new Vector2f(unitDirection);
+			projectileVelocity.scale(10);
+			projectileVelocity.x +=  (float)(Math.random()-.5)*2;
+			projectileVelocity.y += (float)(Math.random()-.5)*2;
+			projectile.setVelocity(projectileVelocity);
+			
+			projectile.getRootNode().setLocalX(obj.getLocalX() + unitDirection.x/2.2f);
+			projectile.getRootNode().setLocalY(obj.getLocalY() + unitDirection.y/2.2f);
+			
+			universe.addEntity(projectile);
+			projectile.setTimeToLive(1000);
 		}
 	}
 
@@ -110,13 +132,16 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	public void mouseMoved(MouseEvent event) {
 		// TODO Auto-generated method stub
 		if(moveButtonDown)
-		{
+		{	
 			unitDirection.x = eng.GetMouseX() - obj.getGlobalX();
 			unitDirection.y = eng.GetMouseY() - obj.getGlobalY();
 			unitDirection.normalise();
-			unitDirection.scale(forceScale);
+			unitDirection.normalise();
+			force.x = unitDirection.x;
+			force.y = unitDirection.y;
+			force.scale(forceScale);
 			//obj.translate(unitDirection.x/10, unitDirection.y/10);
-			appliedForce = unitDirection;
+			appliedForce = force;
 		}
 		else 
 		{
@@ -136,6 +161,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	
 	
 	Vector2f unitDirection = new Vector2f(1,0);
+	Vector2f force = new Vector2f();
 	
 	int MOVE_UP    = Keyboard.KEY_W;
 	int MOVE_DOWN  = Keyboard.KEY_S;
@@ -152,4 +178,6 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	
 	
 	float forceScale = 1; // amount of force to apply
+	
+	Universe universe;
 }

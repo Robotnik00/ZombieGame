@@ -55,7 +55,8 @@ public class Zombie extends Entity
 	@Override
 	public void destroy() 
 	{
-		rootNode = null;
+		universe.removeEntity(this);
+		
 	}
 	AIControl ai;
 	Entity target = null;

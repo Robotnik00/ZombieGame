@@ -56,37 +56,37 @@ public class CollisionTesting extends EventListenerState
 	
 	private void buildUniverse()
 	{
-		universe = new GameObject();
-		universe.scale(.3f, .3f);
-		obj1 = new GameObject();
-		obj1.setBoundingBox(new AABB(.5f, .5f)); 
-		obj1.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0))); 
-		obj1.setCollidable(true); // makes it so other objects can collide with obj1. not nessessary for this example 
-								  // but for more complex scenes it will allow other collidablePhysics objects to collide with obj1
-		PCControl pc = new PCControl(obj1, universe, game);
-		this.addMouseEventListener(pc);
-		this.addKeyEventListener(pc);
-		obj1.addAction(pc); // PCControl extends CollidablePhysics.
-		obj1.setMass(.1f);
-
-		universe.addChild(obj1);
-		obj2 = new GameObject();
-		obj2.setBoundingBox(new AABB(.5f, .5f)); // set objects bounds. units in global coordinates.
-		obj2.translate(2, 0);
-		obj2.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0)));
-		obj2.setCollidable(true); // makes it so other objects can collide with obj2.
-		CollidablePhysics p = new CollidablePhysics(obj2, universe, game);
-		//p.applyForce(new Vector2f(-1,0));
-		obj2.addAction(p);
-		obj2.setMass(.1f);
-		universe.addChild(obj2);
-		
-		GameObject staticObject = new GameObject();
-		staticObject.setCollidable(true);
-		staticObject.translate(.5f, .5f);
-		staticObject.setBoundingBox(new AABB(.5f,.5f));
-		staticObject.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0)));
-		universe.addChild(staticObject);
+//		universe = new GameObject();
+//		universe.scale(.3f, .3f);
+//		obj1 = new GameObject();
+//		obj1.setBoundingBox(new AABB(.5f, .5f)); 
+//		obj1.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0))); 
+//		obj1.setCollidable(true); // makes it so other objects can collide with obj1. not nessessary for this example 
+//								  // but for more complex scenes it will allow other collidablePhysics objects to collide with obj1
+//		PCControl pc = new PCControl(obj1, universe, game);
+//		this.addMouseEventListener(pc);
+//		this.addKeyEventListener(pc);
+//		obj1.addAction(pc); // PCControl extends CollidablePhysics.
+//		obj1.setMass(.1f);
+//
+//		universe.addChild(obj1);
+//		obj2 = new GameObject();
+//		obj2.setBoundingBox(new AABB(.5f, .5f)); // set objects bounds. units in global coordinates.
+//		obj2.translate(2, 0);
+//		obj2.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0)));
+//		obj2.setCollidable(true); // makes it so other objects can collide with obj2.
+//		CollidablePhysics p = new CollidablePhysics(obj2, universe, game);
+//		//p.applyForce(new Vector2f(-1,0));
+//		obj2.addAction(p);
+//		obj2.setMass(.1f);
+//		universe.addChild(obj2);
+//		
+//		GameObject staticObject = new GameObject();
+//		staticObject.setCollidable(true);
+//		staticObject.translate(.5f, .5f);
+//		staticObject.setBoundingBox(new AABB(.5f,.5f));
+//		staticObject.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0)));
+//		universe.addChild(staticObject);
 		
 	}
 	
