@@ -29,7 +29,7 @@ public class Zombie extends Entity
 		rootNode.addAction(ai);
 		
 		rootNode.addChild(gimble);
-		
+		rootNode.setMass(.1f);
 		universe.addEntity(this);
 		
 	}
