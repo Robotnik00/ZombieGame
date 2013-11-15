@@ -61,7 +61,7 @@ public class StartGame extends EventListenerState
 			b.setStartingLoc((float)(Math.random()-.5)*5, (float)(Math.random()-.5)*5);
 		}
 
-		for(int i = 0; i < 15; i++)
+		for(int i = 0; i < 5; i++)
 		{
 			Zombie z1 = new Zombie(level);
 			z1.setStartingLoc((float)(Math.random()-.5)*20, (float)(Math.random()-.5)*20);
