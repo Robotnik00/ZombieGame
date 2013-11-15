@@ -16,17 +16,35 @@ public class SimpleDraw implements DrawObject
 	public SimpleDraw(ITexture tex)
 	{
 		this.tex = tex;
+		offset = new Vector2f();
 	}
 	
 	@Override
 	public void draw(Matrix4f interpolator) 
 	{
 		
+		interpolator.rotate(orientation, zaxis);
 		interpolator.translate(center);
+		
+		
+		
 		tex.Draw(interpolator);
 		
 		
 	}
+	public void setOrientation(float orientation)
+	{
+		this.orientation = orientation;
+	}
+	public void setOffset(float x, float y)
+	{
+		offset.x = x;
+		offset.y = y;
+	}
+	
+	float orientation = 0;
+	Vector2f offset;
 	Vector2f center = new Vector2f(-.5f,-.5f);
+	static Vector3f zaxis = new Vector3f(0,0,1);
 	ITexture tex;
 }

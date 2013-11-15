@@ -33,7 +33,6 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	public void performAction() 
 	{
 		super.performAction();
-		
 		//processKeyEvents();
 	}
 	
@@ -42,7 +41,6 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	{
 		if(keyPressed == MOVE_UP)
 		{
-			
 		}
 		else if(keyPressed == MOVE_DOWN)
 		{
@@ -117,6 +115,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 			unitDirection.y = eng.GetMouseY() - obj.getGlobalY();
 			unitDirection.normalise();
 			unitDirection.scale(forceScale);
+			//obj.translate(unitDirection.x/10, unitDirection.y/10);
 			appliedForce = unitDirection;
 		}
 		else 

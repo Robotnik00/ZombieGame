@@ -20,7 +20,13 @@ public abstract class Entity
 	 * @param level
 	 */
 	public abstract void createObject(Universe universe);
-	
+	public void setStartingLoc(float x, float y)
+	{
+		startingX = x;
+		startingY = y;
+		rootNode.setLocalX(x);
+		rootNode.setLocalY(y);
+	}
 	/**
 	 *  returns root node of the object
 	 * @return
@@ -38,4 +44,7 @@ public abstract class Entity
 	
 	Universe universe;
 	GameObject rootNode;
+	
+	float startingX;
+	float startingY;
 }

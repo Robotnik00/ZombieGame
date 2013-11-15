@@ -68,7 +68,8 @@ public class CollisionTesting extends EventListenerState
 		this.addKeyEventListener(pc);
 		obj1.addAction(pc); // PCControl extends CollidablePhysics.
 		obj1.setMass(.1f);
-		
+
+		universe.addChild(obj1);
 		obj2 = new GameObject();
 		obj2.setBoundingBox(new AABB(.5f, .5f)); // set objects bounds. units in global coordinates.
 		obj2.translate(2, 0);
@@ -87,7 +88,6 @@ public class CollisionTesting extends EventListenerState
 		staticObject.setDrawingInterface(new SimpleDraw(gfx.LoadTexture("image.bmp", 0)));
 		universe.addChild(staticObject);
 		
-		universe.addChild(obj1);
 	}
 	
 	GameObject universe, obj1, obj1child, obj2;

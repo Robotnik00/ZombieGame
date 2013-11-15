@@ -1,5 +1,6 @@
 package Actions;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 
 import Engine.IGameEngine;
@@ -12,11 +13,13 @@ import GameObjects.GameObject;
 public class Camera implements Action
 {
 
-	public Camera(GameObject obj, IGameEngine eng) 
+	public Camera(GameObject obj, GameObject scaleNode, IGameEngine eng) 
 	{
 		this.eng = eng;
 		this.obj = obj;
+		this.scaleNode = scaleNode;
 		toFollow = null;
+		loc = new Vector2f();
 	}
 	
 	@Override
@@ -24,30 +27,23 @@ public class Camera implements Action
 	{
 		if(toFollow != null)
 		{
-			Vector2f loc = new Vector2f(eng.GetMouseX(),eng.GetMouseY());
-			
-			
-			
-			
-			Vector2f velocity = new Vector2f(toFollow.getTranslationalVelocity());
-			velocity.scale(-1);
-			obj.translate(-toFollow.getGlobalX() - eng.GetMouseX()/distanceFactor, -toFollow.getGlobalY() - eng.GetMouseY()/distanceFactor);
-			obj.setTranslationalVelocity(velocity);
-	
+			loc.x = eng.GetMouseX();
+			loc.y = eng.GetMouseY();
+			obj.translate((-toFollow.getGlobalX() - eng.GetMouseX()/distanceFactor)/lag, (-toFollow.getGlobalY() - eng.GetMouseY()/distanceFactor)/lag);
 			prevScale = scale;
-			if(loc.length() > scaleDistance)
+			if(loc.length() > scaleDistance+deadZone)
 			{
-				scale = (float)1/(maxScale*(loc.length() - scaleDistance) + 1);
+				if(scale > maxScale)
+					scale *= scaleVelocity;
+			}
+			else if(loc.length() < scaleDistance - deadZone && scale < 1)
+			{
+				scale /= scaleVelocity;
+			}
 			
-			}
-			else
-			{
-				scale = 1;
-			}
-	
-			obj.scale(1/prevScale, 1/prevScale);
-			obj.scale(scale, scale);
-		}
+			scaleNode.scale(1/prevScale, 1/prevScale);
+			scaleNode.scale(scale, scale);
+		}		
 	}
 	
 	public void setFocus(GameObject obj)
@@ -74,13 +70,20 @@ public class Camera implements Action
 	
 	
 	
+	Vector2f loc;
+	float lag = 2f;
+	
 	float distanceFactor = 2;
-	float scaleDistance = .8f;
-	float maxScale = 3;
+	float scaleDistance = .7f;
+	float maxScale = .8f;
 	float scale = 1;
 	float prevScale = 1;
+	float deadZone = .1f;
+	float scaleVelocity = .98f; 
+	
 	GameObject obj;
 	GameObject toFollow;
+	GameObject scaleNode;
 	
 	IGameEngine eng;
 }

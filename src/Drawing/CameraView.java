@@ -1,58 +1,81 @@
 package Drawing;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 
 import Engine.IGameEngine;
 import GameObjects.GameObject;
-
+import TextureEngine.ITextureEngine;
+/**
+ * 
+ * add this to universe and the camera will appear to follow the object objToFollow
+ *
+ */
 public class CameraView implements DrawObject
 {
 
-    public CameraView(GameObject universe, GameObject objToFollow, IGameEngine game)
-    {
-            this.universe = universe;
+	public CameraView(GameObject obj, ITextureEngine eng) 
+	{
+		this.eng = eng;
+		this.obj = obj;
+		toFollow = null;
+		loc = new Vector2f();
+	}
+	
+	@Override
+	public void draw(Matrix4f interpolator)
+	{
+		float[] coors = eng.ScaleWindowCoordinates(Mouse.getX(), Mouse.getY());
+		loc.x = coors[0];
+		loc.y = coors[1];
+		prevScale = scale;
+		if(loc.length() > scaleDistance)
+		{
+			scale = (float)1/(maxScale*(loc.length() - scaleDistance) + 1);
 
-            universe.translate(-objToFollow.getGlobalX(), -objToFollow.getGlobalY());
-            this.objToFollow = objToFollow;
-            this.game = game;
-    }
-    
-    @Override
-    public void draw(Matrix4f interpolator)
-    {
-		    universe.translate(prevX, prevY);
-            mouseLoc.x = game.GetMouseX()/2;
-            mouseLoc.y = game.GetMouseY()/2;
-            velocity.x = -objToFollow.getTranslationalVelocity().x;
-            velocity.y = -objToFollow.getTranslationalVelocity().y;
-            universe.setTranslationalVelocity(velocity);
-            universe.translate(-mouseLoc.x-objToFollow.getGlobalX(), -mouseLoc.y - objToFollow.getGlobalY()); 
-            prevX = mouseLoc.x;
-            prevY = mouseLoc.y;
-            
-            mouseLoc.scale(2);
-            scale = 1 - mouseLoc.length() + .2f;
-            if(scale > .8)
-            {
-                    scale = .8f;
-            }
-            else if(scale < .5)
-            {
-                    scale = .5f;
-            }
-            universe.scale(1/prevScale, 1/prevScale);
-            universe.scale(scale, scale);
-            prevScale = scale;
-    }
-    Vector2f mouseLoc = new Vector2f();
-    float prevX = 0;
-    float prevY = 0;
-    float scale = 1;
-    float prevScale = 1;
-    
-    Vector2f velocity = new Vector2f();
-    GameObject universe;
-    GameObject objToFollow;
-    IGameEngine game;
+		}
+		else
+		{
+			scale = 1;
+		}
+
+		obj.scale(1/prevScale, 1/prevScale);
+		obj.scale(scale, scale);
+	}
+	
+	public void setFocus(GameObject obj)
+	{
+		this.toFollow = obj;
+	}
+	
+	/**
+	 * sets the distance the mouse must be in order to begin zooming out
+	 * @param dist
+	 */
+	public void setScaleDistance(float dist)
+	{
+		this.scaleDistance = dist;
+	}
+	/**
+	 * sets the % of distance between mouse and object to move the camera
+	 * @param distFactor
+	 */
+	public void setTranslationDistance(float distFactor)
+	{
+		this.distanceFactor = distFactor;
+	}
+	Vector2f loc;
+	
+	
+	float distanceFactor = 2;
+	float scaleDistance = .8f;
+	float maxScale = 3;
+	float scale = 1;
+	float prevScale = 1;
+	GameObject obj;
+	GameObject toFollow;
+	
+	ITextureEngine eng;
 }
+

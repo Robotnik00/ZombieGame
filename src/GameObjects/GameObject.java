@@ -33,17 +33,19 @@ public class GameObject
 		transform = new Matrix4f();
 		transform.setIdentity();
 		interpolator = new Matrix4f();
-		
+		prevTransform = new Matrix4f();
 		glbTransform = new Matrix4f();
 		glbInterpolator = new Matrix4f();
-		
 		
 		velocity = new Vector2f();
 		
 		deltaX = new Vector2f();
 		rotationalVelocity = 0;
 		actions = new ArrayList<Action>();
-		
+
+		deltaScale = new Vector3f();
+		deltaScale.x = 1;
+		deltaScale.y = 1;
 		
 		parent = null;
 		children = new ArrayList<GameObject>();
@@ -65,7 +67,7 @@ public class GameObject
 	 */
 	public void update(float deltaT)
 	{
-
+		prevTransform.load(transform);
 		if(boundingBox != null)
 		{
 			boundingBox.transform(getGlobalTransform());
@@ -74,6 +76,18 @@ public class GameObject
 		{
 			proxemity.transform(getGlobalTransform());
 		}
+
+		transform.scale(deltaScale);
+		transform.rotate(deltaRot, zaxis);
+		transform.translate(deltaX);
+		
+		deltaX.x = velocity.x;
+		deltaX.y = velocity.y;
+		deltaX.scale(deltaT);
+		deltaRot = rotationalVelocity*deltaT;
+		deltaScale.x = 1;
+		deltaScale.y = 1;
+		
 		
 		//System.out.printf("%f %f\n", getGlobalX(), getGlobalY());
 		for(int i = 0; i < actions.size(); i++)
@@ -81,18 +95,6 @@ public class GameObject
 			actions.get(i).performAction();
 		}
 
-
-		prevX = transform.m30;
-		prevY = transform.m31;
-		
-		deltaX.x = velocity.x;
-		deltaX.y = velocity.y;
-		deltaX.scale(deltaT);
-		transform.translate(deltaX);
-			
-		rotate(rotationalVelocity*deltaT);
-
-			
 		updateChildren(deltaT);
 		updateThis(deltaT);
 		glbTransformCalculated = false;
@@ -120,17 +122,17 @@ public class GameObject
 	// draws this object and its children
 	public void draw(float delta)
 	{
-
-		glbInterpolatorCalculated = false;
-		interpolator.load(transform);
-		interpolator.m30 = prevX;
-		interpolator.m31 = prevY;
+		
+		interpolator.load(prevTransform);
 		intDelta.x = deltaX.x;
 		intDelta.y = deltaX.y;
 		intDelta.scale(delta);
+		
+
+		interpolator.scale(new Vector3f(delta*deltaScale.x + 1 - delta, delta*deltaScale.y + 1 - delta, 0));
+		interpolator.rotate(deltaRot*delta, zaxis);
 		interpolator.translate(intDelta);
-		//interpolator.rotate(rotationalVelocity*delta, zaxis);
-		if(proxemity == null || proxemity.intersects(screen) || !drawingInitialized)
+		if(proxemity == null || proxemity.intersects(screen))
 		{
 			if(drawing != null)
 			{
@@ -138,7 +140,6 @@ public class GameObject
 				drawing.draw(getGlobalInterpolator()); 
 	
 			}
-			drawingInitialized = true;
 			drawChildren(delta);
 		}
 	}
@@ -150,7 +151,10 @@ public class GameObject
 			children.get(i).draw(delta);
 		}
 	}
-	
+	public Vector2f getDeltaX()
+	{
+		return deltaX;
+	}
 	
 
 	// checks if obj is a root node
@@ -297,20 +301,12 @@ public class GameObject
 	 */	
 	public void rotate(float angle)
 	{
-		transform.rotate(angle, new Vector3f(0,0,1));
-		
-		//normalizeRotationMatrix();
+		deltaRot += angle;
 	}
 	public void translate(float x, float y)
 	{
-		transform.m30 += x;
-		transform.m31 += y;
 		deltaX.x += x;
 		deltaX.y += y;
-		if(boundingBox != null)
-		{
-			boundingBox.transform(getGlobalTransform());
-		}
 	}
 
 	/**
@@ -489,13 +485,12 @@ public class GameObject
 	 */
 	public void scale(float x, float y)
 	{
-		Matrix4f scale = new Matrix4f();
-		scale.scale(new Vector3f(x,y,1));
-		//float xcoor = transform.m30;
-		//float ycoor = transform.m31;
-		Matrix4f.mul(scale, transform, transform);
-		//transform.m30 = xcoor;
-		//transform.m31 = ycoor;
+//		Vector3f scale = new Vector3f(x,y,0);
+//		transform.scale(scale);
+//		
+		
+		deltaScale.x *= x;
+		deltaScale.y *= y;
 	}
 	/**
 	 *
@@ -504,6 +499,15 @@ public class GameObject
 	public void setDrawingInterface(DrawObject idrawing)
 	{
 		drawing = idrawing;
+	}
+	public float getOrientation()
+	{
+		Vector4f xaxis = new Vector4f(1,0,0,0);
+		
+		
+		Matrix4f.transform(transform, xaxis, xaxis);
+		
+		return (float)Math.atan2(xaxis.y, xaxis.x);
 	}
 	/**
 	 *
@@ -529,22 +533,7 @@ public class GameObject
 		Matrix4f.mul(parent.getGlobalInterpolator(glbInt), glbInt, glbInt);
 		return glbInt;
 	}
-	public boolean isStatic()
-	{
-		return isStatic;
-	}
-	public void setStatic(boolean isStatic)
-	{
-		this.isStatic = isStatic;
-	}
-	public float getPrevX()
-	{
-		return prevX;
-	}
-	public float getPrevY()
-	{
-		return prevY;
-	}
+
 	public void setMass(float mass)
 	{
 		this.mass = mass;
@@ -568,6 +557,7 @@ public class GameObject
 	
 	// transformation matrix for 2d transformations
 	Matrix4f transform; // location/orientation/scale of obj relative to parent
+	Matrix4f prevTransform;
 	Matrix4f interpolator; // used for interpolating between frames
 	Vector2f intDelta = new Vector2f();
 	
@@ -594,20 +584,15 @@ public class GameObject
 	
 	Vector2f velocity;
 	Vector2f deltaX;
+	Vector3f deltaScale;
 	float rotationalVelocity;
-
+	float deltaRot = 0;
+	
 	float mass = 1;
 	float momentOfInertia = 1;
 	
 	boolean collidable = false;
-	boolean isStatic = true;
 	
-	float prevX = 0;
-	float prevY = 0;
-	
-	private boolean drawingInitialized = false;
-	private int cacheUpdating = 0;
-	private static final int updates = 5;
 	static final Vector3f zaxis = new Vector3f(0,0,1);
 	static final AABB screen = new AABB(2,2);
 }

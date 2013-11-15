@@ -11,10 +11,13 @@ import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import Drawing.TileDraw;
 import Engine.IGameEngine;
+import GameObjects.Box;
 import GameObjects.ExampleEntity;
 import GameObjects.ExampleLevel;
 import GameObjects.GameObject;
 import GameObjects.Player;
+import GameObjects.StaticBox;
+import GameObjects.Zombie;
 import Geometry.AABB;
 import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
@@ -43,8 +46,22 @@ public class StartGame extends EventListenerState
 		level.scaleUniverse(.3f);
 		
 		// create entity
-		entity = new ExampleEntity(level);
-		//new Player(level);
+//		entity = new ExampleEntity(level);
+		Player player = new Player(level);
+
+		Box b1 = new Box(level);
+		b1.setStartingLoc(1, 1);
+		Box b2 = new Box(level);
+		b2.setStartingLoc(1, -1);
+		
+		StaticBox sb1 = new StaticBox(level);
+		sb1.setStartingLoc(-1, 1);
+		
+		Zombie z1 = new Zombie(level);
+		z1.setStartingLoc(-1, -1);
+		z1.setTarget(player);
+		
+		
 	}
 	
 	@Override

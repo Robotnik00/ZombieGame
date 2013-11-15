@@ -24,9 +24,10 @@ public abstract class Universe
 		this.state = state;
 		
 		
-		
+		scaleNode = new GameObject();
 		universeNode   = new GameObject();
-		cam = new Camera(universeNode, game);
+		scaleNode.addChild(universeNode);
+		cam = new Camera(universeNode, scaleNode, game);
 		universeNode.addAction(cam);
 		backgroundNode = new GameObject();
 		universeNode.addChild(backgroundNode);
@@ -55,7 +56,7 @@ public abstract class Universe
 	 */
 	public void scaleUniverse(float scale)
 	{
-		universeNode.scale(scale, scale);
+		scaleNode.scale(scale, scale);
 	}
 	
 	
@@ -66,11 +67,11 @@ public abstract class Universe
 	 */
 	public void addEntity(Entity entity)
 	{
-		backgroundNode.addChild(entity.getRootNode());
+		universeNode.addChild(entity.getRootNode());
 	}
 	public void removeEntity(Entity entity)
 	{
-		backgroundNode.removeChild(entity.getRootNode());
+		universeNode.removeChild(entity.getRootNode());
 	}
 	/**
 	 * update everything
@@ -81,7 +82,7 @@ public abstract class Universe
 	{
 		gfx.ClearScreen();
 		deltaT = (float)delta;
-		universeNode.draw(deltaT);
+		scaleNode.draw(deltaT);
 		HUD.draw(deltaT);
 	}
 	/**
@@ -91,7 +92,7 @@ public abstract class Universe
 	{
 		
 		deltaT = (float)1/game.GetTickFrequency();
-		universeNode.update(deltaT);
+		scaleNode.update(deltaT);
 		HUD.update(deltaT);
 	}
 	
@@ -111,6 +112,10 @@ public abstract class Universe
 	{
 		return universeNode;
 	}
+	public GameObject getScalingNode()
+	{
+		return scaleNode;
+	}
 	public EventListenerState getState()
 	{
 		return state;
@@ -122,8 +127,8 @@ public abstract class Universe
 	}
 	Camera cam;
 	
-	
 	float deltaT = 1;
+	GameObject scaleNode;
 	GameObject universeNode;
 	GameObject backgroundNode;
 	GameObject HUD;
