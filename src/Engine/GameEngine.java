@@ -190,9 +190,10 @@ public class GameEngine implements IGameEngine
 		
 		// start initial gamestate
 		//ChangeGameState(new TestState());
-		ChangeGameState(new StartGame());
-		//ChangeGameState(new MenuState());
+		//ChangeGameState(new StartGame());
+		ChangeGameState(new MenuState());
 		//ChangeGameState(new CollisionTesting());
+		
 		// run the game loop
 		GameLoop();
 		
@@ -567,25 +568,19 @@ public class GameEngine implements IGameEngine
 	 * @param height Height of window in pixels.
 	 * @throws Exception
 	 */
+	// FIXME: adjust for 3.1 and 3.2?
 	protected void	SetupDisplay(int width, int height) throws Exception
 	{
 		LogMessage("SetupDisplay");
 		
-		PixelFormat pixelFormat = new PixelFormat();
-		ContextAttribs contextAttribs = new ContextAttribs(3,2)
-		//	.withForwardCompatible(true)
-			.withProfileCore(true);
-		
-		// try
-		Display.setDisplayMode(new DisplayMode(width, height));
-		Display.setTitle(GAME_TITLE);
-		Display.create(pixelFormat, contextAttribs);
-		
-		LogMessage("SetupDisplay: Testing OpenGL, got version: " + 
-				glGetInteger(GL_MAJOR_VERSION) + "." + glGetInteger(GL_MINOR_VERSION));
+		// opengl 3.2 for osx, 3.1 for everyone else.
+		// a lot of "PC"s still don't support 3.2! i am surprised.
+		int minorVersion = 1;
+		if (System.getProperty("os.name").indexOf("mac") >= 0)
+			minorVersion = 2;
 		
 		// opengl texture engine
-		textureEngine_ = new GLTextureEngine();
+		textureEngine_ = new GLTextureEngine(minorVersion);
 		textureEngine_.Init(this,width,height);
 		
 		textureEngine_.SetClearColor(0.0f, 0.5f, 1.0f);
@@ -597,6 +592,8 @@ public class GameEngine implements IGameEngine
 				);
 		
 		textureEngine_.ClearScreen();
+		
+		Display.setTitle(GAME_TITLE);
 	}
 	
 	/**

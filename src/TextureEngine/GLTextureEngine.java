@@ -30,6 +30,10 @@ import java.io.*;
 
 import javax.imageio.ImageIO;
 
+import org.lwjgl.opengl.ContextAttribs;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.*;
 
@@ -46,11 +50,18 @@ public class GLTextureEngine implements ITextureEngine
 	// public methods
 	//
 	
-	public GLTextureEngine()
+	/**
+	 * Initialize an opengl context with the given version.
+	 * Works for 3.x only!
+	 * @param minor Minor OpenGL version, use with major version 3.
+	 */
+	public GLTextureEngine(int minor)
 	{
 		system_ 			= null;
 		displayWidth_ 		= 0;
 		displayHeight_ 		= 0;
+		
+		minorVersion_		= minor;
 		
 		textures_			= new ArrayList<GLTexture>();
 		
@@ -216,6 +227,29 @@ public class GLTextureEngine implements ITextureEngine
 		
 		displayWidth_ = displayWidth;
 		displayHeight_ = displayHeight;
+		
+		// setup opengl display
+		PixelFormat pixelFormat = new PixelFormat();
+		ContextAttribs contextAttribs = null;
+		
+		if (minorVersion_ < 2)
+		{
+			// below 3.2, core, compatibility, forward, etc don't exist
+			contextAttribs = new ContextAttribs(3,minorVersion_);
+		}
+		else
+		{
+			contextAttribs = new ContextAttribs(3,minorVersion_)
+				.withForwardCompatible(true)
+				.withProfileCore(true);
+		}
+		
+		// try
+		Display.setDisplayMode(new DisplayMode(displayWidth_, displayHeight_));
+		Display.create(pixelFormat, contextAttribs);
+		
+		system_.LogMessage("GLTextureEngine::Init: Testing OpenGL, got version: " + 
+				glGetInteger(GL_MAJOR_VERSION) + "." + glGetInteger(GL_MINOR_VERSION));
 		
 		// init gl resources
 		SetupShaders();
@@ -551,6 +585,8 @@ public class GLTextureEngine implements ITextureEngine
 	protected int			displayWidth_;
 	protected int			displayHeight_;
 	
+	protected int			minorVersion_;
+	
 	protected int			drawingState_;
 	protected int			currentTexture_;
 	protected float			r_,g_,b_,a_;
@@ -663,8 +699,17 @@ public class GLTextureEngine implements ITextureEngine
 	
 	protected void	SetupShaders() throws Exception
 	{
-		String TextureVertexShader = 
-			"#version 150							\n" +
+		String versionString = null;
+		
+		// this is so sketchy
+		if (minorVersion_ == 3)
+			versionString = "#version 330\n";
+		else
+			versionString = "#version " + (130+10*minorVersion_) + "\n";
+		
+		String TextureVertexShader =
+			versionString +
+			//"#version 150							\n" +
 			// vertex coordinate variables
 			"in vec2 aPosition;						\n" +	// vertex and texture position (attrib 0)
 			// vertex transformations
@@ -685,7 +730,8 @@ public class GLTextureEngine implements ITextureEngine
 			"}																				\n";
 		
 		String TextureFragmentShader = 
-			"#version 150						\n" +
+			versionString +
+			//"#version 150						\n" +
 			// texture coordinate variables
 			"in vec2			vTexCoord;		\n" +	// varying?
 			"uniform sampler2D	uSampler;		\n" +
@@ -719,7 +765,8 @@ public class GLTextureEngine implements ITextureEngine
 		
 		// drawing primitives
 		String PrimitiveVertexShader = 
-			"#version 150							\n" +
+			versionString +
+			//"#version 150							\n" +
 			// vertex coordinate variables
 			"in vec2 aPosition;						\n" +	// vertex and texture position (attrib 0)
 			// vertex transformations
@@ -732,8 +779,9 @@ public class GLTextureEngine implements ITextureEngine
 			"	gl_Position = uPerspective * uView * uModel * vec4(aPosition,1.0,1.0);		\n" +
 			"}																				\n";
 		
-		String PrimitiveFragmentShader = 
-			"#version 150						\n" +
+		String PrimitiveFragmentShader =
+			versionString +
+			//"#version 150						\n" +
 			// drawing color
 			"uniform vec4		uColor;			\n" +
 			// final color output
