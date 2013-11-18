@@ -6,6 +6,7 @@ import Actions.Action;
 import Actions.MouseTracker;
 import Actions.PCControl;
 import Actions.UpdateHUD;
+import AudioEngine.ISound;
 import Drawing.DrawBoundingBox;
 import Drawing.DrawText;
 import Drawing.SimpleDraw;
@@ -79,6 +80,18 @@ public class Player extends Entity
 		universe.setFocus(this);
 		
 		
+		try 
+		{
+			playerHurt = universe.getAudioEngine().LoadSound("snd/Player/PlayerHurt.wav");
+			deathSound = universe.getAudioEngine().LoadSound("snd/Player/DeathSound.wav");
+		}
+		catch (Exception e) 
+		{
+			playerHurt = null;
+			deathSound = null;
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void addGun(Gun gun)
@@ -99,10 +112,19 @@ public class Player extends Entity
 		return currentGun;
 	}
 	@Override
+	public void damage(float dp)
+	{
+		super.damage(dp);
+		if(playerHurt != null)
+			playerHurt.Play();
+	}
+	
+	@Override
 	public void destroy() 
 	{
 		universe.removeEntity(this);
-		
+		if(deathSound != null)
+			deathSound.Play();
 	}
 	
 	public void addToScore(float points)
@@ -127,4 +149,6 @@ public class Player extends Entity
 	/**
 	 * ect... 
 	 */
+	ISound deathSound;
+	ISound playerHurt;
 }

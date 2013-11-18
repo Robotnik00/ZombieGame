@@ -35,13 +35,6 @@ public class ExampleEntity extends Entity
 		ITexture triangle = universe.getTextureEngine().LoadTexture("image.bmp", 0);
 		ITexture box = universe.getTextureEngine().LoadTexture("image2.png", 0);
 	
-		// add pc control to the root node of this object
-		//PCControl pcc = new PCControl(this, universe.getGameEngine());
-		//universe.getState().addKeyEventListener(pcc);
-		//universe.getState().addMouseEventListener(pcc);
-		// add action to the rootNode
-		//rootNode.addAction(pcc);
-		// set mass so the object accelerates fast
 		rootNode.setMass(.1f);
 		
 		// create an axis to rotate the object about, and add a mouseTracker action to it.

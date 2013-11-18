@@ -40,6 +40,7 @@ public class Zombie extends Entity
 		try 
 		{
 			hurt = universe.getAudioEngine().LoadSound("snd/Zombie/ZombieHurt.wav");
+			zombieDeath = universe.getAudioEngine().LoadSound("snd/Zombie/ZombieDeath.wav");
 		} 
 		catch (Exception e) 
 		{
@@ -65,7 +66,7 @@ public class Zombie extends Entity
 	{
 		super.damage(dp);
 		
-		if(Math.random() > .5)
+		if(Math.random() > .5 && hurt != null)
 		{
 			hurt.Play();
 		}
@@ -75,11 +76,13 @@ public class Zombie extends Entity
 	public void destroy() 
 	{
 		universe.removeEntity(this);
-		
+		if(zombieDeath != null)
+			zombieDeath.Play();
 	}
 	AIControl ai;
 	Entity target = null;
 	GameObject gimble;
 	
 	ISound hurt;
+	ISound zombieDeath;
 }

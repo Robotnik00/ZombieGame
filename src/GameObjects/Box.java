@@ -48,9 +48,6 @@ public class Box extends Entity
 		{
 			ITexture damaged = universe.getTextureEngine().LoadTexture("gfx/Environment/box_damaged.png", 0);
 			rootNode.setDrawingInterface(new SimpleDraw(damaged));
-		}
-		
-	}
-	
-	
+		}	
+	}	
 }
