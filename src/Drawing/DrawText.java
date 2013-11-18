@@ -1,6 +1,8 @@
 package Drawing;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
@@ -13,7 +15,8 @@ public class DrawText implements DrawObject
 	{
 		text = null;
 		textRenderer = new BitmapFont();
-		textRenderer.SetFont(gfx.LoadTexture(font_name, 0));
+		font = gfx.LoadTexture(font_name, 0);
+		textRenderer.SetFont(font);
 		textRenderer.SetKerning(.4f);
 	}
 	public void setText(String text)
@@ -25,6 +28,12 @@ public class DrawText implements DrawObject
 	{
 		if(text != null)
 		{
+			if(color != null)
+			{
+				textRenderer.setBlendColor(color.x, color.y, color.z, 1f);
+				textRenderer.setAlpha(color.w);
+			}
+			interpolator.scale(new Vector3f(scalex,scaley, 0));
 			textRenderer.DrawString(text, interpolator);
 		}
 	}
@@ -32,7 +41,22 @@ public class DrawText implements DrawObject
 	{
 		this.textRenderer = textRenderer;
 	}
+	public void setScale(float scalex, float scaley)
+	{
+		this.scalex = scalex;
+		this.scaley = scaley;
+	}
+	public void setColor(Vector4f color)
+	{
+		this.color = color;
+	}
+	
+	Vector4f color = null;
+	
+	float scalex = 1;
+	float scaley = 1;
 	
 	String text;
 	BitmapFont textRenderer;
+	ITexture font;
 }

@@ -116,6 +116,14 @@ public abstract class Universe
 	{
 		return scaleNode;
 	}
+	public GameObject getBackgroundNode()
+	{
+		return backgroundNode;
+	}
+	public GameObject getHUD()
+	{
+		return HUD;
+	}
 	public EventListenerState getState()
 	{
 		return state;

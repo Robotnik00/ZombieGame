@@ -79,8 +79,8 @@ public class GameEngine implements IGameEngine
 	final String	GAME_TITLE			= "Zombie Game";
 	
 	// display size
-	final int		SCREEN_WIDTH		= 640;
-	final int		SCREEN_HEIGHT		= 480;
+	final int		SCREEN_WIDTH		= 680;
+	final int		SCREEN_HEIGHT		= 450;
 	
 	
 	

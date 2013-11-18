@@ -236,6 +236,16 @@ public class GameObject
 		return transform.m31;
 	}
 
+	public float getXWrt(GameObject wrt)
+	{
+		return getTransformWrt(wrt).m30;
+	}
+	public float getYWrt(GameObject wrt)
+	{
+		return getTransformWrt(wrt).m31;
+	}
+	
+
 	// get local transform (relative to parent)
 	public Matrix4f getLocalTransform()
 	{	
@@ -394,6 +404,21 @@ public class GameObject
 	{
 		return collidable;
 	}
+	
+	public Matrix4f getTransformWrt(GameObject wrt)
+	{
+		Matrix4f transformwrt = new Matrix4f();
+		transformwrt.load(transform);
+		if(parent != wrt)
+		{
+			Matrix4f.mul(parent.getTransformWrt(wrt), transformwrt, transformwrt);
+		}
+		
+		return transformwrt;
+		
+		
+	}
+	
 	/**
 	 *
 	 * 
@@ -510,6 +535,15 @@ public class GameObject
 		Matrix4f.transform(transform, xaxis, xaxis);
 		
 		return (float)Math.atan2(xaxis.y, xaxis.x);
+	}
+	public float getOrientationWrt(GameObject obj)
+	{
+		Matrix4f transform = getTransformWrt(obj);
+		Vector4f xaxis = new Vector4f(1,0,0,0);
+		Matrix4f.transform(transform, xaxis, xaxis);
+		
+		return (float)Math.atan2(xaxis.y, xaxis.x);
+		
 	}
 	/**
 	 *

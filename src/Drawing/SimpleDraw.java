@@ -25,8 +25,12 @@ public class SimpleDraw implements DrawObject
 		interpolator.scale(new Vector3f(scalex, scaley, 0));
 		interpolator.rotate(orientation, zaxis);
 		interpolator.translate(center);
-		
-		
+		interpolator.translate(offset);
+		if(color != null)
+		{
+			tex.SetBlendColor(color.x, color.y, color.z, blend);
+			tex.SetAlpha(color.w);
+		}
 		
 		tex.Draw(interpolator);
 		
@@ -46,7 +50,16 @@ public class SimpleDraw implements DrawObject
 		this.scalex = scalex;
 		this.scaley = scaley;
 	}
-	
+	public void setColor(Vector4f color)
+	{
+		this.color = color;
+	}
+	public void setBlend(float blend)
+	{
+		this.blend =  blend;
+	}
+	Vector4f color = null;
+	float blend = 0;
 	float orientation = 0;
 	float scalex = 1;
 	float scaley = 1;

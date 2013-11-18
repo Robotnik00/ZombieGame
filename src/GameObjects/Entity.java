@@ -46,6 +46,19 @@ public abstract class Entity
 		return rootNode;
 	}
 	
+	public Universe getUniverse()
+	{
+		return universe;
+	}
+	
+	public float getHp()
+	{
+		return hp;
+	}
+	public float getMaxHp()
+	{
+		return maxHp;
+	}
 	
 	/**
 	 * free up resources used by entity
@@ -59,4 +72,5 @@ public abstract class Entity
 	float startingY;
 	
 	float hp = 1;
+	float maxHp = 1;
 }

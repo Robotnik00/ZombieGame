@@ -1,8 +1,13 @@
 package GameObjects;
 
+import java.util.ArrayList;
+
+import Actions.Action;
 import Actions.MouseTracker;
 import Actions.PCControl;
+import Actions.UpdateHUD;
 import Drawing.DrawBoundingBox;
+import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import Geometry.AABB;
 import TextureEngine.ITexture;
@@ -21,7 +26,7 @@ public class Player extends Entity
 	{
 		ITexture playerTexture = universe.getTextureEngine().LoadTexture("gfx/Characters/player1.png", 0);
 		// add pc control to the root node of this object
-		PCControl pcc = new PCControl(rootNode, universe, universe.getGameEngine());
+		PCControl pcc = new PCControl(this, universe.getGameEngine());
 		universe.getState().addKeyEventListener(pcc);
 		universe.getState().addMouseEventListener(pcc);
 		// add action to the rootNode
@@ -29,7 +34,7 @@ public class Player extends Entity
 		// set mass so the object accelerates fast
 		rootNode.setMass(.1f);
 		rootNode.setBoundingBox(new AABB(.5f,.5f));
-		rootNode.translate(startingPosX, startingPosY);
+		rootNode.translate(startingX, startingY);
 		rootNode.setCollidable(true);
 		
 		
@@ -43,19 +48,82 @@ public class Player extends Entity
 		// add it to rootNode so it translates with the rootNode
 		rootNode.addChild(gimble);
 		
+		gunNode = new GameObject();
+		
+		
+		gunNode.setLocalX(.5f);
+		gimble.addChild(gunNode);
+		
+		guns = new ArrayList<Gun>();
+		
+		HandGun gun = new HandGun(universe, this);
+		addGun(gun);
+		setGun(0);
+		
+		gunNode.addChild(gun.getRootNode());
+		
+		
+		
+		
+		
+		
+		UpdateHUD hud = new UpdateHUD(this);
+		
+		rootNode.addAction(hud);
+		
+		
+		
+		
+		
 		universe.addEntity(this);
 		universe.setFocus(this);
+		
+		
 	}
-
+	
+	public void addGun(Gun gun)
+	{
+		guns.add(gun);
+	}
+	public void removeGun(Gun gun)
+	{
+		guns.remove(gun);
+	}
+	public void setGun(int i)
+	{
+		currentGun = guns.get(i);
+	}
+	
+	public Gun getCurrentGun()
+	{
+		return currentGun;
+	}
 	@Override
 	public void destroy() 
 	{
-		// TODO Auto-generated method stub
+		universe.removeEntity(this);
 		
 	}
-	float startingPosX;
-	float startingPosY;
-	float health = 1.0f;
+	
+	public void addToScore(float points)
+	{
+		score += points;
+	}
+	
+	public float getScore()
+	{
+		return score;
+	}
+	float score;
+	
+	Gun currentGun;
+	GameObject gunNode;
+	
+	ArrayList<Gun> guns;
+	GameObject hpBarRoot;
+	
+	
+	float hpbarScale = 1;
 	/**
 	 * ect... 
 	 */

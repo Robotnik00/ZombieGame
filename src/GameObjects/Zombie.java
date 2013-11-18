@@ -48,7 +48,7 @@ public class Zombie extends Entity
 	public void setTarget(Entity target)
 	{
 		this.target = target;
-		ai.setTarget(target.getRootNode());
+		ai.setTarget(target);
 	}
 	
 

@@ -25,8 +25,8 @@ public class AIControl extends PhysicsObjectController
 		super.performAction();
 		if(target != null)
 		{
-			float targetX = target.getLocalX();
-			float targetY = target.getLocalY();
+			float targetX = target.getRootNode().getLocalX();
+			float targetY = target.getRootNode().getLocalY();
 			float objX = obj.getLocalX();
 			float objY = obj.getLocalY();
 			
@@ -42,18 +42,27 @@ public class AIControl extends PhysicsObjectController
 			forward.x = (float)Math.cos(deltaTarget);
 			forward.y = (float)Math.sin(deltaTarget);
 			setAppliedForce(forward);
+			float relX = target.getRootNode().getLocalX();
+			float relY = target.getRootNode().getLocalY();
+			if(Math.abs(obj.getLocalX() - relX) < .5f && Math.abs(obj.getLocalY() - relY) < .5f)
+			{
+				target.damage(dp);
+			}
+			
 			
 		}
 	}
 	
 	
-	public void setTarget(GameObject target)
+	public void setTarget(Entity target)
 	{
 		this.target = target;
 	}
 	
 	Vector2f forward;
 	
-	GameObject target = null;
+	Entity target = null;
 	Zombie character;
+	
+	float dp = .01f;
 }

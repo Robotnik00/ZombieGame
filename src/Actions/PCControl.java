@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Vector4f;
 import Engine.IGameEngine;
 import GameObjects.GameObject;
 import GameObjects.HandGunProjectile;
+import GameObjects.Player;
 import GameObjects.Universe;
 import InputCallbacks.KeyEventListener;
 import InputCallbacks.MouseEvent;
@@ -23,19 +24,21 @@ import InputCallbacks.MouseEventListener;
 public class PCControl extends PhysicsObjectController implements KeyEventListener, MouseEventListener
 {
 
-	public PCControl(GameObject obj, Universe universe, IGameEngine eng) 
+	public PCControl(Player player, IGameEngine eng) 
 	{
-		super(obj, universe.getHandle(), eng);
+		super(player.getRootNode(), player.getUniverse().getHandle(), eng);
 		
-		
-		this.universe = universe;
+		this.player = player;
 	}
 
 	@Override
 	public void performAction() 
 	{
 		super.performAction();
-		//processKeyEvents();
+		if(fileButtonDown)
+		{
+			player.getCurrentGun().fireGun();
+		}
 	}
 	
 	@Override
@@ -56,6 +59,10 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		else if(keyPressed == ACTION_KEY)
 		{
 			// not sure yet
+		}
+		else if(keyPressed == RELOAD_KEY)
+		{
+			player.getCurrentGun().reload();
 		}
 		
 	}
@@ -100,21 +107,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		}
 		if(event.getButton() == FIRE_BUTTON)
 		{	
-			unitDirection.x = eng.GetMouseX() - obj.getGlobalX();
-			unitDirection.y = eng.GetMouseY() - obj.getGlobalY();
-			unitDirection.normalise();
-			HandGunProjectile projectile = new HandGunProjectile(universe);		
-			Vector2f projectileVelocity = new Vector2f(unitDirection);
-			projectileVelocity.scale(10);
-			projectileVelocity.x +=  (float)(Math.random()-.5)*2;
-			projectileVelocity.y += (float)(Math.random()-.5)*2;
-			projectile.setVelocity(projectileVelocity);
-			
-			projectile.getRootNode().setLocalX(obj.getLocalX() + unitDirection.x/2.2f);
-			projectile.getRootNode().setLocalY(obj.getLocalY() + unitDirection.y/2.2f);
-			
-			universe.addEntity(projectile);
-			projectile.setTimeToLive(1000);
+			fileButtonDown = true;
 		}
 	}
 
@@ -125,6 +118,10 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 			moveButtonDown = false;
 			appliedForce.x = 0;
 			appliedForce.y = 0;
+		}
+		if(event.getButton() == FIRE_BUTTON)
+		{
+			fileButtonDown = false;
 		}
 	}
 
@@ -168,7 +165,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	int MOVE_LEFT  = Keyboard.KEY_A;
 	int MOVE_RIGHT = Keyboard.KEY_D;
 	int ACTION_KEY = Keyboard.KEY_E;
-	
+	int RELOAD_KEY = Keyboard.KEY_R;
 	
 	int MOVE_BUTTON = 2;
 	boolean moveButtonDown = false;
@@ -177,7 +174,8 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	boolean fileButtonDown = false;
 	
 	
-	float forceScale = 1; // amount of force to apply
+	float forceScale = 2; // amount of force to apply
 	
-	Universe universe;
+	Player player;
+	
 }

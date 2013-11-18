@@ -37,7 +37,8 @@ public class CollidablePhysics extends Physics
 			moveTotal.x += move.x;
 			moveTotal.y += move.y;
 		}
-		moveTotal.scale(.5f);
+		
+		moveTotal.scale(.3f);
 		obj.translate(moveTotal.x, moveTotal.y);
 	}
 	

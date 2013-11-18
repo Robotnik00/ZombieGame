@@ -8,9 +8,10 @@ import Geometry.AABB;
 public class HandGunProjectile extends Projectile
 {
 
-	public HandGunProjectile(Universe universe) {
-		super(universe);
+	public HandGunProjectile(Universe universe, Player player) {
+		super(universe, player);
 		// TODO Auto-generated constructor stub
+		randomizeDamage = .5f;
 	}
 
 	@Override
@@ -26,6 +27,7 @@ public class HandGunProjectile extends Projectile
 	
 	public void setTimeToLive(long ttl)
 	{
+		
 		TimeToLive timetolive = new TimeToLive(this, universe);
 		timetolive.setTimeToLive(ttl);
 		rootNode.addAction(timetolive);
@@ -41,6 +43,5 @@ public class HandGunProjectile extends Projectile
 		universe.removeEntity(this);
 		universe.addEntity(explosion);
 	}
-	
 	
 }

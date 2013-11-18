@@ -1,6 +1,7 @@
 package Actions;
 
 import GameObjects.Entity;
+import GameObjects.GameObject;
 import GameObjects.Universe;
 
 

@@ -52,6 +52,18 @@ public class BitmapFont
 	public void SetKerning(float kerning)
 		{	kerning_ = kerning;	}
 	
+	public void setBlendColor(float r, float g, float b, float blend)
+	{
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.blend = blend;
+	}
+	public void setAlpha(float alpha)
+	{
+		this.alpha = alpha;
+	}
+	
 	public float	GetKerning()
 		{	return kerning_; }
 	
@@ -170,8 +182,9 @@ public class BitmapFont
 			font_.SetSrcRect(dx, dy, dx+charWidth_, dy+charHeight_);
 			
 			// only use model matrix to move
+			font_.SetBlendColor(r, g, b, blend);
+			font_.SetAlpha(alpha);
 			font_.Draw(mmat_);
-			
 			// move to the next drawing position
 			mmat_.translate(new Vector2f(1.0f - kerning_,0.0f));
 			xpos += (1.0f - kerning_);
@@ -191,6 +204,9 @@ public class BitmapFont
 	//
 	// protected values
 	//
+	
+	protected float r, g ,b, blend;
+	protected float alpha = 1;
 	
 	protected float			x_,y_,xs_,ys_;
 	protected Matrix4f		mmat_;
