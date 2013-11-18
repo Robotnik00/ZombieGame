@@ -1,6 +1,7 @@
 package GameObjects;
 
 import Actions.AIControl;
+import AudioEngine.ISound;
 import Drawing.SimpleDraw;
 import Geometry.AABB;
 import TextureEngine.ITexture;
@@ -35,6 +36,15 @@ public class Zombie extends Entity
 		rootNode.setMass(.1f);
 		universe.addEntity(this);
 		
+		// blah
+		try 
+		{
+			hurt = universe.getAudioEngine().LoadSound("snd/Zombie/ZombieHurt.wav");
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void setOrientation(float angle)
@@ -50,7 +60,16 @@ public class Zombie extends Entity
 		this.target = target;
 		ai.setTarget(target);
 	}
-	
+	@Override
+	public void damage(float dp)
+	{
+		super.damage(dp);
+		
+		if(Math.random() > .5)
+		{
+			hurt.Play();
+		}
+	}
 
 	@Override
 	public void destroy() 
@@ -61,4 +80,6 @@ public class Zombie extends Entity
 	AIControl ai;
 	Entity target = null;
 	GameObject gimble;
+	
+	ISound hurt;
 }
