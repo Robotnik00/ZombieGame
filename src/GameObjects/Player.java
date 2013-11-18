@@ -89,7 +89,9 @@ public class Player extends Entity
 		{
 			playerHurt = null;
 			deathSound = null;
-			e.printStackTrace();
+			universe.getGameEngine().LogMessage(
+					"HandGun: Couldn't load 'snd/Player/PlayerHurt.wav', 'snd/Player/DeathSound.wav'");
+			//e.printStackTrace();
 		}
 		
 	}

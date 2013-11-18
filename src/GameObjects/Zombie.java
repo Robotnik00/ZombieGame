@@ -44,7 +44,9 @@ public class Zombie extends Entity
 		} 
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			universe.getGameEngine().LogMessage(
+					"Zombie: Couldn't load 'snd/Zombie/ZombieHurt.wav', 'snd/Zombie/ZombieDeath.wav'");
+			//e.printStackTrace();
 		}
 	}
 	

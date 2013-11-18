@@ -36,7 +36,9 @@ public class HandGun extends Gun
 		{
 			fireSound = null;
 			outOfAmmoSound = null;
-			e.printStackTrace();
+			universe.getGameEngine().LogMessage(
+					"HandGun: Couldn't load 'snd/guns/HandGun.wav', 'snd/guns/outOfAmmo.wav'");
+			//e.printStackTrace();
 		}
 		
 	}
