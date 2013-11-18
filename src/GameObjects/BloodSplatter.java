@@ -27,7 +27,7 @@ public class BloodSplatter extends Entity
 		universe.getBackgroundNode().addChild(rootNode);
 		
 		ttl = new TimeToLive(this, universe);
-		ttl.setTimeToLive(20000); // default 10 secs
+		ttl.setTimeToLive(20000); // default 20 secs
 		rootNode.addAction(ttl);
 
 		ttl.start();

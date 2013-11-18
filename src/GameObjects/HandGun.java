@@ -3,6 +3,7 @@ package GameObjects;
 import org.lwjgl.util.vector.Vector2f;
 
 import Actions.Action;
+import AudioEngine.ISound;
 import Drawing.SimpleDraw;
 
 public class HandGun extends Gun
@@ -26,6 +27,18 @@ public class HandGun extends Gun
 		rootNode.setDrawingInterface(gun);
 		
 		
+		try 
+		{
+			fireSound = universe.getAudioEngine().LoadSound("snd/guns/HandGun.wav");
+			outOfAmmoSound = universe.getAudioEngine().LoadSound("snd/guns/outOfAmmo.wav");
+		}
+		catch (Exception e) 
+		{
+			fireSound = null;
+			outOfAmmoSound = null;
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
@@ -40,6 +53,9 @@ public class HandGun extends Gun
 	{
 		if(ammo > 0 && !firing)
 		{
+			if(fireSound != null)
+				fireSound.Play();
+			
 			firing = true;
 			float orientation = rootNode.getOrientationWrt(universe.getHandle());
 			
@@ -75,6 +91,10 @@ public class HandGun extends Gun
 			rootNode.addAction(timer);
 			
 		}
+		else if(ammo <= 0 && outOfAmmoSound != null)
+		{
+			outOfAmmoSound.Play();
+		}
 	}
 
 	@Override
@@ -90,5 +110,7 @@ public class HandGun extends Gun
 		
 		clips ++;
 	}
-
+	
+	ISound fireSound;
+	ISound outOfAmmoSound;
 }
