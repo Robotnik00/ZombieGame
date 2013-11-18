@@ -34,6 +34,7 @@ public class OptionsMenuScreen extends BaseMenuScreen
 		gfx_ = menuController_.GetGraphicsController();
 		
 		// load menu graphics
+		ITexture background		= gfx_.LoadTexture("gfx/menu/menu-background4-center.png", 0x00202020);
 		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/options-title.png", 1);
 		ITexture backImage		= gfx_.LoadTexture("gfx/menu/back.png", 1);
 		ITexture incVolume		= gfx_.LoadTexture("gfx/menu/rightarrow.png", 0);
@@ -48,6 +49,11 @@ public class OptionsMenuScreen extends BaseMenuScreen
 		// (controls)
 		// (sound volume)
 		// (video settings?)
+		
+		// background image (covers lines)
+		ImageWidget back = new ImageWidget(background, -1.0f, -1.0f, 2.0f, 2.0f);
+		//imageArea = back.GetAreaOnScreen();
+		AddWidget(back);
 		
 		// title image
 		ImageWidget title = new ImageWidget(titleImage, -0.5f, 0.3f, 1.0f, 1.0f);

@@ -49,11 +49,11 @@ public class MainMenuScreen extends BaseMenuScreen
 		gfx_ = menuController_.GetGraphicsController();
 		
 		// load some images
-		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/game-title.png", 1);
-		ITexture newgameImage	= gfx_.LoadTexture("gfx/menu/newgame.png", 1);
-		ITexture optionsImage	= gfx_.LoadTexture("gfx/menu/options.png", 1);
-		ITexture scoresImage	= gfx_.LoadTexture("gfx/menu/highscores.png", 1);
-		ITexture quitImage		= gfx_.LoadTexture("gfx/menu/quitgame.png", 1);
+		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/game-title.png", 	0x00FFFFFF);
+		ITexture newgameImage	= gfx_.LoadTexture("gfx/menu/newgame.png", 		0x00FFFFFF);
+		ITexture optionsImage	= gfx_.LoadTexture("gfx/menu/options.png", 		0x00FFFFFF);
+		ITexture scoresImage	= gfx_.LoadTexture("gfx/menu/highscores.png", 	0x00FFFFFF);
+		ITexture quitImage		= gfx_.LoadTexture("gfx/menu/quitgame.png", 	0x00FFFFFF);
 		
 		ITexture textFont = gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
 		BitmapFont font = new BitmapFont();
@@ -61,22 +61,24 @@ public class MainMenuScreen extends BaseMenuScreen
 		font.SetKerning(0.45f);
 		
 		//		[Zombie Game]
-		// [start game]		[options]
-		// [high scores]	[quit]
+		// [start game]		[tutorial]
+		// [high scores]	[options]
+		// [credits]		[quit]
 		// tooltip at bottom
+		
+		float row1 = -0.01f;
+		float row2 = -0.25f;
+		float row3 = -0.5f;
+		float col1 = -0.5f;
+		float col2 = 0.1f;
 		
 		float scale=0.4f;
 		float[] imageArea = null;
 		
 		// "tooltip" widget at the bottom, other widget actions will change the text here
 		// to provide a description of the button the mouse is hovering over.
-		TextWidget tooltip = new TextWidget(
-				"",
-				font, -0.55f, -0.575f, 0.05f, 0.05f);
+		TextWidget tooltip = new TextWidget("", font, -0.55f, -0.575f, 0.05f, 0.05f);
 		AddWidget(tooltip);
-		
-		// text at the top
-		//AddWidget(new TextWidget("These are placeholder graphics! Fix them soon!", font, -1.0f, 0.7f, 0.05f, 0.05f));
 				
 		// title image
 		ImageWidget title = new ImageWidget(titleImage, -0.5f, 0.3f, 1.0f, 1.0f);
@@ -89,7 +91,7 @@ public class MainMenuScreen extends BaseMenuScreen
 		AddWidget(title);
 		
 		// newgame
-		ImageWidget newGameButton = new ImageWidget(newgameImage, -0.5f, -0.1f, scale, scale);
+		ImageWidget newGameButton = new ImageWidget(newgameImage, col1, row1, scale, scale);
 		imageArea = newGameButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction newGameDesc = new HoverTextWidgetAction(tooltip, 
@@ -104,8 +106,11 @@ public class MainMenuScreen extends BaseMenuScreen
 		
 		AddWidget(newGameButton);
 		
+		// tutorial
+		//
+		
 		// options
-		ImageWidget optionsButton = new ImageWidget(optionsImage, 0.1f, -0.1f, scale, scale);
+		ImageWidget optionsButton = new ImageWidget(optionsImage, col2, row2, scale, scale);
 		imageArea = optionsButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction optionsDesc = new HoverTextWidgetAction(tooltip, 
@@ -114,7 +119,6 @@ public class MainMenuScreen extends BaseMenuScreen
 		optionsDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		optionsButton.AddAction(optionsDesc);
 		
-		// click to change menu to options menu
 		ChangeMenuWidgetAction changeOptionsMenu = new ChangeMenuWidgetAction(new OptionsMenuScreen());
 		changeOptionsMenu.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		optionsButton.AddAction(changeOptionsMenu);
@@ -122,7 +126,7 @@ public class MainMenuScreen extends BaseMenuScreen
 		AddWidget(optionsButton);
 		
 		// high scores
-		ImageWidget scoresButton = new ImageWidget(scoresImage, -0.5f, -0.4f, scale, scale);
+		ImageWidget scoresButton = new ImageWidget(scoresImage, col1, row2, scale, scale);
 		imageArea = scoresButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction scoresDesc = new HoverTextWidgetAction(tooltip, 
@@ -131,15 +135,17 @@ public class MainMenuScreen extends BaseMenuScreen
 		scoresDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		scoresButton.AddAction(scoresDesc);
 		
-		// click to change menu to options menu
 		ChangeMenuWidgetAction changeHighScoresMenu = new ChangeMenuWidgetAction(new HighScoresMenuScreen());
 		changeHighScoresMenu.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		scoresButton.AddAction(changeHighScoresMenu);
 				
 		AddWidget(scoresButton);
 		
+		// credits
+		//
+		
 		// quit game
-		ImageWidget quitButton = new ImageWidget(quitImage, 0.1f, -0.4f, scale, scale);
+		ImageWidget quitButton = new ImageWidget(quitImage, col2, row3, scale, scale);
 		imageArea = quitButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction quitDesc = new HoverTextWidgetAction(tooltip, 
