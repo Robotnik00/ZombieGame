@@ -81,9 +81,12 @@ public class KeyPressMenuWidget extends IntConfigMenuWidget
 				parentMenu_.ReleaseFocus();
 				hasFocus_ = false;
 				
-				// get the first key value
-				game_.GetGameConfig().SetIntValue(variable_, keyPresses[0]);
-				lastValue_ = keyPresses[0];
+				// check the first key value, if not ESC then set it
+				if (keyPresses[0] != Keyboard.KEY_ESCAPE)
+				{
+					game_.GetGameConfig().SetIntValue(variable_, keyPresses[0]);
+					lastValue_ = keyPresses[0];
+				}
 				
 				// recalculate clickable area
 				CalculateClickArea(Keyboard.getKeyName(lastValue_));

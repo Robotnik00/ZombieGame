@@ -79,8 +79,8 @@ public class GameEngine implements IGameEngine
 	final String	GAME_TITLE			= "Zombie Game";
 	
 	// display size
-	final int		SCREEN_WIDTH		= 680;
-	final int		SCREEN_HEIGHT		= 450;
+	final int		SCREEN_WIDTH		= 640;
+	final int		SCREEN_HEIGHT		= 480;
 	
 	
 	
@@ -589,7 +589,7 @@ public class GameEngine implements IGameEngine
 		// opengl 3.2 for osx, 3.1 for everyone else.
 		// a lot of "PC"s still don't support 3.2! i am surprised.
 		int minorVersion = 1;
-		if (System.getProperty("os.name").indexOf("mac") >= 0)
+		if (System.getProperty("os.name").indexOf("Mac") >= 0)
 			minorVersion = 2;
 		
 		// opengl texture engine

@@ -58,7 +58,7 @@ public class IntConfigMenuWidget extends BaseMenuWidget
 	{
 		font_.SetPosition(x_, y_);
 		font_.SetScale(xs_, ys_);
-		font_.DrawString(String.format("%d",lastValue_));
+		font_.DrawString(String.format("% 8d",lastValue_));
 	}
 	
 	

@@ -15,15 +15,15 @@ import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL21.*;
+//import static org.lwjgl.opengl.GL21.*;
 import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL31.*;
-import static org.lwjgl.opengl.GL32.*;
+//import static org.lwjgl.opengl.GL31.*;
+//import static org.lwjgl.opengl.GL32.*;
 
 import java.nio.FloatBuffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.awt.Image;
+//import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.io.*;
@@ -465,6 +465,7 @@ public class GLTextureEngine implements ITextureEngine
 		}
 		
 		// make a buffer for the image, the next power of two size bigger
+		
 		bufWidth=1;
 		while (bufWidth < img.getWidth())	
 			bufWidth *= 2;
@@ -524,8 +525,8 @@ public class GLTextureEngine implements ITextureEngine
 				GL_TEXTURE_2D,		// 2d texture target
 				0,					// level of detail (0=normal)
 				GL_RGBA,			// format to store the image in video memory
-				img.getWidth(),
-				img.getHeight(),
+				bufWidth,
+				bufHeight,
 				0,					// border
 				GL_BGRA,			// format of the image data supplied
 				GL_UNSIGNED_BYTE,	// data is supplied as a buffer of bytes

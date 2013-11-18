@@ -111,7 +111,7 @@ public class MenuState implements IGameState, IMenuController
 		float ratio = (float)gfx_.GetScreenHeight() / (float)gfx_.GetScreenWidth();
 		gfx_.SetOrthoPerspective(-1.0f, 1.0f, -ratio, ratio);
 		
-		menuBackground_ = gfx_.LoadTexture("gfx/menu/menu-background.png", 1);//0x00FFFFFF);
+		menuBackground_ = gfx_.LoadTexture("gfx/menu/menu-background4.png", 1);//0x00FFFFFF);
 		
 		// create initial menu here
 		currentMenu_ = new MainMenuScreen();
@@ -146,9 +146,9 @@ public class MenuState implements IGameState, IMenuController
 		gfx_.ClearScreen();
 		
 		// draw a background
-		//menuBackground_.SetPos(-1.0f, -1.0f);
-		//menuBackground_.SetScale(2.0f, 2.0f);
-		//menuBackground_.Draw();
+		menuBackground_.SetPos(-1.0f, -1.0f);
+		menuBackground_.SetScale(2.0f, 2.0f);
+		menuBackground_.Draw();
 		
 		currentMenu_.Draw(delta);
 	}

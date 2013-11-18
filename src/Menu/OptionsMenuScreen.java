@@ -39,7 +39,7 @@ public class OptionsMenuScreen extends BaseMenuScreen
 		ITexture incVolume		= gfx_.LoadTexture("gfx/menu/rightarrow.png", 0);
 		ITexture decVolume		= gfx_.LoadTexture("gfx/menu/leftarrow.png", 0);
 		
-		ITexture fontImage = gfx_.LoadTexture("font1.png", 0);
+		ITexture fontImage = gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
 		BitmapFont font = new BitmapFont();
 		font.SetFont(fontImage);
 		font.SetKerning(0.45f);
@@ -62,23 +62,23 @@ public class OptionsMenuScreen extends BaseMenuScreen
 		
 		// control settings
 		KeyPressMenuWidget keyUpButton = new KeyPressMenuWidget(
-				font, "move_up",	0.3f, 0.1f, 0.05f, 0.05f);
+				font, "move_up",	0.25f, 0.1f, 0.05f, 0.05f);
 		AddWidget(keyUpButton);
 		
 		KeyPressMenuWidget keyDownButton = new KeyPressMenuWidget(
-				font, "move_down", 	0.3f, 0.05f, 0.05f, 0.05f);
+				font, "move_down", 	0.25f, 0.05f, 0.05f, 0.05f);
 		AddWidget(keyDownButton);
 		
 		KeyPressMenuWidget keyLeftButton = new KeyPressMenuWidget(
-				font, "move_left", 	0.3f, 0.0f, 0.05f, 0.05f);
+				font, "move_left", 	0.25f, 0.0f, 0.05f, 0.05f);
 		AddWidget(keyLeftButton);
 		
 		KeyPressMenuWidget keyRightButton = new KeyPressMenuWidget(
-				font, "move_right", 0.3f, -0.05f, 0.05f, 0.05f);
+				font, "move_right", 0.25f, -0.05f, 0.05f, 0.05f);
 		AddWidget(keyRightButton);
 		
 		KeyPressMenuWidget keyAction = new KeyPressMenuWidget(
-				font, "action", 	0.3f, -0.1f, 0.05f, 0.05f);
+				font, "action", 	0.25f, -0.1f, 0.05f, 0.05f);
 		AddWidget(keyAction);
 		
 		// sound volume tag

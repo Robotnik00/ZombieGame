@@ -55,7 +55,7 @@ public class MainMenuScreen extends BaseMenuScreen
 		ITexture scoresImage	= gfx_.LoadTexture("gfx/menu/highscores.png", 1);
 		ITexture quitImage		= gfx_.LoadTexture("gfx/menu/quitgame.png", 1);
 		
-		ITexture textFont = gfx_.LoadTexture("font1.png", 0);
+		ITexture textFont = gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
 		BitmapFont font = new BitmapFont();
 		font.SetFont(textFont);
 		font.SetKerning(0.45f);
@@ -65,36 +65,36 @@ public class MainMenuScreen extends BaseMenuScreen
 		// [high scores]	[quit]
 		// tooltip at bottom
 		
-		float scale=0.5f;
+		float scale=0.4f;
 		float[] imageArea = null;
 		
 		// "tooltip" widget at the bottom, other widget actions will change the text here
 		// to provide a description of the button the mouse is hovering over.
 		TextWidget tooltip = new TextWidget(
-				"Hover the mouse over a button for a description!",
-				font, -1.0f, -0.75f, 0.05f, 0.05f);
+				"",
+				font, -0.55f, -0.575f, 0.05f, 0.05f);
 		AddWidget(tooltip);
 		
 		// text at the top
-		AddWidget(new TextWidget("These are placeholder graphics! Fix them soon!", font, -1.0f, 0.7f, 0.05f, 0.05f));
+		//AddWidget(new TextWidget("These are placeholder graphics! Fix them soon!", font, -1.0f, 0.7f, 0.05f, 0.05f));
 				
 		// title image
 		ImageWidget title = new ImageWidget(titleImage, -0.5f, 0.3f, 1.0f, 1.0f);
 		imageArea = title.GetAreaOnScreen();
-		HoverTextWidgetAction titleDesc = new HoverTextWidgetAction(tooltip, 
+		/*HoverTextWidgetAction titleDesc = new HoverTextWidgetAction(tooltip, 
 				"Coming Soon: Zombie Game 3: The search for Zombie Game 2.",
 				"Hover the mouse over a button to see a description!");
 		titleDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
-		title.AddAction(titleDesc);
+		title.AddAction(titleDesc);*/
 		AddWidget(title);
 		
 		// newgame
-		ImageWidget newGameButton = new ImageWidget(newgameImage, -0.75f, -0.1f, scale, scale);
+		ImageWidget newGameButton = new ImageWidget(newgameImage, -0.5f, -0.1f, scale, scale);
 		imageArea = newGameButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction newGameDesc = new HoverTextWidgetAction(tooltip, 
-				"The fight begins here! (eventually!)",
-				"Hover the mouse over a button to see a description!");
+				"The fight begins here!",
+				"");
 		newGameDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		newGameButton.AddAction(newGameDesc);
 		
@@ -105,12 +105,12 @@ public class MainMenuScreen extends BaseMenuScreen
 		AddWidget(newGameButton);
 		
 		// options
-		ImageWidget optionsButton = new ImageWidget(optionsImage, 0.25f, -0.1f, scale, scale);
+		ImageWidget optionsButton = new ImageWidget(optionsImage, 0.1f, -0.1f, scale, scale);
 		imageArea = optionsButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction optionsDesc = new HoverTextWidgetAction(tooltip, 
-				"Configure game controls and audio/video settings.",
-				"Hover the mouse over a button to see a description!");
+				"Configure controls and other settings.",
+				"");
 		optionsDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		optionsButton.AddAction(optionsDesc);
 		
@@ -122,12 +122,12 @@ public class MainMenuScreen extends BaseMenuScreen
 		AddWidget(optionsButton);
 		
 		// high scores
-		ImageWidget scoresButton = new ImageWidget(scoresImage, -0.75f, -0.5f, scale, scale);
+		ImageWidget scoresButton = new ImageWidget(scoresImage, -0.5f, -0.4f, scale, scale);
 		imageArea = scoresButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction scoresDesc = new HoverTextWidgetAction(tooltip, 
-				"View the Top 10 high scores!",
-				"Hover the mouse over a button to see a description!");
+				"View the top 10 high scores!",
+				"");
 		scoresDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		scoresButton.AddAction(scoresDesc);
 		
@@ -139,12 +139,12 @@ public class MainMenuScreen extends BaseMenuScreen
 		AddWidget(scoresButton);
 		
 		// quit game
-		ImageWidget quitButton = new ImageWidget(quitImage, 0.25f, -0.5f, scale, scale);
+		ImageWidget quitButton = new ImageWidget(quitImage, 0.1f, -0.4f, scale, scale);
 		imageArea = quitButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction quitDesc = new HoverTextWidgetAction(tooltip, 
 				"Go ahead and leave. See if I care.",
-				"Hover the mouse over a button to see a description!");
+				"");
 		quitDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		quitButton.AddAction(quitDesc);
 		

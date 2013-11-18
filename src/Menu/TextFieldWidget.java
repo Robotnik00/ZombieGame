@@ -44,6 +44,9 @@ public class TextFieldWidget extends BaseMenuWidget
 		clickArea_[1] = 0.0f;
 		clickArea_[2] = 0.0f;
 		clickArea_[3] = 0.0f;
+		
+		currentString_ = "";
+		lastString_ = "";
 	}
 	
 	
@@ -160,7 +163,7 @@ public class TextFieldWidget extends BaseMenuWidget
 		String finalString = currentString_;
 		
 		if (hasFocus_ && drawCursor_)
-			finalString += '|';
+			finalString += '_';
 		
 		// draw int value as a key
 		font_.SetPosition(x_, y_);

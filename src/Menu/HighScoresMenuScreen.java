@@ -36,7 +36,7 @@ public class HighScoresMenuScreen extends BaseMenuScreen
 		// load menu graphics
 		ITexture titleImage	= gfx_.LoadTexture("gfx/menu/highscores-title.png", 1);
 		ITexture backImage = gfx_.LoadTexture("gfx/menu/back.png", 1);
-		ITexture fontImage = gfx_.LoadTexture("font1.png", 0);
+		ITexture fontImage = gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
 		BitmapFont font = new BitmapFont();
 		font.SetFont(fontImage);
 		font.SetKerning(0.45f);
@@ -55,22 +55,22 @@ public class HighScoresMenuScreen extends BaseMenuScreen
 		for (int i=0; i < 10; i++)
 		{
 			StringConfigMenuWidget scoreName = new StringConfigMenuWidget(
-					font, "score"+i+"_name", -0.5f, 0.1f-(i*0.05f), 0.05f, 0.05f);
+					font, "score"+i+"_name", -0.5f, 0.2f-(i*0.05f), 0.05f, 0.05f);
 			AddWidget(scoreName);
 			
 			IntConfigMenuWidget scorePoints = new IntConfigMenuWidget(
-					font, "score"+i+"_points", 0.3f, 0.1f-(i*0.05f), 0.05f, 0.05f);
+					font, "score"+i+"_points", 0.25f, 0.2f-(i*0.05f), 0.05f, 0.05f);
 			AddWidget(scorePoints);
 		}
 		
 		// temporary: text field
-		TextWidget labelTextField = new TextWidget("Enter your name below:", font, -0.5f, -0.45f, 0.05f, 0.05f);
+		TextWidget labelTextField = new TextWidget("Enter your name below:", font, -0.5f, -0.35f, 0.05f, 0.05f);
 		AddWidget(labelTextField);
-		TextFieldWidget textField = new TextFieldWidget(font, "score0_name", -0.5f, -0.5f, 0.05f, 0.05f);
+		TextFieldWidget textField = new TextFieldWidget(font, "score0_name", -0.5f, -0.4f, 0.05f, 0.05f);
 		AddWidget(textField);
 		
 		// back button
-		ImageWidget backButton = new ImageWidget(backImage, -0.10f, -0.6f, 0.2f, 0.2f);
+		ImageWidget backButton = new ImageWidget(backImage, -0.10f, -0.5f, 0.2f, 0.2f);
 		imageArea = backButton.GetAreaOnScreen();
 		
 		PreviousMenuWidgetAction prevAction = new PreviousMenuWidgetAction();
