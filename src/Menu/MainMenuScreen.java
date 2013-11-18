@@ -95,8 +95,7 @@ public class MainMenuScreen extends BaseMenuScreen
 		imageArea = newGameButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction newGameDesc = new HoverTextWidgetAction(tooltip, 
-				"The fight begins here!",
-				"");
+				"The fight starts here!", "");
 		newGameDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		newGameButton.AddAction(newGameDesc);
 		
