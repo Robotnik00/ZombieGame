@@ -29,15 +29,15 @@ public class HandGun extends Gun
 		
 		try 
 		{
-			fireSound = universe.getAudioEngine().LoadSound("snd/guns/HandGun.wav");
-			outOfAmmoSound = universe.getAudioEngine().LoadSound("snd/guns/outOfAmmo.wav");
+			fireSound = universe.getAudioEngine().LoadSound("snd/guns/pew.wav");
+			outOfAmmoSound = universe.getAudioEngine().LoadSound("snd/guns/click2.wav");
 		}
 		catch (Exception e) 
 		{
 			fireSound = null;
 			outOfAmmoSound = null;
 			universe.getGameEngine().LogMessage(
-					"HandGun: Couldn't load 'snd/guns/HandGun.wav', 'snd/guns/outOfAmmo.wav'");
+					"HandGun: Couldn't load 'snd/guns/pew.wav', 'snd/guns/click2.wav'");
 			//e.printStackTrace();
 		}
 		
@@ -53,11 +53,46 @@ public class HandGun extends Gun
 	@Override
 	public void fireGun() 
 	{
+		// bug: if you are out of ammo, there is no delay between "clicks."
+		// here is some different code to fix that, we may want to generalize this and move it to Gun?
+		
+		if (universe.getGameEngine().GetTime() - lastTriggerTime > (1000/rateOfFire))
+		{
+			// now we can *try* shoot.
+			// if no ammo, we make a click.
+			// we apply the same delay to shooting as we do to "pulling the trigger"
+			
+			lastTriggerTime = universe.getGameEngine().GetTime();
+			
+			if (ammo > 0)
+			{
+				if(fireSound != null)
+					fireSound.Play();
+				
+				float orientation = rootNode.getOrientationWrt(universe.getHandle());
+				
+				Vector2f velocity = new Vector2f((float)Math.cos(orientation) + (float)(Math.random()-.5)*.2f, 
+												(float)Math.sin(orientation) + (float)(Math.random()-.5)*.2f);
+				
+				velocity.scale(projectileSpeed);
+				
+				HandGunProjectile bullet = new HandGunProjectile(universe, player);
+				bullet.setStartingLoc(rootNode.getXWrt(universe.getHandle()), rootNode.getYWrt(universe.getHandle()));
+				bullet.setVelocity(velocity);
+				bullet.setTimeToLive(1000);
+				universe.addEntity(bullet);
+				ammo -= 1;
+			}
+			else
+			{
+				if (outOfAmmoSound != null)
+					outOfAmmoSound.Play();
+			}
+		}
+		
+		/*
 		if(ammo > 0 && !firing)
 		{
-			if(fireSound != null)
-				fireSound.Play();
-			
 			firing = true;
 			float orientation = rootNode.getOrientationWrt(universe.getHandle());
 			
@@ -91,12 +126,12 @@ public class HandGun extends Gun
 			};
 			
 			rootNode.addAction(timer);
-			
 		}
 		else if(ammo <= 0 && outOfAmmoSound != null)
 		{
 			outOfAmmoSound.Play();
 		}
+		*/
 	}
 
 	@Override
@@ -115,4 +150,6 @@ public class HandGun extends Gun
 	
 	ISound fireSound;
 	ISound outOfAmmoSound;
+	
+	long	lastTriggerTime=0;
 }

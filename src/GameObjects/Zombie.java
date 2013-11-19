@@ -37,15 +37,28 @@ public class Zombie extends Entity
 		universe.addEntity(this);
 		
 		// blah
+		sndHurt = new ISound[3];
+		sndIdle = new ISound[2];
+		sndDeath = new ISound[1];
+		
+		sndHurt[0]=null; sndHurt[1]=null; sndHurt[2]=null;
+		sndIdle[0]=null; sndIdle[1]=null;
+		sndDeath[0]=null;
+		
 		try 
 		{
-			hurt = universe.getAudioEngine().LoadSound("snd/Zombie/ZombieHurt.wav");
-			zombieDeath = universe.getAudioEngine().LoadSound("snd/Zombie/ZombieDeath.wav");
+			sndHurt[0] = universe.getAudioEngine().LoadSound("snd/Zombie/zombie_hurt1.wav");
+			sndHurt[1] = universe.getAudioEngine().LoadSound("snd/Zombie/zombie_hurt2.wav");
+			sndHurt[2] = universe.getAudioEngine().LoadSound("snd/Zombie/zombie_hurt3.wav");
+			
+			sndIdle[0] = universe.getAudioEngine().LoadSound("snd/Zombie/zombie_idle1.wav");
+			sndIdle[1] = universe.getAudioEngine().LoadSound("snd/Zombie/zombie_idle2.wav");
+			
+			sndDeath[0] = universe.getAudioEngine().LoadSound("snd/Zombie/zombie_die1.wav");
 		} 
 		catch (Exception e) 
 		{
-			universe.getGameEngine().LogMessage(
-					"Zombie: Couldn't load 'snd/Zombie/ZombieHurt.wav', 'snd/Zombie/ZombieDeath.wav'");
+			universe.getGameEngine().LogMessage("Zombie: Couldn't load zombie sounds.");
 			//e.printStackTrace();
 		}
 	}
@@ -68,9 +81,12 @@ public class Zombie extends Entity
 	{
 		super.damage(dp);
 		
-		if(Math.random() > .5 && hurt != null)
+		// choose a random hurt sound
+		int r = (int)Math.floor((Math.random()*3));
+		
+		if(Math.random() > .5 && sndHurt[r] != null)
 		{
-			hurt.Play();
+			sndHurt[r].Play();
 		}
 	}
 
@@ -78,13 +94,14 @@ public class Zombie extends Entity
 	public void destroy() 
 	{
 		universe.removeEntity(this);
-		if(zombieDeath != null)
-			zombieDeath.Play();
+		if(sndDeath[0] != null)
+			sndDeath[0].Play();
 	}
 	AIControl ai;
 	Entity target = null;
 	GameObject gimble;
 	
-	ISound hurt;
-	ISound zombieDeath;
+	ISound[] sndIdle;
+	ISound[] sndHurt;
+	ISound[] sndDeath;
 }
