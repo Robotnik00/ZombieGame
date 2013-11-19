@@ -11,9 +11,9 @@ import Utility.BitmapFont;
 
 
 
-public class HighScoresMenuScreen extends BaseMenuScreen
+public class CreditsMenuScreen extends BaseMenuScreen
 {
-	public HighScoresMenuScreen()
+	public CreditsMenuScreen()
 	{
 		super();
 	}
@@ -35,7 +35,7 @@ public class HighScoresMenuScreen extends BaseMenuScreen
 		
 		// load menu graphics
 		ITexture background		= gfx_.LoadTexture("gfx/menu/menu-background4-center.png", 0x00202020);
-		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/highscores-title.png", 1);
+		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/credits-title.png", 1);
 		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 1);
 		
 		ITexture fontImage 		= gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
@@ -44,8 +44,8 @@ public class HighScoresMenuScreen extends BaseMenuScreen
 		font.SetFont(fontImage);
 		font.SetKerning(0.45f);
 		
-		//	[high scores]
-		// (name)	(score) x10
+		//		[credits]
+		// title	names
 		// 		[back]
 		
 		// background image (covers lines)
@@ -57,27 +57,30 @@ public class HighScoresMenuScreen extends BaseMenuScreen
 		imageArea = title.GetAreaOnScreen();
 		AddWidget(title);
 		
-		// 10 labels for high score name and the score
-		// FIXME: magic number for # of high score entries
-		for (int i=0; i < 10; i++)
-		{
-			StringConfigMenuWidget scoreName = new StringConfigMenuWidget(
-					font, "score"+i+"_name", -0.5f, 0.2f-(i*0.05f), 0.05f, 0.05f);
-			AddWidget(scoreName);
-			
-			IntConfigMenuWidget scorePoints = new IntConfigMenuWidget(
-					font, "score"+i+"_points", 0.25f, 0.2f-(i*0.05f), 0.05f, 0.05f);
-			AddWidget(scorePoints);
-		}
-		
-		// temporary: text field
-		TextWidget labelTextField = new TextWidget("Enter your name below:", font, -0.5f, -0.35f, 0.05f, 0.05f);
-		AddWidget(labelTextField);
-		TextFieldWidget textField = new TextFieldWidget(font, "score0_name", -0.5f, -0.4f, 0.05f, 0.05f);
-		AddWidget(textField);
+		TextWidget credits = new TextWidget(
+			"Art               Will Bahnmiller  \n" +
+			//"                  Google Images    \n" +
+			"\n"+
+			"Documentation     Craig Camacho    \n"+
+			"                  Erwin Holzhauser \n"+
+			"                  Cort Lyons       \n"+
+			"\n"+
+			"Programming       Jacob Millsaps   \n"+
+			"                  Jackson Ritchey  \n"+
+			"\n"+
+			"Sound             Will Bahnmiller  \n"+
+			"                  Erwin Holzhauser \n"+
+			"                  Cort Lyons       \n"+
+			"\n"+
+			"Developed for COP4331C Fall 2013 at UCF",
+			font,
+			-0.5f, 0.2f,
+			0.045f, 0.045f
+			);
+		AddWidget(credits);
 		
 		// back button
-		ImageWidget backButton = new ImageWidget(backImage, -0.10f, -0.5f, 0.2f, 0.2f);
+		ImageWidget backButton = new ImageWidget(backImage, -0.10f, -0.55f, 0.2f, 0.2f);
 		imageArea = backButton.GetAreaOnScreen();
 		
 		PreviousMenuWidgetAction prevAction = new PreviousMenuWidgetAction();

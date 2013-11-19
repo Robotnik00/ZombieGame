@@ -51,8 +51,10 @@ public class MainMenuScreen extends BaseMenuScreen
 		// load some images
 		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/game-title.png", 	0x00FFFFFF);
 		ITexture newgameImage	= gfx_.LoadTexture("gfx/menu/newgame.png", 		0x00FFFFFF);
+		ITexture tutorialImage	= gfx_.LoadTexture("gfx/menu/tutorial.png", 	0x00FFFFFF);
 		ITexture optionsImage	= gfx_.LoadTexture("gfx/menu/options.png", 		0x00FFFFFF);
 		ITexture scoresImage	= gfx_.LoadTexture("gfx/menu/highscores.png", 	0x00FFFFFF);
+		ITexture creditsImage	= gfx_.LoadTexture("gfx/menu/credits.png", 		0x00FFFFFF);
 		ITexture quitImage		= gfx_.LoadTexture("gfx/menu/quitgame.png", 	0x00FFFFFF);
 		
 		ITexture textFont = gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
@@ -66,7 +68,7 @@ public class MainMenuScreen extends BaseMenuScreen
 		// [credits]		[quit]
 		// tooltip at bottom
 		
-		float row1 = -0.01f;
+		float row1 = -0.03f;
 		float row2 = -0.25f;
 		float row3 = -0.5f;
 		float col1 = -0.5f;
@@ -83,11 +85,6 @@ public class MainMenuScreen extends BaseMenuScreen
 		// title image
 		ImageWidget title = new ImageWidget(titleImage, -0.5f, 0.3f, 1.0f, 1.0f);
 		imageArea = title.GetAreaOnScreen();
-		/*HoverTextWidgetAction titleDesc = new HoverTextWidgetAction(tooltip, 
-				"Coming Soon: Zombie Game 3: The search for Zombie Game 2.",
-				"Hover the mouse over a button to see a description!");
-		titleDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
-		title.AddAction(titleDesc);*/
 		AddWidget(title);
 		
 		// newgame
@@ -106,15 +103,24 @@ public class MainMenuScreen extends BaseMenuScreen
 		AddWidget(newGameButton);
 		
 		// tutorial
-		//
+		ImageWidget tutorialButton = new ImageWidget(tutorialImage, col2, row1, scale, scale);
+		imageArea = tutorialButton.GetAreaOnScreen();
+		
+		HoverTextWidgetAction tutorialDesc = new HoverTextWidgetAction(tooltip, 
+				"Learn how to play!", "");
+		tutorialDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		tutorialButton.AddAction(tutorialDesc);
+		
+		// change menu screen action
+		
+		AddWidget(tutorialButton);
 		
 		// options
 		ImageWidget optionsButton = new ImageWidget(optionsImage, col2, row2, scale, scale);
 		imageArea = optionsButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction optionsDesc = new HoverTextWidgetAction(tooltip, 
-				"Configure controls and other settings.",
-				"");
+				"Configure controls and other settings.", "");
 		optionsDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		optionsButton.AddAction(optionsDesc);
 		
@@ -129,8 +135,7 @@ public class MainMenuScreen extends BaseMenuScreen
 		imageArea = scoresButton.GetAreaOnScreen();
 		
 		HoverTextWidgetAction scoresDesc = new HoverTextWidgetAction(tooltip, 
-				"View the top 10 high scores!",
-				"");
+				"View the top 10 high scores!", "");
 		scoresDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		scoresButton.AddAction(scoresDesc);
 		
@@ -141,7 +146,19 @@ public class MainMenuScreen extends BaseMenuScreen
 		AddWidget(scoresButton);
 		
 		// credits
-		//
+		ImageWidget creditsButton = new ImageWidget(creditsImage, col1, row3, scale, scale);
+		imageArea = creditsButton.GetAreaOnScreen();
+		
+		HoverTextWidgetAction creditsDesc = new HoverTextWidgetAction(tooltip, 
+				"Who made this game?", "");
+		creditsDesc.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		creditsButton.AddAction(creditsDesc);
+		
+		ChangeMenuWidgetAction changeCreditsScoresMenu = new ChangeMenuWidgetAction(new CreditsMenuScreen());
+		changeCreditsScoresMenu.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		creditsButton.AddAction(changeCreditsScoresMenu);
+				
+		AddWidget(creditsButton);
 		
 		// quit game
 		ImageWidget quitButton = new ImageWidget(quitImage, col2, row3, scale, scale);
