@@ -2,6 +2,8 @@ package Actions;
 
 import java.util.ArrayList;
 
+import org.lwjgl.util.vector.Vector4f;
+
 import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import GameObjects.GameObject;
@@ -14,6 +16,14 @@ public class UpdateHUD implements Action
 	public UpdateHUD(Player player)
 	{
 		this.player = player;
+		GameObject background = new GameObject();
+		SimpleDraw drawBackground = new SimpleDraw(player.getUniverse().getTextureEngine().LoadTexture("gfx/Black.png", 1));
+		background.setDrawingInterface(drawBackground);
+		player.getUniverse().getHUD().addChild(background);
+		background.scale(2, .3f);
+		background.setLocalY(.65f);
+		drawBackground.setColor(new Vector4f(0,0,0,.5f));
+		
 		GameObject HP = new GameObject();
 		GameObject hpText = new GameObject();
 		hpBarRoot = new GameObject();
