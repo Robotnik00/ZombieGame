@@ -56,6 +56,6 @@ public abstract class Projectile extends Entity
 	Player player;
 	float randomizeDamage = 0;
 	float randomizeScore = 1;
-	float dp = .5f;
+	float dp = .2f;
 	long timeToLive = 1000;
 }
