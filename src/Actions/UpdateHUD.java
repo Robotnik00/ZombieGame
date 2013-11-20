@@ -81,7 +81,7 @@ public class UpdateHUD implements Action
 		for(int i = 0; i < player.getPowerups().size(); i++)
 		{
 			powerups.add(player.getPowerups().get(i));
-			powerups.get(i).getRootNode().setLocalX(i);
+			powerups.get(i).getRootNode().setLocalX(.7f*i);
 			powerups.get(i).getRootNode().setLocalY(0);
 			powerupNode.addChild(powerups.get(i).getRootNode());
 			prevPowerups[i] = powerups.get(i).getRootNode();
