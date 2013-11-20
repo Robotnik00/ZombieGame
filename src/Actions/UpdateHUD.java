@@ -65,7 +65,9 @@ public class UpdateHUD implements Action
 		
 		powerupNode = new GameObject();
 		powerupNode.scale(.2f, .2f);
-		powerupNode.setLocalY(.625f);
+		powerupNode.setLocalY(.7f);
+		
+		
 		player.getUniverse().getHUD().addChild(powerupNode);
 		prevPowerups = new GameObject[0];
 	}
@@ -88,11 +90,19 @@ public class UpdateHUD implements Action
 		}
 		
 		prevPowerups = new GameObject[player.getPowerups().size()];
+		
+		int x = 0;
+		int y = 0;
 		for(int i = 0; i < player.getPowerups().size(); i++)
 		{
+			if(i >= 6)
+			{
+				y = 1;
+				x = 6;
+			}
 			powerups.add(player.getPowerups().get(i));
-			powerups.get(i).getRootNode().setLocalX(.7f*i);
-			powerups.get(i).getRootNode().setLocalY(0);
+			powerups.get(i).getRootNode().setLocalX(.7f*(i - x));
+			powerups.get(i).getRootNode().setLocalY(-y*.7f);
 			powerupNode.addChild(powerups.get(i).getRootNode());
 			prevPowerups[i] = powerups.get(i).getRootNode();
 		}
