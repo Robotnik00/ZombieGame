@@ -1,6 +1,10 @@
 package GameObjects;
 
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector4f;
+
 import Actions.AIControl;
+import Actions.TimeToLive;
 import AudioEngine.ISound;
 import Drawing.SimpleDraw;
 import Geometry.AABB;
@@ -96,6 +100,22 @@ public class Zombie extends Entity
 		universe.removeEntity(this);
 		if(sndDeath[0] != null)
 			sndDeath[0].Play();
+		if(target instanceof Player)
+		{
+			((Player)target).addToScore(1000);
+		}		InGameText text = new InGameText(universe);
+		
+		text.scaleText(.2f);
+		int dscore = 1000;
+		text.setText("" + dscore);
+		text.setColor(new Vector4f(1,0,1,1));
+		TimeToLive ttl = new TimeToLive(text, universe);
+		ttl.setTimeToLive(500);
+		text.getRootNode().setTranslationalVelocity(new Vector2f(0,.5f));
+		text.setStartingLoc(rootNode.getLocalX(), rootNode.getLocalY());
+		text.getRootNode().addAction(ttl);
+		universe.addEntity(text);
+		ttl.start();
 	}
 	AIControl ai;
 	Entity target = null;

@@ -16,7 +16,6 @@ public abstract class Projectile extends Entity
 
 	public void inflictDamage(Entity entity)
 	{
-		entity.damage(dp + (float)(Math.random()-.5)*randomizeDamage);
 		InGameText text = new InGameText(universe);
 			
 		text.scaleText(.2f);
@@ -42,7 +41,8 @@ public abstract class Projectile extends Entity
 			splatter.setStartingLoc(entity.getRootNode().getLocalX(), entity.getRootNode().getLocalY());
 		}
 		
-		
+
+		entity.damage(dp + (float)(Math.random()-.5)*randomizeDamage);
 		
 		
 	}
