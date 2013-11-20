@@ -59,7 +59,6 @@ public class CreditsMenuScreen extends BaseMenuScreen
 		
 		TextWidget credits = new TextWidget(
 			"Art               Will Bahnmiller  \n" +
-			//"                  Google Images    \n" +
 			"\n"+
 			"Documentation     Craig Camacho    \n"+
 			"                  Erwin Holzhauser \n"+
@@ -68,10 +67,11 @@ public class CreditsMenuScreen extends BaseMenuScreen
 			"Programming       Jacob Millsaps   \n"+
 			"                  Jackson Ritchey  \n"+
 			"\n"+
-			"Sound             Will Bahnmiller  \n"+
+			"Sound Effects     Will Bahnmiller  \n"+
 			"                  Erwin Holzhauser \n"+
 			"                  Cort Lyons       \n"+
-			"\n",
+			"\n"+
+			"Developed for COP4331C Fall 2013 at UCF",
 			font,
 			-0.5f, 0.2f,
 			0.045f, 0.045f

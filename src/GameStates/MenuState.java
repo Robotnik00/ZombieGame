@@ -35,6 +35,7 @@ public class MenuState implements IGameState, IMenuController
 	{
 		menuStack_ = new Stack<IMenuScreen>();
 		currentMenu_ = null;	// initialize to a menu or something.
+		refresh_ = false;
 	}
 	
 	//
@@ -138,11 +139,16 @@ public class MenuState implements IGameState, IMenuController
 			}
 		}
 		
+		//refresh_ = true;
+		
 		currentMenu_.Update();
 	}
 	
 	public void	Draw(float delta)
 	{
+		//if (refresh_ == false)
+		//	return;
+		
 		gfx_.ClearScreen();
 		
 		// draw a background
@@ -151,6 +157,8 @@ public class MenuState implements IGameState, IMenuController
 		menuBackground_.Draw();
 		
 		currentMenu_.Draw(delta);
+		
+		//refresh_ = false;
 	}
 	
 	
@@ -164,6 +172,8 @@ public class MenuState implements IGameState, IMenuController
 	protected IAudioEngine		sfx_;
 	
 	protected ITexture			menuBackground_;
+
+	protected boolean			refresh_;
 	
 	protected Stack<IMenuScreen>	menuStack_;
 	protected IMenuScreen			currentMenu_;

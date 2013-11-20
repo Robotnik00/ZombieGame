@@ -11,9 +11,9 @@ import Utility.BitmapFont;
 
 
 
-public class Tutorial2MenuScreen extends BaseMenuScreen
+public class Tutorial3MenuScreen extends BaseMenuScreen
 {
-	public Tutorial2MenuScreen()
+	public Tutorial3MenuScreen()
 	{
 		super();
 	}
@@ -39,9 +39,9 @@ public class Tutorial2MenuScreen extends BaseMenuScreen
 		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 1);
 		ITexture nextImage 		= gfx_.LoadTexture("gfx/menu/next.png", 1);
 		
-		ITexture wpnShotgun		= gfx_.LoadTexture("gfx/powerups/shotgun_shell.png", 1);
-		ITexture wpnMachine		= gfx_.LoadTexture("gfx/powerups/machinegun_shells.png", 1);
-		ITexture wpnFlame		= gfx_.LoadTexture("gfx/powerups/flamethrower_can.png", 1);
+		ITexture wpnHealth			= gfx_.LoadTexture("gfx/powerups/RestoreHealth.png", 1);
+		ITexture wpnInvulnerable	= gfx_.LoadTexture("gfx/powerups/invulnerability.png", 1);
+		ITexture wpnQuad			= gfx_.LoadTexture("gfx/powerups/quad_damage.png", 1);
 		
 		ITexture fontImage = gfx_.LoadGrayscaleFont("gfx/font.png", true);
 		BitmapFont font = new BitmapFont();
@@ -65,16 +65,16 @@ public class Tutorial2MenuScreen extends BaseMenuScreen
 		//AddWidget(stickyNote);
 		
 		TextWidget tutorialText = new TextWidget(
-			"Many different weapons can be found\n" +
-			"during the game. You'll need them!\n" +
+			"Powerups can greatly enhance your arsenal!\n" +
 			"\n" +
-			"Weapons replace your starting pistol\n" +
-			"and have only limited ammo. Use the \n" +
-			"Action button (default = E) to switch\n" +
-			"between weapons.\n" +
+			"Health restore acts instantly and\n" +
+			"resets your health to 100%!\n" +
+			"\n" +
+			"Other powerups last for 15 seconds and\n" +
+			"only one of them can be active at a time.\n" +
 			"\n\n\n\n\n\n" +
-			"Shotgun      Machine Gun    Flamethrower\n" +
-			"",
+			"Health     Invulnerability    Quad\n" +
+			"Restore                       Damage",
 			font,
 			-0.5f, 0.2f,
 			0.045f, 0.045f
@@ -83,11 +83,11 @@ public class Tutorial2MenuScreen extends BaseMenuScreen
 		
 		// weapon powerup icons
 		float row=-0.33f;
-		ImageWidget imgShotgun = new ImageWidget(wpnShotgun, -0.5f, row, 0.2f, 0.2f);
+		ImageWidget imgShotgun = new ImageWidget(wpnHealth, -0.5f, row, 0.2f, 0.2f);
 		AddWidget(imgShotgun);
-		ImageWidget imgMachine = new ImageWidget(wpnMachine, -0.125f, row, 0.2f, 0.2f);
+		ImageWidget imgMachine = new ImageWidget(wpnInvulnerable, -0.125f, row, 0.2f, 0.2f);
 		AddWidget(imgMachine);
-		ImageWidget imgFlame = new ImageWidget(wpnFlame, 0.23f, row, 0.2f, 0.2f);
+		ImageWidget imgFlame = new ImageWidget(wpnQuad, 0.23f, row, 0.2f, 0.2f);
 		AddWidget(imgFlame);
 		
 		// back button
@@ -101,14 +101,14 @@ public class Tutorial2MenuScreen extends BaseMenuScreen
 		AddWidget(backButton);
 		
 		// next button
-		ImageWidget nextButton = new ImageWidget(nextImage, 0.10f, -0.55f, 0.2f, 0.2f);
-		imageArea = nextButton.GetAreaOnScreen();
+		//ImageWidget nextButton = new ImageWidget(nextImage, 0.10f, -0.55f, 0.2f, 0.2f);
+		//imageArea = nextButton.GetAreaOnScreen();
 		
-		ChangeMenuWidgetAction nextAction = new ChangeMenuWidgetAction(new Tutorial3MenuScreen());
-		nextAction.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
-		nextButton.AddAction(nextAction);
+		//ChangeMenuWidgetAction nextAction = new ChangeMenuWidgetAction(new Tutorial2MenuScreen());
+		//nextAction.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		//nextButton.AddAction(nextAction);
 		
-		AddWidget(nextButton);
+		//AddWidget(nextButton);
 	}
 	
 	public void	Draw(float delta)
