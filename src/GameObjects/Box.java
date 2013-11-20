@@ -40,18 +40,14 @@ public class Box extends Entity
 	public void createObject(Universe universe)
 	{
 		ITexture boxTexture = universe.getTextureEngine().LoadTexture("gfx/Environment/box_normal.png", 0);
-		CollidablePhysics col = new CollidablePhysics(rootNode, universe.getHandle(), universe.getGameEngine());
-		rootNode.addAction(col);
-		rootNode.setMass(.1f);
 		rootNode.setDrawingInterface(new SimpleDraw(boxTexture));
 		rootNode.setBoundingBox(new AABB(1f,1f));
 		rootNode.setProxemityBounds(new AABB(1,1));
 		rootNode.setCollidable(true);
 		universe.addEntity(this);
-		
-		
+
 	}
-	
+
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
@@ -62,7 +58,6 @@ public class Box extends Entity
 			entity.setStartingLoc(rootNode.getLocalX(), rootNode.getLocalY());
 		}
 	}
-
 	
 	@Override
 	public void damage(float dp)
@@ -73,8 +68,8 @@ public class Box extends Entity
 		{
 			ITexture damaged = universe.getTextureEngine().LoadTexture("gfx/Environment/box_damaged.png", 0);
 			rootNode.setDrawingInterface(new SimpleDraw(damaged));
-		}	
-	}	
-	
+		}
+		
+	}
 	Entity entity;
 }

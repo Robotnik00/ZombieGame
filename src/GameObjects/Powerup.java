@@ -22,9 +22,6 @@ public abstract class Powerup extends Entity
 			{
 				if(rootNode.getBoundingBox() != null && itsplayer.getRootNode().getBoundingBox().intersects(rootNode.getBoundingBox()))
 				{
-					System.out.printf("hey\n");
-					
-
 					universe.getHandle().removeChild(rootNode);
 					itsplayer.addPowerup(ref);
 					applyPowerup(itsplayer);
