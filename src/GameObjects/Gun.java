@@ -1,6 +1,9 @@
 package GameObjects;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import Actions.Action;
+import AudioEngine.ISound;
 import TextureEngine.ITexture;
 
 public abstract class Gun extends Entity
@@ -12,8 +15,30 @@ public abstract class Gun extends Entity
 		this.player = player;
 	}
 	
-	public abstract void fireGun();	
-	public abstract void stopFiring();
+	public void fireGun()
+	{
+		if (universe.getGameEngine().GetTime() - lastTriggerTime > (1000/rateOfFire))
+		{
+			lastTriggerTime = universe.getGameEngine().GetTime();
+			
+			if (ammo > 0)
+			{
+				if(fireSound != null)
+					fireSound.Play();
+		
+				onFire();
+				ammo -= 1;
+			}
+			else
+			{
+				if (outOfAmmoSound != null)
+					outOfAmmoSound.Play();
+			}
+		}
+	}
+	
+	protected abstract void onFire();
+	
 	// reload the gun
 	public void reload() 
 	{
@@ -70,8 +95,12 @@ public abstract class Gun extends Entity
 	long reloadTime = 1000; // time it takes to reload
 	long startReloadTime;
 	long startFiringTime;
+	
+	long	lastTriggerTime=0;
 	boolean reloading = false;
 	boolean firing = false;
 	ITexture icon;
 	ITexture texture;
+	ISound fireSound;
+	ISound outOfAmmoSound;
 }
