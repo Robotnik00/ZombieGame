@@ -29,17 +29,4 @@ public class PhysicsBox extends Box
 	}
 	
 	
-	@Override
-	public void damage(float dp)
-	{
-		super.damage(dp);
-		
-		if(hp/maxHp < .5f)
-		{
-			ITexture damaged = universe.getTextureEngine().LoadTexture("gfx/Environment/box_damaged.png", 0);
-			rootNode.setDrawingInterface(new SimpleDraw(damaged));
-		}	
-	}
-
-	
 }
