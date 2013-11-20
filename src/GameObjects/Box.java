@@ -11,10 +11,25 @@ import Geometry.AABB;
 public class Box extends Entity
 {
 
-	public Box(Universe universe) {
+	public Box(Universe universe, Player player) {
 		super(universe);
 		hp = 10;
 		maxHp = 10;
+		
+		float i = (float)Math.random();
+		if(i > .8f)
+		{
+			entity = new MachineGunPowerup(universe, player);
+		}
+		else if(i > .6f && i < .8f)
+		{
+			entity = new ShotgunPowerup(universe, player);
+		}
+		else 
+		{
+			entity = null;
+		}
+		
 	}
 
 	@Override
@@ -29,13 +44,19 @@ public class Box extends Entity
 		rootNode.setProxemityBounds(new AABB(1,1));
 		rootNode.setCollidable(true);
 		universe.addEntity(this);
-
+		
+		
 	}
 	
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 		universe.removeEntity(this);
+		if(entity != null)
+		{
+			universe.addEntity(entity);
+			entity.setStartingLoc(rootNode.getLocalX(), rootNode.getLocalY());
+		}
 	}
 
 	
@@ -50,4 +71,6 @@ public class Box extends Entity
 			rootNode.setDrawingInterface(new SimpleDraw(damaged));
 		}	
 	}	
+	
+	Entity entity;
 }
