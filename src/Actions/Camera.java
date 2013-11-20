@@ -74,7 +74,7 @@ public class Camera implements Action
 	float lag = 2f;
 	
 	float distanceFactor = 2;
-	float scaleDistance = .7f;
+	float scaleDistance = .6f;
 	float maxScale = .8f;
 	float scale = 1;
 	float prevScale = 1;

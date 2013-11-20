@@ -39,6 +39,17 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		{
 			player.getCurrentGun().fireGun();
 		}
+		
+		
+		unitDirection.x = mouseDirection.x + keyBoardDirection.x;
+		unitDirection.y = mouseDirection.y + keyBoardDirection.y;
+		
+		if(unitDirection.length()>0)
+			unitDirection.normalise();
+		
+		unitDirection.scale(forceScale);
+		appliedForce.x = unitDirection.x;
+		appliedForce.y = unitDirection.y;
 	}
 	
 	@Override
@@ -46,15 +57,19 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	{
 		if(keyPressed == MOVE_UP)
 		{
+			keyBoardDirection.y += 1;
 		}
 		else if(keyPressed == MOVE_DOWN)
 		{
+			keyBoardDirection.y -= 1;
 		}
 		else if(keyPressed == MOVE_LEFT)
 		{
+			keyBoardDirection.x -= 1;
 		}
 		else if(keyPressed == MOVE_RIGHT)
 		{
+			keyBoardDirection.x += 1;
 		}
 		else if(keyPressed == ACTION_KEY)
 		{
@@ -72,19 +87,19 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 
 		if(keyReleased == MOVE_UP)
 		{
-			//removeForce(unitDirection);
+			keyBoardDirection.y -= 1;
 		}
 		else if(keyReleased == MOVE_DOWN)
 		{
-			//removeForce(new Vector2f(-forceScale,0));
+			keyBoardDirection.y += 1;
 		}
 		else if(keyReleased == MOVE_LEFT)
 		{
-			//removeForce(new Vector2f(0,forceScale));
+			keyBoardDirection.x += 1;
 		}
 		else if(keyReleased == MOVE_RIGHT)
 		{
-			//removeForce(new Vector2f(0,-forceScale));
+			keyBoardDirection.x -= 1;
 		}
 		else if(keyReleased == ACTION_KEY)
 		{
@@ -97,13 +112,20 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		if(event.getButton() == MOVE_BUTTON)
 		{
 			moveButtonDown = true;
-			unitDirection.x = eng.GetMouseX() - obj.getGlobalX();
-			unitDirection.y = eng.GetMouseY() - obj.getGlobalY();
+			
+			unitDirection.x -= mouseDirection.x;
+			unitDirection.y -= mouseDirection.y;
+			mouseDirection.x = eng.GetMouseX() - obj.getGlobalX();
+			mouseDirection.y = eng.GetMouseY() - obj.getGlobalY();
+			mouseDirection.normalise();
+			
+			unitDirection.x += mouseDirection.x;
+			unitDirection.y += mouseDirection.y;
 			unitDirection.normalise();
 			force.x = unitDirection.x;
 			force.y = unitDirection.y;
 			force.scale(forceScale);
-			appliedForce = unitDirection;
+			//appliedForce = unitDirection;
 		}
 		if(event.getButton() == FIRE_BUTTON)
 		{	
@@ -116,8 +138,9 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		if(event.getButton() == MOVE_BUTTON)
 		{
 			moveButtonDown = false;
-			appliedForce.x = 0;
-			appliedForce.y = 0;
+			
+			mouseDirection.x = 0;
+			mouseDirection.y = 0;
 		}
 		if(event.getButton() == FIRE_BUTTON)
 		{
@@ -130,20 +153,21 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		// TODO Auto-generated method stub
 		if(moveButtonDown)
 		{	
-			unitDirection.x = eng.GetMouseX() - obj.getGlobalX();
-			unitDirection.y = eng.GetMouseY() - obj.getGlobalY();
+			
+			unitDirection.x -= mouseDirection.x;
+			unitDirection.y -= mouseDirection.y;
+			mouseDirection.x = eng.GetMouseX() - obj.getGlobalX();
+			mouseDirection.y = eng.GetMouseY() - obj.getGlobalY();
+			mouseDirection.normalise();
+			unitDirection.x += mouseDirection.x;
+			unitDirection.y += mouseDirection.y;
+			
 			unitDirection.normalise();
 			unitDirection.normalise();
 			force.x = unitDirection.x;
 			force.y = unitDirection.y;
 			force.scale(forceScale);
-			//obj.translate(unitDirection.x/10, unitDirection.y/10);
 			appliedForce = force;
-		}
-		else 
-		{
-			appliedForce.x = 0;
-			appliedForce.y = 0;
 		}
 	}
 
@@ -156,8 +180,9 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		return forceScale;
 	}	
 	
-	
-	Vector2f unitDirection = new Vector2f(1,0);
+	Vector2f keyBoardDirection = new Vector2f();
+	Vector2f mouseDirection = new Vector2f();
+	Vector2f unitDirection = new Vector2f();
 	Vector2f force = new Vector2f();
 	
 	int MOVE_UP    = Keyboard.KEY_W;

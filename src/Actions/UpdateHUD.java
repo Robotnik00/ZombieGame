@@ -62,7 +62,7 @@ public class UpdateHUD implements Action
 	@Override
 	public void performAction() 
 	{
-		String score = "score: " + (float)Math.round(player.getScore()*1000)/1000f;
+		String score = "score: " + player.getScore();
 		scoretext.setText(score);
 		
 		hpBarScale = player.getHp()/player.getMaxHp();

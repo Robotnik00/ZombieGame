@@ -20,7 +20,7 @@ public abstract class Projectile extends Entity
 		InGameText text = new InGameText(universe);
 			
 		text.scaleText(.2f);
-		float dscore = (float)Math.round((dp + randomizeScore*Math.random())*100)/100f;
+		int dscore = (int)Math.round((dp + randomizeScore*Math.random())*100);
 		text.setText("" + dscore);
 		text.setColor(new Vector4f(0,1,0,1));
 		TimeToLive ttl = new TimeToLive(text, universe);

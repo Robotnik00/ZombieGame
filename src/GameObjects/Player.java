@@ -140,12 +140,12 @@ public class Player extends Entity
 			deathSound.Play();
 	}
 	
-	public void addToScore(float points)
+	public void addToScore(int points)
 	{
 		score += points;
 	}
 	
-	public float getScore()
+	public int getScore()
 	{
 		return score;
 	}
@@ -167,7 +167,7 @@ public class Player extends Entity
 	
 	
 	
-	float score;
+	int score;
 	
 	Gun currentGun;
 	GameObject gunNode;
