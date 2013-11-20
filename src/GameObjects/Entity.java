@@ -50,7 +50,14 @@ public abstract class Entity
 	{
 		return universe;
 	}
-	
+	public void setHP(float hp)
+	{
+		this.hp = hp;
+	}
+	public void setMaxHp(float maxHp)
+	{
+		this.maxHp = maxHp;
+	}
 	public float getHp()
 	{
 		return hp;

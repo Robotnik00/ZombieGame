@@ -25,6 +25,10 @@ public class Box extends Entity
 		{
 			entity = new ShotgunPowerup(universe, player);
 		}
+		else if(i > .4f && i < .6f)
+		{
+			entity = new RestoreHealth(universe, player);
+		}
 		else 
 		{
 			entity = null;

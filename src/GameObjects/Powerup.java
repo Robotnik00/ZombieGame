@@ -24,10 +24,10 @@ public abstract class Powerup extends Entity
 				{
 					System.out.printf("hey\n");
 					
-					
-					applyPowerup(itsplayer);
+
 					universe.getHandle().removeChild(rootNode);
 					itsplayer.addPowerup(ref);
+					applyPowerup(itsplayer);
 				}
 			}
 			
