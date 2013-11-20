@@ -13,8 +13,8 @@ public class Box extends Entity
 
 	public Box(Universe universe, Player player) {
 		super(universe);
-		hp = 10;
-		maxHp = 10;
+		hp = 3;
+		maxHp = 3;
 		
 		float i = (float)Math.random();
 		if(i > .8f)
