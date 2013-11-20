@@ -33,7 +33,7 @@ public class ExampleLevel extends Universe
 	protected void buildUniverse() 
 	{
 		// load the tile texture
-		ITexture tile = gfx.LoadTexture("image3.bmp", 1);
+		ITexture tile = gfx.LoadTexture("gfx/Environment/papertile.png", 1);
 		
 		// create a tile drawing class for drawing a portion of the level.
 		TileDraw tileTexture = new TileDraw(tile);

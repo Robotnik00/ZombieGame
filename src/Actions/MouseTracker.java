@@ -47,7 +47,7 @@ public class MouseTracker extends Physics
 		
 		return angle;
 	}
-	float lag = 5;
+	float lag = 3;
 	GameObject obj;
 	IGameEngine game;
 }

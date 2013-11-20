@@ -40,7 +40,8 @@ public class OptionsMenuScreen extends BaseMenuScreen
 		ITexture incVolume		= gfx_.LoadTexture("gfx/menu/rightarrow.png", 0);
 		ITexture decVolume		= gfx_.LoadTexture("gfx/menu/leftarrow.png", 0);
 		
-		ITexture fontImage = gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
+		//ITexture fontImage = gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
+		ITexture fontImage = gfx_.LoadGrayscaleFont("gfx/font.png", true);
 		BitmapFont font = new BitmapFont();
 		font.SetFont(fontImage);
 		font.SetKerning(0.45f);

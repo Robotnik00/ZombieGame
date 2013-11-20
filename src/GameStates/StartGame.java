@@ -21,7 +21,7 @@ import GameObjects.PhysicsBox;
 import GameObjects.Player;
 import GameObjects.Powerup;
 import GameObjects.ShotgunPowerup;
-import GameObjects.StaticBox;
+//import GameObjects.StaticBox;
 import GameObjects.Zombie;
 import Geometry.AABB;
 import TextureEngine.ITexture;
@@ -54,24 +54,52 @@ public class StartGame extends EventListenerState
 //		entity = new ExampleEntity(level);
 		Player player = new Player(level);
 
+		// changed to add objects at a random distance and angle
+		float dist, angle;
+		float minDistance = 2.0f;
+		
 		for(int i = 0; i < 50; i++)
 		{
 			Box sb = new Box(level, player);
-			sb.setStartingLoc((float)(Math.random()-.5)*50, (float)(Math.random()-.5)*50);
+			
+			dist = (float)Math.random() * 50.0f + minDistance;
+			angle = (float)Math.random() * 2.0f * (float)Math.PI;
+			
+			sb.setStartingLoc(
+				(float)(Math.cos(angle)*dist), 
+				(float)(Math.sin(angle)*dist)
+			);
 		}
 		for(int i = 0; i < 5; i++)
 		{
-
 			PhysicsBox b = new PhysicsBox(level, player);
-			b.setStartingLoc((float)(Math.random()-.5)*5, (float)(Math.random()-.5)*5);
+			//b.setStartingLoc((float)(Math.random()-.5)*5, (float)(Math.random()-.5)*5);
+			
+			dist = (float)Math.random() * 5.0f + minDistance;
+			angle = (float)Math.random() * 2.0f * (float)Math.PI;
+			
+			b.setStartingLoc(
+				(float)(Math.cos(angle)*dist), 
+				(float)(Math.sin(angle)*dist)
+			);
 		}
 
 		for(int i = 0; i < 25; i++)
 		{
 			Zombie z1 = new Zombie(level);
-			z1.setStartingLoc((float)(Math.random()-.5)*20, (float)(Math.random()-.5)*20);
+			
+			dist = (float)Math.random() * 20.0f + minDistance;
+			angle = (float)Math.random() * 20.0f * (float)Math.PI;
+			
+			z1.setStartingLoc(
+				(float)(Math.cos(angle)*dist), 
+				(float)(Math.sin(angle)*dist)
+			);
+			
+			//z1.setStartingLoc((float)(Math.random()-.5)*20, (float)(Math.random()-.5)*20);
 			z1.setTarget(player);
 		}
+		
 		Powerup p1 = new ShotgunPowerup(level, player);
 		p1.setStartingLoc(2f, 2f);
 		level.addEntity(p1);

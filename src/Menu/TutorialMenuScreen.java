@@ -11,9 +11,9 @@ import Utility.BitmapFont;
 
 
 
-public class CreditsMenuScreen extends BaseMenuScreen
+public class TutorialMenuScreen extends BaseMenuScreen
 {
-	public CreditsMenuScreen()
+	public TutorialMenuScreen()
 	{
 		super();
 	}
@@ -35,17 +35,18 @@ public class CreditsMenuScreen extends BaseMenuScreen
 		
 		// load menu graphics
 		ITexture background		= gfx_.LoadTexture("gfx/menu/menu-background4-center.png", 0x00202020);
-		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/credits-title.png", 1);
+		ITexture sticky			= gfx_.LoadTexture("gfx/tutorial/tutorial_all.png", 0x00FFFFFF);
+		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/tutorial-title.png", 1);
 		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 1);
+		ITexture nextImage 		= gfx_.LoadTexture("gfx/menu/next.png", 1);
 		
-		//ITexture fontImage 		= gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
 		ITexture fontImage = gfx_.LoadGrayscaleFont("gfx/font.png", true);
 		BitmapFont font = new BitmapFont();
 		font.SetFont(fontImage);
 		font.SetKerning(0.45f);
 		
-		//		[credits]
-		// title	names
+		//		[tutorial]
+		//   (text)		(sticky note)
 		// 		[back]
 		
 		// background image (covers lines)
@@ -57,29 +58,33 @@ public class CreditsMenuScreen extends BaseMenuScreen
 		imageArea = title.GetAreaOnScreen();
 		AddWidget(title);
 		
-		TextWidget credits = new TextWidget(
-			"Art               Will Bahnmiller  \n" +
-			//"                  Google Images    \n" +
-			"\n"+
-			"Documentation     Craig Camacho    \n"+
-			"                  Erwin Holzhauser \n"+
-			"                  Cort Lyons       \n"+
-			"\n"+
-			"Programming       Jacob Millsaps   \n"+
-			"                  Jackson Ritchey  \n"+
-			"\n"+
-			"Sound             Will Bahnmiller  \n"+
-			"                  Erwin Holzhauser \n"+
-			"                  Cort Lyons       \n"+
-			"\n",
+		ImageWidget stickyNote = new ImageWidget(sticky, 0.3f, 0.0f, 1.0f, 1.0f);
+		AddWidget(stickyNote);
+		
+		TextWidget tutorialText = new TextWidget(
+			"Welcome to Zombie Game,\n" +
+			"the interactive drawing!\n" +
+			"\n" +
+			"The goal is to survive as long as \n" +
+			"you can against an endless horde \n" +
+			"of zombies! \n" + 
+			"\n" +
+			"The basic controls are listed on the \n" +
+			"sticky note (keyboard buttons can be \n" +
+			"reconfigured in the options menu). \n" +
+			"\n" +
+			"Use the movement keys to move around,\n" +
+			"aim with the mouse, and shoot with the\n" +
+			"left mouse button. You can continuously\n" +
+			"shoot by holding down the left button.\n",
 			font,
 			-0.5f, 0.2f,
 			0.045f, 0.045f
 			);
-		AddWidget(credits);
+		AddWidget(tutorialText);
 		
 		// back button
-		ImageWidget backButton = new ImageWidget(backImage, -0.10f, -0.55f, 0.2f, 0.2f);
+		ImageWidget backButton = new ImageWidget(backImage, -0.30f, -0.55f, 0.2f, 0.2f);
 		imageArea = backButton.GetAreaOnScreen();
 		
 		PreviousMenuWidgetAction prevAction = new PreviousMenuWidgetAction();
@@ -87,6 +92,16 @@ public class CreditsMenuScreen extends BaseMenuScreen
 		backButton.AddAction(prevAction);
 		
 		AddWidget(backButton);
+		
+		// next button
+		ImageWidget nextButton = new ImageWidget(nextImage, 0.10f, -0.55f, 0.2f, 0.2f);
+		imageArea = nextButton.GetAreaOnScreen();
+		
+		ChangeMenuWidgetAction nextAction = new ChangeMenuWidgetAction(new Tutorial2MenuScreen());
+		nextAction.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		nextButton.AddAction(nextAction);
+		
+		AddWidget(nextButton);
 	}
 	
 	public void	Draw(float delta)

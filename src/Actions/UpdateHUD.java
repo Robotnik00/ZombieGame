@@ -16,20 +16,22 @@ public class UpdateHUD implements Action
 	public UpdateHUD(Player player)
 	{
 		this.player = player;
+		/*
 		GameObject background = new GameObject();
-		SimpleDraw drawBackground = new SimpleDraw(player.getUniverse().getTextureEngine().LoadTexture("gfx/Black.png", 1));
+		SimpleDraw drawBackground = new SimpleDraw(player.getUniverse().getTextureEngine().LoadTexture("gfx/white.png", 1));
 		background.setDrawingInterface(drawBackground);
 		player.getUniverse().getHUD().addChild(background);
-		background.scale(2, .3f);
-		background.setLocalY(.65f);
+		background.scale(2, .2f);
+		background.setLocalY(.75f);
 		drawBackground.setColor(new Vector4f(0,0,0,.5f));
+		*/
 		
 		GameObject HP = new GameObject();
 		GameObject hpText = new GameObject();
 		hpBarRoot = new GameObject();
 		hpBar = new GameObject();
 		
-		DrawText hptext = new DrawText(player.getUniverse().getTextureEngine(), "font1.png");
+		DrawText hptext = new DrawText(player.getUniverse().getTextureEngine(), "gfx/font.png");
 		hpText.setDrawingInterface(hptext);
 		hptext.setText("HP:");
 		HP.translate(-5f, 0);
@@ -53,15 +55,15 @@ public class UpdateHUD implements Action
 		player.getUniverse().getHUD().addChild(HP);
 		HP.scale(.25f, .25f);
 		
-		HP.translate(-15, 12);
+		HP.translate(-15, 14);
 		
 		
 		GameObject score = new GameObject();
-		scoretext = new DrawText(player.getUniverse().getTextureEngine(), "font1.png");
+		scoretext = new DrawText(player.getUniverse().getTextureEngine(), "gfx/font.png");
 		score.setDrawingInterface(scoretext);
 		player.getUniverse().getHUD().addChild(score);
 		score.scale(.05f,.05f);
-		score.translate(-12, 12);
+		score.translate(-12, 14);
 		
 		powerupNode = new GameObject();
 		powerupNode.scale(.2f, .2f);

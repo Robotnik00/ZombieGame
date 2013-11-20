@@ -92,7 +92,7 @@ public interface IGameEngine
 	//
 	
 	/** 
-	 * @return time elapsed since the program started in milliseconds.
+	 * @return time elapsed since the program started in milliseconds. Use for performance metrics only!
 	 */
 	public long	GetTime();
 	

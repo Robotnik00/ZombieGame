@@ -104,6 +104,14 @@ public interface ITextureEngine
 	 */
 	public ITexture	LoadTexture(String filename, int colorkey);
 	
+	/**
+	 * Loads a grayscale image, copying the color component into the alpha component (useful for fonts).
+	 * 
+	 * @param filename Name of image file.
+	 * @param colorkeyWhite If true, white is the transparent color (alpha=0) and black is the opaque color (alpha=1).
+	 * @return
+	 */
+	public ITexture LoadGrayscaleFont(String filename, boolean colorkeyWhite);
 	
 	//
 	// utility functions

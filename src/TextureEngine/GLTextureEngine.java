@@ -565,6 +565,135 @@ public class GLTextureEngine implements ITextureEngine
 		return gltex;
 	}
 	
+	public GLTexture LoadGrayscaleFont(String filename, boolean colorkeyWhite)
+	{
+		int tex;
+		int bufWidth,bufHeight,pitch;
+		int pixel;
+		GLTexture gltex = null;
+		
+		// search loaded textures, see if we have already loaded this.
+		for (int i=0; i < textures_.size(); i++)
+		{
+			if (textures_.get(i).GetTextureName() == filename)
+			{
+				//system_.LogMessage("GLTextureEngine::LoadTexture: Filename matched loaded texture: "+filename);
+				return textures_.get(i);
+			}
+		}
+		
+		// the texture hasn't been loaded yet, so load the texture file
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File(filename));
+		} catch (Exception e) {
+			system_.LogMessage("GLTextureEngine::LoadTexture: Failed to load file: "+filename+"\n"+e.getMessage());
+			return null;
+		}
+		
+		// make a buffer for the image, the next power of two size bigger
+		
+		bufWidth=1;
+		while (bufWidth < img.getWidth())	
+			bufWidth *= 2;
+		bufHeight=1;
+		while (bufHeight < img.getHeight())	
+			bufHeight *= 2;
+		
+		// non power of two images will be padded
+		if (bufWidth != img.getWidth() || bufHeight != img.getHeight())
+		{
+			system_.LogMessage(
+				"GLTextureEngine::LoadTexture: Warning: Image size is not a power of two! Image data will be padded.\n");
+		}
+		
+		// allocate array for pixel data
+		int[] pixelData = new int [bufWidth*bufHeight];
+		for (int i=0; i < pixelData.length; i++)
+			pixelData[i] = 0;
+		
+		// copy image data to padded buffer
+		pitch=bufWidth;
+		for (int y=0; y < img.getHeight(); y++)
+		{
+			for (int x=0; x < img.getWidth(); x++)
+			{
+				// get"RGB" returns "ARGB" which is actually "BGRA". go figure.
+				// also, flip the image vertically.
+				pixel = img.getRGB(x, img.getHeight()-y-1);
+				
+				// assume the image is a grayscale image (r=g=b),
+				// copy the red component into the alpha component.
+				pixel &= 0x00FFFFFF;	// get rid of the alpha component
+				if (colorkeyWhite)
+					pixel |= (0xFF000000 - ((pixel & 0x00FF0000) << 8));
+				else
+					pixel |= ((pixel & 0x00FF0000) << 8);
+				
+				pixelData[y*pitch+x] = pixel;
+			}
+		}
+		
+		// make a buffer for the pixel data (can't use wrap() here?)
+		IntBuffer texBuf = BufferUtils.createIntBuffer(pixelData.length);
+		texBuf.put(pixelData);
+		texBuf.flip();
+		
+		// i guess we need to activate a texture unit for this?
+		glActiveTexture(GL_TEXTURE0);
+		
+		// create an opengl texture buffer
+		tex = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, tex);
+		
+		// each component is 1 byte
+		glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+		
+		// upload the texture data
+		glTexImage2D(
+				GL_TEXTURE_2D,		// 2d texture target
+				0,					// level of detail (0=normal)
+				GL_RGBA,			// format to store the image in video memory
+				bufWidth,
+				bufHeight,
+				0,					// border
+				GL_BGRA,			// format of the image data supplied
+				GL_UNSIGNED_BYTE,	// data is supplied as a buffer of bytes
+				texBuf
+				);
+		
+		// smooth filtering when scaled up
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		
+		// texture repeats for coords > 1.0
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);		
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		
+		// generate mipmaps?
+		glGenerateMipmap(GL_TEXTURE_2D);
+		
+		// gl cleanup
+		glBindTexture(GL_TEXTURE_2D,0);
+		
+		// pack this stuff into a GLTexture class and add it to the texture resource list
+		gltex = new GLTexture(
+			this,
+			bufWidth, bufHeight,
+			filename,
+			tex,
+			tex_programId_,
+			tex_uModel_, tex_uView_,
+			tex_uTexModel_,
+			tex_uAlphaMul_, 
+			tex_uBlendColor_, tex_uBlendMul_
+			);
+		
+		textures_.add(gltex);
+		
+		return gltex;
+	}
+	
 	public float[] ScaleWindowCoordinates(int x, int y)
 	{
 		float sx = ((float)x / displayWidth_) * (perRight - perLeft) + perLeft;

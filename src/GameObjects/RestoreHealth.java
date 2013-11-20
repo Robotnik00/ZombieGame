@@ -14,7 +14,7 @@ public class RestoreHealth extends Powerup
 	public void createObject(Universe universe) 
 	{
 		super.createObject(universe);
-		ITexture health = universe.getTextureEngine().LoadTexture("gfx/Powerups/RestoreHealth.png", 0);
+		ITexture health = universe.getTextureEngine().LoadTexture("gfx/Powerups/RestoreHealth.png", 1);
 		SimpleDraw drawPowerup = new SimpleDraw(health);
 		
 		rootNode.setDrawingInterface(drawPowerup);
@@ -33,5 +33,5 @@ public class RestoreHealth extends Powerup
 		
 	}
 
-
+	
 }

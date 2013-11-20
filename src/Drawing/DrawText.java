@@ -17,7 +17,8 @@ public class DrawText implements DrawObject
 		textRenderer = new BitmapFont();
 		
 		if(font == null)
-			font = gfx.LoadTexture(font_name, 0);
+		//	font = gfx.LoadTexture(font_name, 0);
+			font = gfx.LoadGrayscaleFont(font_name, true);
 		
 		textRenderer.SetFont(font);
 		textRenderer.SetKerning(.4f);

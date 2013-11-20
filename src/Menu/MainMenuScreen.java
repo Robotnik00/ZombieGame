@@ -57,7 +57,7 @@ public class MainMenuScreen extends BaseMenuScreen
 		ITexture creditsImage	= gfx_.LoadTexture("gfx/menu/credits.png", 		0x00FFFFFF);
 		ITexture quitImage		= gfx_.LoadTexture("gfx/menu/quitgame.png", 	0x00FFFFFF);
 		
-		ITexture textFont = gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
+		ITexture textFont = gfx_.LoadGrayscaleFont("gfx/font.png", true);
 		BitmapFont font = new BitmapFont();
 		font.SetFont(textFont);
 		font.SetKerning(0.45f);
@@ -112,6 +112,9 @@ public class MainMenuScreen extends BaseMenuScreen
 		tutorialButton.AddAction(tutorialDesc);
 		
 		// change menu screen action
+		ChangeMenuWidgetAction changeTutorialMenu = new ChangeMenuWidgetAction(new TutorialMenuScreen());
+		changeTutorialMenu.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		tutorialButton.AddAction(changeTutorialMenu);
 		
 		AddWidget(tutorialButton);
 		

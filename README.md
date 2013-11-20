@@ -13,18 +13,20 @@ WHAT IS DONE (tested and working!):
 * Bitmapped font drawing.  
 * Elastic collisions. note: faster the update freq the better collisions will look. Let jack know if you ever notice any bugs!
 * Config file.  
+* GUI/Menu stuff.  
+* Player (movement, more).  
 
 WORK IN PROGRESS: 
-* ART AND SOUNDS 
-* GUI/Menu stuff.  
-* AABB Collision detection and response (needs integration to GameObject).  
-* Player (movement, more).  
-* Weapons (firing, collecting, more).  
-* Enemies (spawning, moving, attacking, more).  
+* ART (see google doc)
+* SOUNDS (player hurt, death)
+* Player configurable controls.  
+* Redo AABB Collision detection and response (needs integration to GameObject)?  
+* Weapons (flamethrower).  
+* Enemies (spawning)  
 * Levels (tileset, solid walls, spawning enemies, transitions, more).  
 
 WHAT NEEDS TO BE DONE:  
-* Action to control object based on keys pressed.(already have one, but it needs to be revisited)  
+* ???
 
 
 =====  

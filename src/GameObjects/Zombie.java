@@ -19,7 +19,7 @@ public class Zombie extends Entity
 	public void createObject(Universe universe) 
 	{
 		String textureName = "gfx/Characters/zombie" + ((int)(Math.random()*3+1)) + ".png";
-		System.out.printf("%s\n", textureName);
+		//System.out.printf("%s\n", textureName);
 		ITexture zombieTexture = universe.getTextureEngine().LoadTexture(textureName, 0);
 		rootNode.setBoundingBox(new AABB(.5f,.5f));
 		rootNode.setProxemityBounds(new AABB(1,1));
