@@ -329,7 +329,6 @@ public class GameObject
 	 */
 	public void setBoundingBox(AABB box)
 	{
-		box.transform(getGlobalTransform());
 		boundingBox = box;
 	}
 	public AABB getBoundingBox()
@@ -594,7 +593,10 @@ public class GameObject
 	{
 		return this.entity;
 	}
-	
+	public DrawObject getDrawingInterface()
+	{
+		return drawing;
+	}
 	
 	AABB proxemity; // if no objects in this area than don't process any children unless it is null
 	AABB boundingBox; // if object in this area notify a collision

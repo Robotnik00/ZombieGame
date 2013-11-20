@@ -152,13 +152,18 @@ public class Player extends Entity
 	
 	public void addPowerup(Powerup p)
 	{
+		
+		p.getRootNode().setBoundingBox(null);
 		powerups.add(p);
 	}
 	public void removePowerup(Powerup p)
 	{
 		powerups.remove(p);
 	}
-	
+	public ArrayList<Powerup> getPowerups()
+	{
+		return powerups;
+	}
 	
 	
 	

@@ -1,9 +1,12 @@
 package Actions;
 
+import java.util.ArrayList;
+
 import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import GameObjects.GameObject;
 import GameObjects.Player;
+import GameObjects.Powerup;
 import TextureEngine.ITexture;
 
 public class UpdateHUD implements Action
@@ -50,8 +53,11 @@ public class UpdateHUD implements Action
 		score.scale(.05f,.05f);
 		score.translate(-12, 12);
 		
-		
-		
+		powerupNode = new GameObject();
+		powerupNode.scale(.2f, .2f);
+		powerupNode.setLocalY(.625f);
+		player.getUniverse().getHUD().addChild(powerupNode);
+		prevPowerups = new GameObject[0];
 	}
 	@Override
 	public void performAction() 
@@ -63,11 +69,32 @@ public class UpdateHUD implements Action
 		hpBarRoot.scale(1/prevHpBarScale, 1);
 		hpBarRoot.scale(hpBarScale, 1);
 		prevHpBarScale = hpBarScale;
+		
+		ArrayList<Powerup> powerups = new ArrayList<Powerup>();
+		
+		for(int i = 0; i < prevPowerups.length; i++)
+		{
+			powerupNode.removeChild(prevPowerups[i]);
+		}
+		
+		prevPowerups = new GameObject[player.getPowerups().size()];
+		for(int i = 0; i < player.getPowerups().size(); i++)
+		{
+			powerups.add(player.getPowerups().get(i));
+			powerups.get(i).getRootNode().setLocalX(i);
+			powerups.get(i).getRootNode().setLocalY(0);
+			powerupNode.addChild(powerups.get(i).getRootNode());
+			prevPowerups[i] = powerups.get(i).getRootNode();
+		}
 	}
+	
+	GameObject[] prevPowerups;
+	
 	Player player;
 	
 	GameObject hpBarRoot;
 	GameObject hpBar;
+	GameObject powerupNode;
 	DrawText scoretext;
 	
 	float prevHpBarScale = 1;

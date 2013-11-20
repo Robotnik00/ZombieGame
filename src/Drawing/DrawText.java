@@ -15,7 +15,10 @@ public class DrawText implements DrawObject
 	{
 		text = null;
 		textRenderer = new BitmapFont();
-		font = gfx.LoadTexture(font_name, 0);
+		
+		if(font == null)
+			font = gfx.LoadTexture(font_name, 0);
+		
 		textRenderer.SetFont(font);
 		textRenderer.SetKerning(.4f);
 	}
@@ -58,5 +61,7 @@ public class DrawText implements DrawObject
 	
 	String text;
 	BitmapFont textRenderer;
-	ITexture font;
+	
+	
+	static ITexture font = null;
 }

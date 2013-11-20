@@ -13,25 +13,26 @@ public abstract class Powerup extends Entity
 		this.itsplayer = player;
 		
 		
+		
 		Action givePlayerPowerup = new Action()
 		{
 
 			@Override
 			public void performAction() 
 			{
-				if(itsplayer.getRootNode().getBoundingBox().intersects(rootNode.getBoundingBox()))
+				if(rootNode.getBoundingBox() != null && itsplayer.getRootNode().getBoundingBox().intersects(rootNode.getBoundingBox()))
 				{
 					System.out.printf("hey\n");
 					
 					
 					applyPowerup(itsplayer);
 					universe.getHandle().removeChild(rootNode);
+					itsplayer.addPowerup(ref);
 				}
 			}
 			
 		};
 		rootNode.addAction(givePlayerPowerup);
-		
 	}
 
 	
@@ -49,6 +50,6 @@ public abstract class Powerup extends Entity
 		player.removePowerup(this);
 	}
 	
-	
 	Player itsplayer;
+	Powerup ref = this;
 }

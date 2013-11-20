@@ -61,7 +61,7 @@ public class StartGame extends EventListenerState
 		for(int i = 0; i < 5; i++)
 		{
 
-			Box b = new Box(level);
+			Box b = new Box(level, player);
 			b.setStartingLoc((float)(Math.random()-.5)*5, (float)(Math.random()-.5)*5);
 		}
 
