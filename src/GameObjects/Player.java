@@ -19,6 +19,7 @@ public class Player extends Entity
 	public Player(Universe universe)
 	{
 		super(universe);
+		powerups = new ArrayList<Powerup>();
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class Player extends Entity
 		
 		guns = new ArrayList<Gun>();
 		
-		HandGun gun = new HandGun(universe, this);
+		Gun gun = new HandGun(universe, this);
 		addGun(gun);
 		setGun(0);
 		
@@ -98,7 +99,12 @@ public class Player extends Entity
 	}
 	public void removeGun(Gun gun)
 	{
+		if(gun == currentGun)
+		{
+			setGun(guns.size()-1);
+		}
 		guns.remove(gun);
+		
 	}
 	public void setGun(int i)
 	{
@@ -113,6 +119,10 @@ public class Player extends Entity
 	public Gun getCurrentGun()
 	{
 		return currentGun;
+	}
+	public int getNumGuns()
+	{
+		return guns.size();
 	}
 	@Override
 	public void damage(float dp)
@@ -130,11 +140,6 @@ public class Player extends Entity
 			deathSound.Play();
 	}
 	
-	public Powerup getCurrentPowerup()
-	{
-		return currentPowerup;
-	}
-	
 	public void addToScore(float points)
 	{
 		score += points;
@@ -144,6 +149,19 @@ public class Player extends Entity
 	{
 		return score;
 	}
+	
+	public void addPowerup(Powerup p)
+	{
+		powerups.add(p);
+	}
+	public void removePowerup(Powerup p)
+	{
+		powerups.remove(p);
+	}
+	
+	
+	
+	
 	float score;
 	
 	Gun currentGun;
@@ -157,7 +175,7 @@ public class Player extends Entity
 	/**
 	 * ect... 
 	 */
-	Powerup currentPowerup = null;
+	ArrayList<Powerup> powerups;
 	
 	ISound deathSound;
 	ISound playerHurt;

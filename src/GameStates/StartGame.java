@@ -16,6 +16,7 @@ import GameObjects.ExampleEntity;
 import GameObjects.ExampleLevel;
 import GameObjects.GameObject;
 import GameObjects.HandGunProjectile;
+import GameObjects.MachineGunPowerup;
 import GameObjects.Player;
 import GameObjects.Powerup;
 import GameObjects.ShotgunPowerup;
@@ -70,9 +71,14 @@ public class StartGame extends EventListenerState
 			z1.setStartingLoc((float)(Math.random()-.5)*20, (float)(Math.random()-.5)*20);
 			z1.setTarget(player);
 		}
-		Powerup p = new ShotgunPowerup(level, player);
-		p.setStartingLoc(2f, 2f);
-		level.addEntity(p);
+		Powerup p1 = new ShotgunPowerup(level, player);
+		p1.setStartingLoc(2f, 2f);
+		level.addEntity(p1);
+		
+		Powerup p2 = new MachineGunPowerup(level, player);
+		p2.setStartingLoc(-2, 2);
+		level.addEntity(p2);
+		
 		
 		
 		//new HandGunProjectile(level);
