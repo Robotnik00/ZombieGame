@@ -60,8 +60,8 @@ public class HandGun extends Gun
 	}
 
 	@Override
-	protected void onFire() {
-		// TODO Auto-generated method stub
+	protected void onFire() 
+	{
 		
 		float orientation = rootNode.getOrientationWrt(universe.getHandle());
 		

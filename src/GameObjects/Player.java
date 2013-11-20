@@ -19,7 +19,6 @@ public class Player extends Entity
 	public Player(Universe universe)
 	{
 		super(universe);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -61,8 +60,6 @@ public class Player extends Entity
 		addGun(gun);
 		setGun(0);
 		
-		gunNode.addChild(gun.getRootNode());
-		
 		
 		
 		
@@ -93,7 +90,6 @@ public class Player extends Entity
 					"HandGun: Couldn't load 'snd/Player/PlayerHurt.wav', 'snd/Player/DeathSound.wav'");
 			//e.printStackTrace();
 		}
-		
 	}
 	
 	public void addGun(Gun gun)
@@ -106,7 +102,12 @@ public class Player extends Entity
 	}
 	public void setGun(int i)
 	{
+		if(currentGun != null)
+			gunNode.removeChild(currentGun.getRootNode());
+		
 		currentGun = guns.get(i);
+		gunNode.addChild(currentGun.getRootNode());
+		
 	}
 	
 	public Gun getCurrentGun()
@@ -127,6 +128,11 @@ public class Player extends Entity
 		universe.removeEntity(this);
 		if(deathSound != null)
 			deathSound.Play();
+	}
+	
+	public Powerup getCurrentPowerup()
+	{
+		return currentPowerup;
 	}
 	
 	public void addToScore(float points)
@@ -151,6 +157,8 @@ public class Player extends Entity
 	/**
 	 * ect... 
 	 */
+	Powerup currentPowerup = null;
+	
 	ISound deathSound;
 	ISound playerHurt;
 }
