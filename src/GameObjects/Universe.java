@@ -96,10 +96,15 @@ public abstract class Universe
 	 */
 	public void update()
 	{
-		
+		frames++;
 		deltaT = (float)1/game.GetTickFrequency();
 		scaleNode.update(deltaT);
 		HUD.update(deltaT);
+	}
+	
+	public int getFrames()
+	{
+		return frames;
 	}
 	
 	public IGameEngine getGameEngine()
@@ -157,4 +162,6 @@ public abstract class Universe
 	IAudioEngine snd;
 	IGameEngine game;
 	EventListenerState state;
+	
+	int frames=0;
 }

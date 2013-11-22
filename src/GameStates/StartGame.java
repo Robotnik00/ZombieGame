@@ -43,7 +43,12 @@ public class StartGame extends EventListenerState
 	public StartGame()
 	{
 		super();
+		paused=false;
 	}
+	
+	//
+	// IGameState interface functions
+	//
 	
 	@Override
 	public void Init(ITextureEngine gfx, IAudioEngine snd, IGameEngine game) throws Exception 
@@ -163,6 +168,23 @@ public class StartGame extends EventListenerState
 		level.draw(delta);
 	}
 	
+	public boolean GetPaused()
+	{
+		return paused;
+	}
+	
+	//
+	// IMenuController interface functions
+	//
+	
+	
+	
+	
+	//
+	//
+	//
+	
 	ExampleEntity entity;
 	ExampleLevel level;	
+	boolean paused;
 }

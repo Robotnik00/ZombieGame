@@ -65,4 +65,10 @@ public interface IGameState
 	 * @param delta interpolation value in between frames, ranging from [0.0,1.0)
 	 */
 	public void	Draw(float delta);
+	
+	/**
+	 * Return if the state is paused
+	 * FIXME: this is a hack
+	 */
+	public boolean GetPaused();
 }

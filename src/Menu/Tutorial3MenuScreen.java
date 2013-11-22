@@ -39,9 +39,9 @@ public class Tutorial3MenuScreen extends BaseMenuScreen
 		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 1);
 		ITexture nextImage 		= gfx_.LoadTexture("gfx/menu/next.png", 1);
 		
-		ITexture wpnHealth			= gfx_.LoadTexture("gfx/powerups/RestoreHealth.png", 1);
-		ITexture wpnInvulnerable	= gfx_.LoadTexture("gfx/powerups/invulnerability.png", 1);
-		ITexture wpnQuad			= gfx_.LoadTexture("gfx/powerups/quad_damage.png", 1);
+		ITexture wpnHealth			= gfx_.LoadTexture("gfx/Powerups/RestoreHealth.png", 1);
+		ITexture wpnInvulnerable	= gfx_.LoadTexture("gfx/Powerups/invulnerability.png", 1);
+		ITexture wpnQuad			= gfx_.LoadTexture("gfx/Powerups/quad_damage.png", 1);
 		
 		ITexture fontImage = gfx_.LoadGrayscaleFont("gfx/font.png", true);
 		BitmapFont font = new BitmapFont();

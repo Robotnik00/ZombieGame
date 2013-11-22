@@ -36,7 +36,10 @@ public class CollidablePhysics extends Physics
 			move = obj.getBoundingBox().solveCollision(collisions[i].getBoundingBox());
 			if(!collisions[i].getStatic())
 			{
-				move.scale(.3f);
+				// lower values make it "less" jittery,
+				// and allows the zombies to "compress" more.
+				// this seems to be a nice value.
+				move.scale(.1f);
 			}
 			
 			moveTotal.x += move.x;

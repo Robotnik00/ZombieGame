@@ -103,6 +103,23 @@ public class TextFieldWidget extends BaseMenuWidget
 			int[] keyPresses = game_.GetKeyEvents();
 			char[] keyChars = game_.GetKeyCharacters();
 			
+			// check for more mouse clicks, quit if user clicked (as if ESC was pressed)
+			int[] mouseEvents = game_.GetMouseEvents();
+			for (int i=0; i < mouseEvents.length; i++)
+			{
+				if (mouseEvents[i] > 0)
+				{
+					// cancel, use previous string,
+					// release focus and reset.
+					currentString_ = lastString_;
+					
+					parentMenu_.ReleaseFocus();
+					hasFocus_ = false;
+					
+					return;
+				}
+			}
+			
 			for (int i=0; i < keyPresses.length; i++)
 			{
 				// don't count key up events

@@ -62,7 +62,7 @@ public class Shotgun extends Gun
 		
 	}
 
-	int numProjectiles = 5;
+	int numProjectiles = 20;
 
 	@Override
 	public void select() {

@@ -161,6 +161,10 @@ public class MenuState implements IGameState, IMenuController
 		//refresh_ = false;
 	}
 	
+	public boolean GetPaused()
+	{
+		return false;
+	}
 	
 	
 	//

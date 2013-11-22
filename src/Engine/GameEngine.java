@@ -13,30 +13,16 @@ import java.text.*;
 import java.io.*;
 
 import org.lwjgl.Sys;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.input.Keyboard;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL31.*;
-import static org.lwjgl.opengl.GL32.*;
 
 import AudioEngine.IAudioEngine;
 import AudioEngine.NullAudioEngine;
 import AudioEngine.ALAudioEngine;
 import GameStates.IGameState;
-import GameStates.InputExample;
-import GameStates.StartGame;
-import GameStates.TestState;
 import GameStates.MenuState;
-import GameStates.CollisionTesting;
 import InputCallbacks.KeyEventListener;
-import InputCallbacks.MouseEvent;
 import InputCallbacks.MouseEventListener;
 import TextureEngine.GLTextureEngine;
 import TextureEngine.ITextureEngine;

@@ -21,7 +21,7 @@ public abstract class GunPowerup extends Powerup
 	{
 		super.createObject(universe);
 		
-		text = new DrawText(universe.getTextureEngine(), "font1.bmp");
+		text = new DrawText(universe.getTextureEngine(), "gfx/font.png");
 		GameObject textNode = new GameObject();
 		textNode.setDrawingInterface(text);
 		rootNode.addChild(textNode);
