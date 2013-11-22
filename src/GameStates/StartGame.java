@@ -139,7 +139,7 @@ public class StartGame extends EventListenerState
 		s.startSpawning();
 		
 		TreeLeaves tree = new TreeLeaves(level);
-		tree.setStartingLoc(-5, 5);
+		tree.setStartingLoc(-3, 0);
 	}
 	
 	@Override
