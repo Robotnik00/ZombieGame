@@ -3,6 +3,7 @@ package GameStates;
 
 
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector4f;
 
 import Actions.CollidablePhysics;
 import AudioEngine.IAudioEngine;
@@ -12,6 +13,7 @@ import Drawing.SimpleDraw;
 import Drawing.TileDraw;
 import Engine.IGameEngine;
 import GameObjects.Box;
+import GameObjects.Car;
 import GameObjects.ExampleEntity;
 import GameObjects.ExampleLevel;
 import GameObjects.GameObject;
@@ -21,6 +23,8 @@ import GameObjects.PhysicsBox;
 import GameObjects.Player;
 import GameObjects.Powerup;
 import GameObjects.ShotgunPowerup;
+import GameObjects.Spawner;
+import GameObjects.TreeLeaves;
 //import GameObjects.StaticBox;
 import GameObjects.Zombie;
 import Geometry.AABB;
@@ -69,6 +73,11 @@ public class StartGame extends EventListenerState
 				(float)(Math.cos(angle)*dist), 
 				(float)(Math.sin(angle)*dist)
 			);
+			
+			if(Utility.CollisionDetection.getCollisions(sb.getRootNode(), level.getHandle()).length > 0)
+			{
+				level.removeEntity(sb);
+			}
 		}
 		for(int i = 0; i < 5; i++)
 		{
@@ -82,14 +91,20 @@ public class StartGame extends EventListenerState
 				(float)(Math.cos(angle)*dist), 
 				(float)(Math.sin(angle)*dist)
 			);
+			
+			
+			if(Utility.CollisionDetection.getCollisions(b.getRootNode(), level.getHandle()).length > 0)
+			{
+				level.removeEntity(b);
+			}
 		}
 
-		for(int i = 0; i < 25; i++)
+		for(int i = 0; i < 0; i++)
 		{
 			Zombie z1 = new Zombie(level);
 			
-			dist = (float)Math.random() * 20.0f + minDistance;
-			angle = (float)Math.random() * 20.0f * (float)Math.PI;
+			dist = (float)Math.random() * 100.0f + minDistance;
+			angle = (float)Math.random() * 100.0f * (float)Math.PI;
 			
 			z1.setStartingLoc(
 				(float)(Math.cos(angle)*dist), 
@@ -97,7 +112,11 @@ public class StartGame extends EventListenerState
 			);
 			
 			//z1.setStartingLoc((float)(Math.random()-.5)*20, (float)(Math.random()-.5)*20);
-			z1.setTarget(player);
+			z1.setTarget(player);			
+			if(Utility.CollisionDetection.getCollisions(z1.getRootNode(), level.getHandle()).length > 0)
+			{
+				level.removeEntity(z1);
+			}
 		}
 		
 		Powerup p1 = new ShotgunPowerup(level, player);
@@ -109,9 +128,18 @@ public class StartGame extends EventListenerState
 		level.addEntity(p2);
 		
 		
+		Car car = new Car(level);
+		car.setStartingLoc(-2, -2);
+		car.setColor(new Vector4f(1,.2f	,.1f,1));
+		level.addEntity(car);
 		
-		//new HandGunProjectile(level);
 		
+		Spawner s = new Spawner(level, player);
+		s.setStartingLoc(5, 5);
+		s.startSpawning();
+		
+		TreeLeaves tree = new TreeLeaves(level);
+		tree.setStartingLoc(-5, 5);
 	}
 	
 	@Override
