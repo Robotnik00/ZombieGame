@@ -23,7 +23,7 @@ public class AIControl extends PhysicsObjectController
 	public void performAction() 
 	{
 		super.performAction();
-		if(target != null)
+		if(target != null && !target.isDestroyed())
 		{
 			float targetX = target.getRootNode().getLocalX();
 			float targetY = target.getRootNode().getLocalY();

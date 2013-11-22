@@ -73,13 +73,17 @@ public abstract class Entity
 	{
 		return destroyable;
 	}
+	public boolean isDestroyed()
+	{
+		return destroyed;
+	}
 	/**
 	 * free up resources used by entity
 	 */
 	public abstract void destroy();
 	
 	boolean destroyable = false;
-	
+	boolean destroyed = false;
 	Universe universe;
 	GameObject rootNode;
 	

@@ -1,6 +1,5 @@
 package GameObjects;
 
-
 import TextureEngine.ITexture;
 import Actions.Action;
 import Actions.TimeToLive;
@@ -47,7 +46,7 @@ public class Spawner extends Entity
 			{
 				long elapsedTime = universe.getGameEngine().GetTime() - time;
 				if(elapsedTime > timeperspawn)
-				{						
+				{
 					Zombie z = new Zombie(universe);
 					z.setTarget(target);
 					z.setStartingLoc(rootNode.getLocalX(), rootNode.getLocalY());

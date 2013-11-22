@@ -83,15 +83,16 @@ public class Player extends Entity
 		
 		try 
 		{
-			playerHurt = universe.getAudioEngine().LoadSound("snd/Player/PlayerHurt.wav");
-			deathSound = universe.getAudioEngine().LoadSound("snd/Player/DeathSound.wav");
+			//splayerHurt = universe.getAudioEngine().LoadSound("snd/player/PlayerHurt.wav");
+			String filename = "player_dies" + (int)(Math.random()*4+1) + ".wav";
+			deathSound = universe.getAudioEngine().LoadSound("snd/player/" + filename);
 		}
 		catch (Exception e) 
 		{
 			playerHurt = null;
 			deathSound = null;
 			universe.getGameEngine().LogMessage(
-					"HandGun: Couldn't load 'snd/Player/PlayerHurt.wav', 'snd/Player/DeathSound.wav'");
+					"HandGun: Couldn't load 'snd/player/PlayerHurt.wav', 'snd/player/DeathSound.wav'");
 			//e.printStackTrace();
 		}
 	}
@@ -138,9 +139,27 @@ public class Player extends Entity
 	@Override
 	public void destroy() 
 	{
-		universe.removeEntity(this);
+		universe.getHandle().removeChild(rootNode);
+		destroyed = true;
 		if(deathSound != null)
 			deathSound.Play();
+		
+		GameObject deadBody = new GameObject();
+		SimpleDraw drawbody = new SimpleDraw(universe.getTextureEngine().LoadTexture("gfx/Characters/player_dead1.png", 0));
+		deadBody.setDrawingInterface(drawbody);
+		universe.getBackgroundNode().addChild(deadBody);
+		deadBody.setLocalX(rootNode.getLocalX());
+		deadBody.setLocalY(rootNode.getLocalY());
+		
+		for(int i = 0; i < 10; i++)
+		{
+			BloodSplatter b = new BloodSplatter(universe);
+			b.setStartingLoc((float)(rootNode.getLocalX()+Math.random()*.5f), (float)(rootNode.getLocalY()+Math.random()*.5f));
+			
+		}
+		
+		
+		
 	}
 	
 	public void addToScore(int points)
