@@ -24,7 +24,7 @@ public class PhysicsBox extends Box
 		rootNode.addAction(col);
 		rootNode.setMass(.1f);
 
-		
+		rootNode.setStatic(false);
 		
 	}
 	

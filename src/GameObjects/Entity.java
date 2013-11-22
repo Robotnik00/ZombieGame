@@ -22,10 +22,13 @@ public abstract class Entity
 	
 	public void damage(float dp)
 	{
-		hp -= dp;
-		if(hp < 0)
+		if(destroyable)
 		{
-			destroy();
+			hp -= dp;
+			if(hp < 0)
+			{
+				destroy();
+			}
 		}
 	}
 	
@@ -66,11 +69,16 @@ public abstract class Entity
 	{
 		return maxHp;
 	}
-	
+	public boolean isDestroyable()
+	{
+		return destroyable;
+	}
 	/**
 	 * free up resources used by entity
 	 */
 	public abstract void destroy();
+	
+	boolean destroyable = false;
 	
 	Universe universe;
 	GameObject rootNode;

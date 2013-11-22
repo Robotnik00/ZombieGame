@@ -2,6 +2,8 @@ package GameObjects;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import TextureEngine.ITexture;
+
 import Actions.Action;
 import AudioEngine.ISound;
 import Drawing.SimpleDraw;
@@ -21,14 +23,7 @@ public class MachineGun extends Gun
 	@Override
 	public void createObject(Universe universe) 
 	{
-		texture = universe.getTextureEngine().LoadTexture("gfx/Projectiles/MachineGun.png", 0);
-		icon = universe.getTextureEngine().LoadTexture("gfx/Icons/Guns/HandGunIcon.png", 0);
-		SimpleDraw gun = new SimpleDraw(texture);
-		gun.setScale(1f, 1f);
-		gun.setOrientation((float)-Math.PI/2);
-		gun.setOffset(0, -.2f);
-		
-		rootNode.setDrawingInterface(gun);
+		machinegun = universe.getTextureEngine().LoadTexture("gfx/Characters/player_machinegun.png", 0);
 		
 		
 		try 
@@ -79,5 +74,10 @@ public class MachineGun extends Gun
 		bullet.setTimeToLive(800);
 		universe.addEntity(bullet);
 	}
-	
+
+	@Override
+	public void select() {
+		player.getDrawingInterface().setTexture(machinegun);
+	}
+	ITexture machinegun;
 }

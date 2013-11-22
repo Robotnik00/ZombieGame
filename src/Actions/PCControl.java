@@ -73,7 +73,11 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		}
 		else if(keyPressed == ACTION_KEY)
 		{
-			// not sure yet
+			if(i >= player.getNumGuns())
+			{
+				i = 0;
+			}
+			player.setGun(i++);
 		}
 		else if(keyPressed == RELOAD_KEY)
 		{
@@ -202,5 +206,5 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	float forceScale = 2; // amount of force to apply
 	
 	Player player;
-	
+	int i = 1;
 }

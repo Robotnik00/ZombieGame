@@ -41,11 +41,8 @@ public class Shotgun extends Gun
 		ammo = 10;
 		maxAmmo = 10;
 		
-		ITexture shotgunTex = universe.getTextureEngine().LoadTexture("gfx/Projectiles/Shotgun.png", 0);
-		SimpleDraw drawShotgun = new SimpleDraw(shotgunTex);
-		drawShotgun.setOrientation((float)-Math.PI/2);
-		drawShotgun.setOffset(0, -.2f);
-		rootNode.setDrawingInterface(drawShotgun);
+		shotgun = universe.getTextureEngine().LoadTexture("gfx/Characters/player_shotgun.png", 0);
+		
 		
 		
 		
@@ -66,4 +63,10 @@ public class Shotgun extends Gun
 	}
 
 	int numProjectiles = 5;
+
+	@Override
+	public void select() {
+		player.getDrawingInterface().setTexture(shotgun);
+	}
+	ITexture shotgun;
 }

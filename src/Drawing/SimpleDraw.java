@@ -58,8 +58,12 @@ public class SimpleDraw implements DrawObject
 	{
 		this.blend =  blend;
 	}
+	public void setTexture(ITexture tex)
+	{
+		this.tex = tex;
+	}
 	Vector4f color = null;
-	float blend = 0;
+	float blend = 1f;
 	float orientation = 0;
 	float scalex = 1;
 	float scaley = 1;

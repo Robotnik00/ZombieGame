@@ -76,6 +76,10 @@ public abstract class Gun extends Entity
 	{
 		return reloading;
 	}
+	public void addAmmo(int ammo)
+	{
+		this.ammo += ammo;
+	}
 	public int getAmmo()
 	{
 		return ammo;
@@ -84,6 +88,8 @@ public abstract class Gun extends Entity
 	{
 		return ammo;
 	}
+	public abstract void select();
+	
 	
 	Player player;
 	

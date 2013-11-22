@@ -34,13 +34,27 @@ public class CollidablePhysics extends Physics
 		for (int i=0; i < collisions.length; i++)
 		{
 			move = obj.getBoundingBox().solveCollision(collisions[i].getBoundingBox());
+			if(!collisions[i].getStatic())
+			{
+				move.scale(.3f);
+			}
+			
 			moveTotal.x += move.x;
 			moveTotal.y += move.y;
 		}
 		
-		moveTotal.scale(.3f);
+		if(collisions.length > 0)
+		{
+			iscolliding = true;
+		}
+		else 
+		{
+			iscolliding = false;
+		}
+		
 		obj.translate(moveTotal.x, moveTotal.y);
 	}
+	boolean iscolliding = false;
 	
     Vector2f u1 = new Vector2f();
     Vector2f u2 = new Vector2f();

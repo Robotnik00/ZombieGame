@@ -20,7 +20,7 @@ public class BloodSplatter extends Entity
 		String texName = "gfx/Environment/BloodSplatters/BloodSplatter" + (int)(Math.random()*5 + 1) + ".png";
 		ITexture bloodSplatter = universe.getTextureEngine().LoadTexture(texName, 0);
 		SimpleDraw drawSplatter = new SimpleDraw(bloodSplatter);
-		drawSplatter.setColor(new Vector4f(0,0,0,.8f));
+		drawSplatter.setColor(new Vector4f(.5f,.05f,0.05f,.8f));
 		rootNode.setDrawingInterface(drawSplatter);
 		drawSplatter.setScale(.3f, .3f);
 		

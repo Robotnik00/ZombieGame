@@ -22,6 +22,7 @@ public class Zombie extends Entity
 	@Override
 	public void createObject(Universe universe) 
 	{
+		destroyable = true;
 		String textureName = "gfx/Characters/zombie" + ((int)(Math.random()*3+1)) + ".png";
 		//System.out.printf("%s\n", textureName);
 		ITexture zombieTexture = universe.getTextureEngine().LoadTexture(textureName, 0);
@@ -38,7 +39,6 @@ public class Zombie extends Entity
 		
 		rootNode.addChild(gimble);
 		rootNode.setMass(.1f);
-		universe.addEntity(this);
 		
 		// blah
 		sndHurt = new ISound[3];

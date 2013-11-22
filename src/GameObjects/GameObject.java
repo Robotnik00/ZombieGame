@@ -597,7 +597,14 @@ public class GameObject
 	{
 		return drawing;
 	}
-	
+	public void setStatic(boolean isstatic)
+	{
+		this.isstatic = isstatic;
+	}
+	public boolean getStatic()
+	{
+		return isstatic;
+	}
 	AABB proxemity; // if no objects in this area than don't process any children unless it is null
 	AABB boundingBox; // if object in this area notify a collision
 	
@@ -638,6 +645,7 @@ public class GameObject
 	float momentOfInertia = 1;
 	
 	boolean collidable = false;
+	boolean isstatic = false;
 	
 	static final Vector3f zaxis = new Vector3f(0,0,1);
 	static final AABB screen = new AABB(2,2);

@@ -21,5 +21,26 @@ public class MachineGunPowerup extends GunPowerup
 		rootNode.scale(.5f, .5f);
 		
 	}
-	
+	@Override
+	public void applyPowerup(final Player player)
+	{
+		MachineGunPowerup appliedPowerup = null;
+		for(int i = 0; i < player.getPowerups().size(); i++)
+		{
+			if(player.getPowerups().get(i) instanceof MachineGunPowerup)
+			{
+				appliedPowerup = (MachineGunPowerup)player.getPowerups().get(i);
+			}
+		}
+		if(appliedPowerup == null)
+		{
+			super.applyPowerup(player);
+		}
+		else
+		{
+			appliedPowerup.getGun().addAmmo(gun.getMaxAmmo());
+		}
+		
+		
+	}
 }

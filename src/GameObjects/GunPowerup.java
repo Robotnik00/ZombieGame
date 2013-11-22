@@ -35,6 +35,7 @@ public abstract class GunPowerup extends Powerup
 	@Override
 	public void applyPowerup(final Player player) 
 	{
+		player.addPowerup(this);
 		if(gun != null)
 		{
 			Action removeShotgun = new Action()
@@ -69,7 +70,10 @@ public abstract class GunPowerup extends Powerup
 		player.removeGun(gun);
 		
 	}
-	
+	public Gun getGun()
+	{
+		return gun;
+	}
 	DrawText text;
 
 	@Override

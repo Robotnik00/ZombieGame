@@ -39,12 +39,14 @@ public class Box extends Entity
 	@Override
 	public void createObject(Universe universe)
 	{
+		destroyable = true;
 		ITexture boxTexture = universe.getTextureEngine().LoadTexture("gfx/Environment/box_normal.png", 0);
 		rootNode.setDrawingInterface(new SimpleDraw(boxTexture));
 		rootNode.setBoundingBox(new AABB(1f,1f));
 		rootNode.setProxemityBounds(new AABB(1,1));
 		rootNode.setCollidable(true);
 		universe.addEntity(this);
+		rootNode.setStatic(true);
 
 	}
 

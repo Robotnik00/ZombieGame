@@ -23,5 +23,28 @@ public class ShotgunPowerup extends GunPowerup
 		rootNode.setDrawingInterface(drawPowerup);
 		rootNode.scale(.5f, .5f);
 		
+	}	
+	
+	@Override
+	public void applyPowerup(final Player player)
+	{
+		ShotgunPowerup appliedPowerup = null;
+		for(int i = 0; i < player.getPowerups().size(); i++)
+		{
+			if(player.getPowerups().get(i) instanceof ShotgunPowerup)
+			{
+				appliedPowerup = (ShotgunPowerup)player.getPowerups().get(i);
+			}
+		}
+		if(appliedPowerup == null)
+		{
+			super.applyPowerup(player);
+		}
+		else
+		{
+			appliedPowerup.getGun().addAmmo(gun.getMaxAmmo());
+		}
+		
+		
 	}
 }

@@ -31,6 +31,12 @@ public abstract class Universe
 		universeNode.addAction(cam);
 		backgroundNode = new GameObject();
 		universeNode.addChild(backgroundNode);
+		midgroundNode = new GameObject();
+		universeNode.addChild(midgroundNode);
+		
+		foregroundNode = new GameObject();
+		universeNode.addChild(foregroundNode);
+		
 		HUD = new GameObject();
 		buildUniverse();
 	}
@@ -67,11 +73,11 @@ public abstract class Universe
 	 */
 	public void addEntity(Entity entity)
 	{
-		universeNode.addChild(entity.getRootNode());
+		midgroundNode.addChild(entity.getRootNode());
 	}
 	public void removeEntity(Entity entity)
 	{
-		universeNode.removeChild(entity.getRootNode());
+		midgroundNode.removeChild(entity.getRootNode());
 	}
 	/**
 	 * update everything
@@ -110,7 +116,7 @@ public abstract class Universe
 	}
 	public GameObject getHandle()
 	{
-		return universeNode;
+		return midgroundNode;
 	}
 	public GameObject getScalingNode()
 	{
@@ -119,6 +125,10 @@ public abstract class Universe
 	public GameObject getBackgroundNode()
 	{
 		return backgroundNode;
+	}
+	public GameObject getForgroundNode()
+	{
+		return foregroundNode;
 	}
 	public GameObject getHUD()
 	{
@@ -139,6 +149,8 @@ public abstract class Universe
 	GameObject scaleNode;
 	GameObject universeNode;
 	GameObject backgroundNode;
+	GameObject foregroundNode;
+	GameObject midgroundNode;
 	GameObject HUD;
 	
 	ITextureEngine gfx;

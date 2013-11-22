@@ -2,6 +2,8 @@ package GameObjects;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import TextureEngine.ITexture;
+
 import Actions.Action;
 import AudioEngine.ISound;
 import Drawing.SimpleDraw;
@@ -19,12 +21,7 @@ public class HandGun extends Gun
 	@Override
 	public void createObject(Universe universe) 
 	{
-		texture = universe.getTextureEngine().LoadTexture("gfx/Projectiles/HandGun.png", 0);
-		icon = universe.getTextureEngine().LoadTexture("gfx/Icons/Guns/HandGunIcon.png", 0);
-		SimpleDraw gun = new SimpleDraw(texture);
-		gun.setScale(.3f, .3f);
-		gun.setOffset(-.6f, 0);
-		rootNode.setDrawingInterface(gun);
+		handgun = universe.getTextureEngine().LoadTexture("gfx/Characters/player_base.png", 0);
 		
 		
 		try 
@@ -78,5 +75,11 @@ public class HandGun extends Gun
 		
 		ammo++; // a hack to make handgun have inf ammo
 	}
-	
+
+	@Override
+	public void select() 
+	{
+		player.getDrawingInterface().setTexture(handgun);
+	}
+	ITexture handgun;
 }

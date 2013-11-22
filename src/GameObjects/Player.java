@@ -25,6 +25,7 @@ public class Player extends Entity
 	@Override
 	public void createObject(Universe universe) 
 	{
+		destroyable = true;
 		ITexture playerTexture = universe.getTextureEngine().LoadTexture("gfx/Characters/player1.png", 0);
 		// add pc control to the root node of this object
 		PCControl pcc = new PCControl(this, universe.getGameEngine());
@@ -43,8 +44,9 @@ public class Player extends Entity
 		// create an axis to rotate the object about, and add a mouseTracker action to it.
 		GameObject gimble = new GameObject();
 		gimble.addAction(new MouseTracker(gimble, universe.getGameEngine()));
-		SimpleDraw drawChar = new SimpleDraw(playerTexture);
+		drawChar = new SimpleDraw(playerTexture);
 		drawChar.setOrientation((float)-Math.PI/2);
+		drawChar.setScale(.5f, .5f);
 		gimble.setDrawingInterface(drawChar);
 		// add it to rootNode so it translates with the rootNode
 		rootNode.addChild(gimble);
@@ -53,6 +55,7 @@ public class Player extends Entity
 		
 		
 		gunNode.setLocalX(.5f);
+		gunNode.setLocalY(-.1f);
 		gimble.addChild(gunNode);
 		
 		guns = new ArrayList<Gun>();
@@ -113,7 +116,7 @@ public class Player extends Entity
 		
 		currentGun = guns.get(i);
 		gunNode.addChild(currentGun.getRootNode());
-		
+		currentGun.select();
 	}
 	
 	public Gun getCurrentGun()
@@ -164,7 +167,10 @@ public class Player extends Entity
 	{
 		return powerups;
 	}
-	
+	public SimpleDraw getDrawingInterface()
+	{
+		return drawChar;
+	}
 	
 	
 	int score;
@@ -184,4 +190,5 @@ public class Player extends Entity
 	
 	ISound deathSound;
 	ISound playerHurt;
+	SimpleDraw drawChar;
 }
