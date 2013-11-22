@@ -12,6 +12,7 @@ public abstract class Projectile extends Entity
 	{
 		super(universe);
 		this.player = player;
+		
 	}
 
 	public void inflictDamage(Entity entity)
@@ -44,17 +45,29 @@ public abstract class Projectile extends Entity
 			}
 			
 	
-			entity.damage(dp + (float)(Math.random()-.5)*randomizeDamage);
+			entity.damage(dp + (float)(Math.random()*randomizeDamage));
 			
 		}
 	}
+
 	
+	public void setTimeToLive(long ttl)
+	{
+		
+		TimeToLive timetolive = new TimeToLive(this, universe);
+		timetolive.setTimeToLive(ttl);
+		rootNode.addAction(timetolive);
+		timetolive.start();
+	}
 	public void setVelocity(Vector2f velocity)
 	{
 		rootNode.setTranslationalVelocity(velocity);
 	}
 	
-	
+	public float getDP()
+	{
+		return dp;
+	}
 	Player player;
 	float randomizeDamage = 0;
 	float randomizeScore = 1;

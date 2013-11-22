@@ -20,7 +20,7 @@ public class ProjectileAction implements Action
 		if(collisions.length > 0)
 		{
 			projectile.inflictDamage(collisions[0].getEntity());
-			projectile.destroy();
+			projectile.damage(projectile.getDP());
 		}
 	}
 	Projectile projectile;

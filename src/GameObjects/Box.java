@@ -29,6 +29,11 @@ public class Box extends Entity
 		{
 			entity = new RestoreHealth(universe, player);
 		}
+		else if(i > .2f && i < .4f)
+		{
+
+			entity = new FlameThrowerPowerup(universe, player);
+		}
 		else 
 		{
 			entity = null;

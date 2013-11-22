@@ -156,8 +156,8 @@ public class GameEngine implements IGameEngine
 		arguments_ = args;
 
 		// event listeners
-		keyListeners = new ArrayList<KeyEventListener>();
-		mouseListeners = new ArrayList<MouseEventListener>();
+		//keyListeners = new ArrayList<KeyEventListener>();
+		//mouseListeners = new ArrayList<MouseEventListener>();
 		
 		// LogMessage output can also go to a file
 		logFile_ = log;
@@ -351,8 +351,8 @@ public class GameEngine implements IGameEngine
 	protected int[]				lastKeyEvents_;
 	protected char[]			lastKeyCharacters_;
 	
-	protected ArrayList<KeyEventListener> 	keyListeners;
-	protected ArrayList<MouseEventListener> mouseListeners;
+	//protected ArrayList<KeyEventListener> 	keyListeners;
+	//protected ArrayList<MouseEventListener> mouseListeners;
 	
 	
 	

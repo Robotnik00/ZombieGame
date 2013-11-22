@@ -11,7 +11,9 @@ public class HandGunProjectile extends Projectile
 	public HandGunProjectile(Universe universe, Player player) {
 		super(universe, player);
 		// TODO Auto-generated constructor stub
-		randomizeDamage = .5f;
+		randomizeDamage = .1f;
+		hp = .1f;
+		maxHp = .1f;
 	}
 
 	@Override
@@ -24,16 +26,13 @@ public class HandGunProjectile extends Projectile
 		rootNode.setBoundingBox(new AABB(.1f, .1f));
 		rootNode.addAction(new ProjectileAction(this, universe.getHandle()));
 	}
-	
-	public void setTimeToLive(long ttl)
+	@Override 
+	public void inflictDamage(Entity entity)
 	{
-		
-		TimeToLive timetolive = new TimeToLive(this, universe);
-		timetolive.setTimeToLive(ttl);
-		rootNode.addAction(timetolive);
-		timetolive.start();
+		super.inflictDamage(entity);
+
+		destroy();
 	}
-	
 	
 	@Override
 	public void destroy() 

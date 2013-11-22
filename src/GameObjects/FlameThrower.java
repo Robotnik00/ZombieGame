@@ -1,6 +1,10 @@
 package GameObjects;
 
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector4f;
+
+import Actions.TimeToLive;
+import TextureEngine.ITexture;
 
 public class FlameThrower extends Gun
 {
@@ -8,15 +12,34 @@ public class FlameThrower extends Gun
 
 	public FlameThrower(Universe universe, Player player) {
 		super(universe, player);
-		// TODO Auto-generated constructor stub
+		rateOfFire = 50;
+		projectileSpeed = 4;
+		maxAmmo = 100;
+		ammo = 100;
 	}
 
 	
 	@Override
-	public void createObject(Universe universe) {
-		// TODO Auto-generated method stub
+	public void createObject(Universe universe) 
+	{
+		flamethrower = universe.getTextureEngine().LoadTexture("gfx/Characters/player_flamethrower.png", 0);
 		
+		
+		try 
+		{
+			fireSound = universe.getAudioEngine().LoadSound("snd/guns/flamethrower.wav");
+			outOfAmmoSound = universe.getAudioEngine().LoadSound("snd/guns/click2.wav");
+		}
+		catch (Exception e) 
+		{
+			fireSound = null;
+			outOfAmmoSound = null;
+			universe.getGameEngine().LogMessage(
+					"HandGun: Couldn't load 'snd/guns/pew.wav', 'snd/guns/click2.wav'");
+			//e.printStackTrace();
+		}
 	}
+	
 
 	@Override
 	public void destroy() {
@@ -35,16 +58,19 @@ public class FlameThrower extends Gun
 		
 		velocity.scale(projectileSpeed);
 		
-		HandGunProjectile bullet = new HandGunProjectile(universe, player);
-		bullet.setStartingLoc(rootNode.getXWrt(universe.getHandle()), rootNode.getYWrt(universe.getHandle()));
-		bullet.setVelocity(velocity);
-		bullet.setTimeToLive(800);
-		universe.addEntity(bullet);
+		Flame flame = new Flame(universe, player);
+		flame.setStartingLoc(rootNode.getXWrt(universe.getHandle()), rootNode.getYWrt(universe.getHandle()));
+		flame.setVelocity(velocity);
+		flame.setTimeToLive(1000);
+		universe.addEntity(flame);
 	}
 	
 	@Override
 	public void select() {
-		
+
+		player.getDrawingInterface().setTexture(flamethrower);
 	}
+	
+	ITexture flamethrower;
 
 }

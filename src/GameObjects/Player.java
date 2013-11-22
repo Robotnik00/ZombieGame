@@ -35,7 +35,7 @@ public class Player extends Entity
 		rootNode.addAction(pcc);
 		// set mass so the object accelerates fast
 		rootNode.setMass(.1f);
-		rootNode.setBoundingBox(new AABB(.5f,.5f));
+		rootNode.setBoundingBox(new AABB(.3f,.3f));
 		rootNode.translate(startingX, startingY);
 		rootNode.setCollidable(true);
 		
@@ -54,8 +54,8 @@ public class Player extends Entity
 		gunNode = new GameObject();
 		
 		
-		gunNode.setLocalX(.5f);
-		gunNode.setLocalY(-.1f);
+		gunNode.setLocalX(.3f);
+		gunNode.setLocalY(-.05f);
 		gimble.addChild(gunNode);
 		
 		guns = new ArrayList<Gun>();
