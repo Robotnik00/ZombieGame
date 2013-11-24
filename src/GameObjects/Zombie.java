@@ -92,9 +92,10 @@ public class Zombie extends Entity
 		// choose a random hurt sound
 		int r = (int)Math.floor((Math.random()*3));
 		
-		if(Math.random() > .5 && sndHurt[r] != null && !dead)
+		if(Math.random() > .8 && sndHurt[r] != null && !dead && universe.getTime() - lastSound > 1000)
 		{
 			sndHurt[r].Play();
+			lastSound = universe.getTime();
 		}
 	}
 
@@ -129,6 +130,8 @@ public class Zombie extends Entity
 	ISound[] sndIdle;
 	ISound[] sndHurt;
 	ISound[] sndDeath;
+	
+	long lastSound = 0;
 	
 	boolean dead = false;
 }

@@ -23,8 +23,6 @@ public abstract class Gun extends Entity
 			
 			if (ammo > 0)
 			{
-				if(fireSound != null)
-					fireSound.Play();
 		
 				onFire();
 				ammo -= 1;

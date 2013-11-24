@@ -164,8 +164,11 @@ public class Player extends Entity
 			
 			// FIXME: stop player sound from playing more than once
 			int s = (int)(Math.random()*3.0);
-			if(playerHurt[s] != null && Math.random() > .9f)
+			if(playerHurt[s] != null && Math.random() > .5f && universe.getTime() - lastSound > 1000)
+			{
 				playerHurt[s].Play();
+				lastSound = universe.getTime();
+			}
 		}
 	}
 	
@@ -252,4 +255,6 @@ public class Player extends Entity
 	SimpleDraw drawChar;
 	
 	boolean invulnerable = false;
+	
+	long lastSound = 0;
 }

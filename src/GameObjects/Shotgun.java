@@ -24,6 +24,10 @@ public class Shotgun extends Gun
 	@Override
 	protected void onFire() 
 	{
+
+		if(fireSound != null)
+			fireSound.Play();
+		
 		for(int i = 0; i < numProjectiles; i++)
 		{
 			float orientation = rootNode.getOrientationWrt(universe.getHandle());

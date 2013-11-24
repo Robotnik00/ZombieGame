@@ -60,6 +60,12 @@ public class MachineGun extends Gun
 	@Override
 	protected void onFire() 
 	{
+		makeSound++;
+		if(fireSound != null && makeSound > 1)
+		{
+			fireSound.Play();
+			makeSound = 0;
+		}
 		
 		float orientation = rootNode.getOrientationWrt(universe.getHandle());
 		
@@ -81,4 +87,5 @@ public class MachineGun extends Gun
 		player.getDrawingInterface().setTexture(machinegun);
 	}
 	ITexture machinegun;
+	private int makeSound = 0;
 }

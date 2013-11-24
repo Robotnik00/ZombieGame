@@ -59,6 +59,9 @@ public class HandGun extends Gun
 	@Override
 	protected void onFire() 
 	{
+
+		if(fireSound != null)
+			fireSound.Play();
 		
 		float orientation = rootNode.getOrientationWrt(universe.getHandle());
 		

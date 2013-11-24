@@ -25,6 +25,7 @@ public class FlameThrower extends Gun
 		flamethrower = universe.getTextureEngine().LoadTexture("gfx/Characters/player_flamethrower.png", 0);
 		
 		
+		
 		try 
 		{
 			fireSound = universe.getAudioEngine().LoadSound("snd/guns/flamethrower.wav");
@@ -50,7 +51,12 @@ public class FlameThrower extends Gun
 	@Override
 	protected void onFire() 
 	{
-		
+		makeSound++;
+		if(fireSound != null && makeSound > 10)
+		{
+			fireSound.Play();
+			makeSound = 0;
+		}
 		float orientation = rootNode.getOrientationWrt(universe.getHandle());
 		
 		Vector2f velocity = new Vector2f((float)Math.cos(orientation) + (float)(Math.random()-.5)*.4f, 
@@ -72,5 +78,5 @@ public class FlameThrower extends Gun
 	}
 	
 	ITexture flamethrower;
-
+	private int makeSound = 0;
 }
