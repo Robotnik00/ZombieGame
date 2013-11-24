@@ -70,7 +70,7 @@ public class Player extends Entity
 		
 		UpdateHUD hud = new UpdateHUD(this);
 		
-		rootNode.addAction(hud);
+		universe.getHUD().addAction(hud);
 		
 		universe.addEntity(this);
 		universe.setFocus(this);

@@ -30,6 +30,7 @@ import GameObjects.Powerup;
 import GameObjects.ShotgunPowerup;
 import GameObjects.Spawner;
 import GameObjects.TreeLeaves;
+import GameObjects.Wall;
 //import GameObjects.StaticBox;
 import GameObjects.Zombie;
 import Geometry.AABB;
@@ -223,6 +224,10 @@ public class StartGame extends EventListenerState implements IMenuController
 		i.setStartingLoc(.5f, 0);
 		level.addEntity(i);
 		
+		Wall w = new Wall(level);
+		w.setStartingLoc(3, 3);
+		level.addEntity(w);
+	
 	}
 	
 	@Override

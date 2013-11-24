@@ -27,6 +27,7 @@ public abstract class Entity
 			hp -= dp;
 			if(hp < 0)
 			{
+				hp = 0;
 				destroy();
 			}
 		}
