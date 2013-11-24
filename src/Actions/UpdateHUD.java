@@ -47,7 +47,7 @@ public class UpdateHUD implements Action
 		SimpleDraw hpbar = new SimpleDraw(hpbartex);
 		hpBar.setDrawingInterface(hpbar);
 		hpbar.setScale(10, 4); 
-		hpBar.translate(1.9f, 0);
+		hpBar.translate(2.2f, 0);
 		
 		hpBarRoot.translate(2.2f, .4f);
 		
@@ -80,6 +80,10 @@ public class UpdateHUD implements Action
 		scoretext.setText(score);
 		
 		hpBarScale = player.getHp()/player.getMaxHp();
+		if(player.getHp() < 0)
+		{
+			hpBarScale = 0;
+		}
 		hpBarRoot.scale(1/prevHpBarScale, 1);
 		hpBarRoot.scale(hpBarScale, 1);
 		prevHpBarScale = hpBarScale;
