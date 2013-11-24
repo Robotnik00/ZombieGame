@@ -202,13 +202,15 @@ public class StartGame extends EventListenerState implements IMenuController
 		car.setColor(new Vector4f(1,.2f	,.1f,1));
 		level.addEntity(car);
 		
-		
-		Spawner s = new Spawner(level, player);
-		s.setStartingLoc(5, 5);
-		s.startSpawning();
-		
-		TreeLeaves tree = new TreeLeaves(level);
-		tree.setStartingLoc(-3, 0);
+		for(int i = 0; i < 5; i++)
+		{
+			Spawner s = new Spawner(level, player);
+			s.setStartingLoc((float)(Math.random()-.5)*20, (float)(Math.random()-.5)*20);
+			s.setNumZombies(10);
+			s.startSpawning();
+		}
+		//TreeLeaves tree = new TreeLeaves(level);
+		//tree.setStartingLoc(-3, 0);
 		
 		DamageMultiplier d = new DamageMultiplier(level, player);
 		level.addEntity(d);

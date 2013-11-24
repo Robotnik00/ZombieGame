@@ -98,6 +98,10 @@ public class Spawner extends Entity
 		
 		
 	}
+	public void setNumZombies(int num)
+	{
+		maxZombies = num;
+	}
 	
 	public void setTimeToLive(long ttl)
 	{

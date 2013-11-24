@@ -39,7 +39,7 @@ public class CollidablePhysics extends Physics
 				// lower values make it "less" jittery,
 				// and allows the zombies to "compress" more.
 				// this seems to be a nice value.
-				move.scale(.5f);
+				move.scale(.3f);
 			}
 			
 			moveTotal.x += move.x;
