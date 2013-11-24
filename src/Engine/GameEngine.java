@@ -27,6 +27,7 @@ import InputCallbacks.MouseEventListener;
 import TextureEngine.GLTextureEngine;
 import TextureEngine.ITextureEngine;
 import Utility.ConfigData;
+import Utility.HighScoresManager;
 
 
 
@@ -162,7 +163,7 @@ public class GameEngine implements IGameEngine
 		// LogMessage output can also go to a file
 		logFile_ = log;
 		
-		// setup game configuration file.
+		// setup game configuration file and high scores
 		SetupConfig();
 		
 		// setup window w/LWJGL, init opengl
@@ -223,6 +224,11 @@ public class GameEngine implements IGameEngine
 	public ConfigData	GetGameConfig()
 	{
 		return gameConfig_;
+	}
+	
+	public HighScoresManager GetHighScores()
+	{
+		return highScores_;
 	}
 	
 	// information
@@ -340,6 +346,7 @@ public class GameEngine implements IGameEngine
 	protected PrintWriter		logFile_;
 	
 	protected ConfigData		gameConfig_;
+	protected HighScoresManager	highScores_;
 	
 	protected int				framesPerSecond_;
 	
@@ -537,11 +544,14 @@ public class GameEngine implements IGameEngine
 	protected void	SetupConfig() throws Exception
 	{
 		gameConfig_	= new ConfigData();
+		highScores_ = new HighScoresManager(10);
 		
 		try {
 			gameConfig_.LoadFile("config.cfg");
-		} catch (Exception e) {
-			LogMessage("GameEngine::SetupConfig: Couldn't find config file, creating default profile.");
+		} 
+		catch (Exception e) {
+			LogMessage("GameEngine::SetupConfig: Couldn't find config file, creating default profile. "
+					+ e.getMessage());
 			
 			// fill in default values for controls
 			gameConfig_.SetIntValue("move_up", 		Keyboard.KEY_W);
@@ -553,13 +563,14 @@ public class GameEngine implements IGameEngine
 			// default sound volume
 			gameConfig_.SetFloatValue("sound_volume", 1.0f);
 			
-			// empty high score table with 10 slots
-			for (int i=0; i < 10; i++)
-			{
-				// scoreX_name and scoreX_points
-				gameConfig_.SetStringValue("score"+i+"_name", "AAA");
-				gameConfig_.SetIntValue("score"+i+"_points", (10-i)*1000);
-			}
+			// store default high scores in the config file
+			highScores_.SaveScores(gameConfig_);
+		}
+		
+		try {
+			highScores_.LoadScores(gameConfig_);
+		} catch (Exception e) {
+			LogMessage("GameEngine::SetupConfig: high scores error: "+e.getMessage());
 		}
 	}
 	

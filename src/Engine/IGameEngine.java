@@ -14,6 +14,7 @@ import GameStates.IGameState;
 import InputCallbacks.KeyEventListener;
 import InputCallbacks.MouseEventListener;
 import Utility.ConfigData;
+import Utility.HighScoresManager;
 
 
 
@@ -47,6 +48,12 @@ public interface IGameEngine
 	 * Request the handle to the game's configuration file.
 	 */
 	public ConfigData	GetGameConfig();
+	
+	/**
+	 * Request the handle to the game's high score list.
+	 */
+	public HighScoresManager GetHighScores();
+	
 	
 	//
 	// information
