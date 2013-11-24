@@ -18,7 +18,7 @@ public class TimeToLive implements Action
 	{
 		if(started)
 		{
-			time = universe.getGameEngine().GetTime() - startTime;
+			time = universe.getTime() - startTime;//universe.getGameEngine().GetTime() - startTime;
 			if(time >= timeToLive)
 			{
 				entity.destroy();
@@ -28,7 +28,7 @@ public class TimeToLive implements Action
 	public void start()
 	{
 
-		startTime = universe.getGameEngine().GetTime(); 
+		startTime = universe.getTime() - startTime;//universe.getGameEngine().GetTime(); 
 		started = true;
 	}
 	public void addTime(long time)

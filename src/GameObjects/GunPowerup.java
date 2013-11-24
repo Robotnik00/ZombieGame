@@ -44,7 +44,6 @@ public abstract class GunPowerup extends Powerup
 				@Override
 				public void performAction() 
 				{
-					text.setText("" + gun.getAmmo());
 					if(gun.getAmmo() == 0)
 					{
 						removePowerup(player);
@@ -53,9 +52,19 @@ public abstract class GunPowerup extends Powerup
 				}
 				
 			};
+			gun.getRootNode().addAction(removeShotgun);
 			
-			rootNode.addAction(removeShotgun);
-			
+			Action updateText = new Action()
+			{
+
+				@Override
+				public void performAction() 
+				{
+					text.setText("" + gun.getAmmo());
+				}
+				
+			};
+			rootNode.addAction(updateText);
 			
 			player.addGun(gun);
 			player.setGun(player.getNumGuns() - 1); 

@@ -48,7 +48,7 @@ public class Spawner extends Entity
 
 	public void startSpawning()
 	{
-		time = universe.getGameEngine().GetTime();
+		time = universe.getTime();
 		
 		Action spawnZombies = new Action()
 		{
@@ -57,7 +57,7 @@ public class Spawner extends Entity
 			@Override
 			public void performAction() 
 			{
-				long elapsedTime = universe.getGameEngine().GetTime() - time;
+				long elapsedTime = universe.getTime() - time;
 				if(timtolive == null)
 				{
 					drawNumZombies.setText("" + (maxZombies - spawnedZombies));
@@ -79,7 +79,7 @@ public class Spawner extends Entity
 						spawnedZombies++;
 						
 					}
-					time = universe.getGameEngine().GetTime();
+					time = universe.getTime();
 					
 				}
 				if(spawnedZombies == maxZombies)

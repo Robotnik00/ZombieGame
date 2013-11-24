@@ -17,9 +17,9 @@ public abstract class Gun extends Entity
 	
 	public void fireGun()
 	{
-		if (universe.getGameEngine().GetTime() - lastTriggerTime > (1000/rateOfFire))
+		if (universe.getTime() - lastTriggerTime > (1000/rateOfFire))
 		{
-			lastTriggerTime = universe.getGameEngine().GetTime();
+			lastTriggerTime = universe.getTime();
 			
 			if (ammo > 0)
 			{
@@ -45,7 +45,7 @@ public abstract class Gun extends Entity
 		if(!reloading && clips > 0)
 		{
 			reloading = true;
-			startReloadTime = universe.getGameEngine().GetTime();
+			startReloadTime = universe.getTime();
 			ammo = 0;
 			
 			Action action = new Action() {
@@ -53,7 +53,7 @@ public abstract class Gun extends Entity
 				@Override
 				public void performAction() 
 				{
-					long currentTime = universe.getGameEngine().GetTime() - startReloadTime;
+					long currentTime = universe.getTime() - startReloadTime;
 					if(currentTime > reloadTime)
 					{
 						ammo = maxAmmo;

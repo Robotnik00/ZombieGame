@@ -106,7 +106,10 @@ public abstract class Universe
 	{
 		return frames;
 	}
-	
+	public long getTime()
+	{
+		return frames*1000/game.GetTickFrequency();
+	}
 	public IGameEngine getGameEngine()
 	{
 		return game;
