@@ -54,7 +54,7 @@ public abstract class GunPowerup extends Powerup
 				
 			};
 			
-			gun.getRootNode().addAction(removeShotgun);
+			rootNode.addAction(removeShotgun);
 			
 			
 			player.addGun(gun);

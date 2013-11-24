@@ -34,6 +34,14 @@ public class Box extends Entity
 
 			entity = new FlameThrowerPowerup(universe, player);
 		}
+		else if(i > .15f && i < .2f)
+		{
+			entity = new Invulnerable(universe, player);
+		}
+		else if(i > .1 && i < .15f)
+		{
+			entity = new DamageMultiplier(universe, player);
+		}
 		else 
 		{
 			entity = null;
