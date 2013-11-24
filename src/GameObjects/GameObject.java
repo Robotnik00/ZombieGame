@@ -210,6 +210,7 @@ public class GameObject
 	{
 		transform.m30 = x;
 		prevTransform.m30 = x;
+		deltaX.scale(0);
 		if(boundingBox != null)
 		{
 			boundingBox.transform(getGlobalTransform());
@@ -219,6 +220,7 @@ public class GameObject
 	{
 		transform.m31 = y;
 		prevTransform.m31 = y;
+		deltaX.scale(0);
 		if(boundingBox != null)
 		{
 			boundingBox.transform(getGlobalTransform());
@@ -604,6 +606,10 @@ public class GameObject
 	public boolean getStatic()
 	{
 		return isstatic;
+	}
+	public ArrayList<Action> getActions()
+	{
+		return actions;
 	}
 	AABB proxemity; // if no objects in this area than don't process any children unless it is null
 	AABB boundingBox; // if object in this area notify a collision

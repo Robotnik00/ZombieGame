@@ -41,6 +41,7 @@ public class HandGunProjectile extends Projectile
 		explosion.setStartingLoc(rootNode.getLocalX(), rootNode.getLocalY());
 		universe.removeEntity(this);
 		universe.addEntity(explosion);
+		rootNode.removeAction(timetolive);
 	}
 	
 }

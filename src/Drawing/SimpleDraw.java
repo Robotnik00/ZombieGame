@@ -63,7 +63,7 @@ public class SimpleDraw implements DrawObject
 		this.tex = tex;
 	}
 	Vector4f color = null;
-	float blend = 1f;
+	float blend = 0f;
 	float orientation = 0;
 	float scalex = 1;
 	float scaley = 1;

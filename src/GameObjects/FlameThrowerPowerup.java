@@ -9,6 +9,7 @@ public class FlameThrowerPowerup extends GunPowerup
 	public FlameThrowerPowerup(Universe universe, Player player) {
 		super(universe, player);
 		gun = new FlameThrower(universe, player);
+		gun.setPowerup(this);
 	}
 
 	@Override
@@ -16,10 +17,9 @@ public class FlameThrowerPowerup extends GunPowerup
 	{
 		super.createObject(universe);
 		ITexture fire = universe.getTextureEngine().LoadTexture("gfx/Powerups/flamethrower_can.png", 0);
-		SimpleDraw drawPowerup = new SimpleDraw(fire);
+		drawPowerup = new SimpleDraw(fire);
 		
 		rootNode.setDrawingInterface(drawPowerup);
-		rootNode.scale(.5f, .5f);
 		
 	}	 
 	

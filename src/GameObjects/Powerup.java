@@ -1,6 +1,7 @@
 package GameObjects;
 
 import Actions.Action;
+import Drawing.SimpleDraw;
 import Geometry.AABB;
 
 public abstract class Powerup extends Entity
@@ -38,6 +39,12 @@ public abstract class Powerup extends Entity
 	{
 		rootNode.setBoundingBox(new AABB(1,1));
 
+		rootNode.scale(.5f, .5f);
+	}
+	
+	public SimpleDraw getDrawInterface()
+	{
+		return drawPowerup;
 	}
 	
 	public abstract void applyPowerup(Player player);
@@ -48,4 +55,6 @@ public abstract class Powerup extends Entity
 	
 	Player itsplayer;
 	Powerup ref = this;
+
+	SimpleDraw drawPowerup;
 }

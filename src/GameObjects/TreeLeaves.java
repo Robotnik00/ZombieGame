@@ -21,7 +21,7 @@ public class TreeLeaves extends Entity
 		String texname = "gfx/Environment/TreeLeaves" + (int)(Math.random()*1+1) + ".png";
 		ITexture treetex = universe.getTextureEngine().LoadTexture(texname, 0);
 		SimpleDraw drawtree = new SimpleDraw(treetex);
-		drawtree.setScale(5, 5);
+		drawtree.setScale(3, 3);
 		rootNode.setDrawingInterface(drawtree);
 		universe.getForgroundNode().addChild(rootNode);
 		rootNode.setStatic(true);

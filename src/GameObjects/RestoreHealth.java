@@ -18,7 +18,6 @@ public class RestoreHealth extends Powerup
 		SimpleDraw drawPowerup = new SimpleDraw(health);
 		
 		rootNode.setDrawingInterface(drawPowerup);
-		rootNode.scale(.5f, .5f);
 	}
 	@Override
 	public void applyPowerup(Player player) {

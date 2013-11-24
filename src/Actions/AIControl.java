@@ -29,9 +29,9 @@ public class AIControl extends PhysicsObjectController
 			float targetY = target.getRootNode().getLocalY();
 			float objX = obj.getLocalX();
 			float objY = obj.getLocalY();
-			
-			
+
 			float orientation = character.getOrientation();
+			
 			float deltaTarget = (float)Math.atan2(targetY - objY, targetX - objX);
 			
 			orientation = deltaTarget - orientation;
@@ -42,6 +42,7 @@ public class AIControl extends PhysicsObjectController
 			forward.x = (float)Math.cos(deltaTarget);
 			forward.y = (float)Math.sin(deltaTarget);
 			setAppliedForce(forward);
+			appliedForce.scale(forceScale);
 			float relX = target.getRootNode().getLocalX();
 			float relY = target.getRootNode().getLocalY();
 			if(Math.abs(obj.getLocalX() - relX) < .5f && Math.abs(obj.getLocalY() - relY) < .5f)
@@ -51,6 +52,11 @@ public class AIControl extends PhysicsObjectController
 			
 			
 		}
+		else
+		{
+			appliedForce.scale(0);
+			
+		}
 	}
 	
 	
@@ -58,7 +64,7 @@ public class AIControl extends PhysicsObjectController
 	{
 		this.target = target;
 	}
-	
+	float forceScale = 1;
 	Vector2f forward;
 	
 	Entity target = null;

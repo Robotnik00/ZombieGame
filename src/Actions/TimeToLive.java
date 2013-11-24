@@ -31,10 +31,20 @@ public class TimeToLive implements Action
 		startTime = universe.getGameEngine().GetTime(); 
 		started = true;
 	}
+	public void addTime(long time)
+	{
+		this.timeToLive += time;
+	}
 	public void setTimeToLive(long timeToLive)
 	{
 		this.timeToLive = timeToLive;
 	}
+	public long getTimeLeft()
+	{
+		return timeToLive - time;
+	}
+	
+	
 	
 	boolean started = false;
 	
