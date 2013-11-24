@@ -92,7 +92,7 @@ public class ALAudioEngine implements IAudioEngine
 		
 		if (channel == -1)
 		{
-			system_.LogMessage("ALAudioEngine: Couldn't find a sound channel.");
+			//system_.LogMessage("ALAudioEngine: Couldn't find a sound channel.");
 			return -1;
 		}
 		

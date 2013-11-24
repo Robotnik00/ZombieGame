@@ -14,7 +14,7 @@ public class Fire extends Entity
 
 	@Override
 	public void createObject(Universe universe) {
-		ITexture fire = universe.getTextureEngine().LoadTexture("gfx/Projectiles/fire.png", 0);
+		ITexture fire = universe.getTextureEngine().LoadTexture("gfx/Projectiles/fire.png", 0x00FFFFFF);
 		SimpleDraw drawfire = new SimpleDraw(fire);
 		rootNode.setDrawingInterface(drawfire);
 		drawfire.setScale(.35f, .35f);

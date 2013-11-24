@@ -248,8 +248,9 @@ public class GLTextureEngine implements ITextureEngine
 		Display.setDisplayMode(new DisplayMode(displayWidth_, displayHeight_));
 		Display.create(pixelFormat, contextAttribs);
 		
-		system_.LogMessage("GLTextureEngine::Init: Testing OpenGL, got version: " + 
-				glGetInteger(GL_MAJOR_VERSION) + "." + glGetInteger(GL_MINOR_VERSION));
+		// checking the version is apparently too much for osx to handle.
+		//system_.LogMessage("GLTextureEngine::Init: Testing OpenGL, got version: " + 
+		//		glGetInteger(GL_MAJOR_VERSION) + "." + glGetInteger(GL_MINOR_VERSION));
 		
 		// init gl resources
 		SetupShaders();

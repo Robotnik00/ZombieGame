@@ -53,8 +53,8 @@ public class MenuState implements IGameState, IMenuController
 		// setup new menu
 		currentMenu_ = menu;
 		
-		// initialize the menu only once:
-		// FIXME: menu screens can create other menu screen (as part of a menu transition action, for example),
+		// FIXME: initialize the menu only once:
+		// menu screens can create other menu screen (as part of a menu transition action, for example),
 		// and sometimes these menus are initialized twice because they are fed into this function each time a
 		// transition is performed.
 		// Option A: have menus clear their state on each init, before setting up again
@@ -68,9 +68,13 @@ public class MenuState implements IGameState, IMenuController
 	{
 		// FIXME: setup transition stuff here!
 		
+		//game_.LogMessage("MenuState::PreviousMenu");
+		//GameEngine.DumpStackTrace(Thread.currentThread().getStackTrace(), null);
+		
 		if (menuStack_.size() == 0)
 		{
-			game_.LogMessage("MenuState::PreviousMenu: WARNING: Stack size zero!");
+			//game_.LogMessage("MenuState::PreviousMenu: WARNING: Stack size zero!");
+			game_.EndGameLoop();
 			return;
 		}
 		
@@ -126,6 +130,7 @@ public class MenuState implements IGameState, IMenuController
 	
 	public void	Update()
 	{
+		/*
 		int[] keys = game_.GetKeyEvents();
 		
 		for (int i=0; i < keys.length; i++)
@@ -138,6 +143,7 @@ public class MenuState implements IGameState, IMenuController
 					game_.EndGameLoop();
 			}
 		}
+		*/
 		
 		//refresh_ = true;
 		
@@ -149,7 +155,7 @@ public class MenuState implements IGameState, IMenuController
 		//if (refresh_ == false)
 		//	return;
 		
-		gfx_.ClearScreen();
+		//gfx_.ClearScreen();
 		
 		// draw a background
 		menuBackground_.SetPos(-1.0f, -1.0f);

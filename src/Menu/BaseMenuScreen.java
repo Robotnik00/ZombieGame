@@ -6,10 +6,11 @@ package Menu;
 // imports
 import java.util.*;
 
+import org.lwjgl.input.Keyboard;
+
 import AudioEngine.IAudioEngine;
 import Engine.IGameEngine;
 import TextureEngine.ITextureEngine;
-
 import Menu.IMenuWidget;
 import Menu.IMenuController;
 
@@ -74,6 +75,20 @@ public class BaseMenuScreen implements IMenuScreen
 		}
 		else
 		{
+			// if esc is pressed, go to the previous menu.
+			// check for this when there are no focused widgets,
+			// and before we give the widgets a chance to focus (before updating)
+			int[] keys = menuController_.GetGameController().GetKeyEvents();
+			
+			for (int i=0; i < keys.length; i++)
+			{
+				if (keys[i] == Keyboard.KEY_ESCAPE)
+				{
+					menuController_.PreviousMenu();
+					return;	// don't update the widgets if we are going back
+				}
+			}
+			
 			for (int i=0; i < widgets_.size(); i++)
 			{
 				widgets_.get(i).Update();

@@ -1,7 +1,9 @@
 
 package GameStates;
 
+import java.util.*;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -11,6 +13,7 @@ import Drawing.CameraView;
 import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import Drawing.TileDraw;
+import Engine.GameEngine;
 import Engine.IGameEngine;
 import GameObjects.Box;
 import GameObjects.Car;
@@ -30,6 +33,9 @@ import GameObjects.Zombie;
 import Geometry.AABB;
 import TextureEngine.ITexture;
 import TextureEngine.ITextureEngine;
+import Menu.IMenuController;
+import Menu.IMenuScreen;
+import Menu.PauseMenuScreen;
 
 /// example of making a scene. Creates ExampleObject and adds action to it
 
@@ -38,12 +44,68 @@ import TextureEngine.ITextureEngine;
  * 
  * try and reach the end of the level. :P
  */
-public class StartGame extends EventListenerState
+public class StartGame extends EventListenerState implements IMenuController
 {
 	public StartGame()
 	{
 		super();
 		paused=false;
+		menuStack_ = new Stack<IMenuScreen>();
+	}
+	
+	//
+	// IMenuController interface functions
+	//
+	
+	public void	ChangeMenuScreen(IMenuScreen menu) throws Exception
+	{
+		// FIXME: setup transition stuff here!
+		
+		// notify the current menu and push it onto the stack
+		currentMenu_.Push();
+		menuStack_.push(currentMenu_);
+		
+		// setup new menu
+		currentMenu_ = menu;
+		
+		if (currentMenu_.IsInitialized() == false)
+			currentMenu_.Init(this);
+	}
+	
+	public void	PreviousMenu()
+	{
+		// FIXME: setup transition stuff here!
+		
+		if (menuStack_.size() == 0)
+		{
+			// unpause
+			paused = false;
+			currentMenu_ = null;
+			return;	// don't mess with the menu stack after this
+		}
+		
+		// kill current menu
+		currentMenu_.Quit();
+		currentMenu_ = null;
+		
+		// notify stack menu to restore stuff
+		currentMenu_ = menuStack_.pop();
+		currentMenu_.Pop();
+	}
+	
+	public IGameEngine		GetGameController()
+	{
+		return game;
+	}
+	
+	public ITextureEngine	GetGraphicsController()
+	{
+		return gfx;
+	}
+	
+	public IAudioEngine		GetAudioController()
+	{
+		return snd;
 	}
 	
 	//
@@ -60,7 +122,6 @@ public class StartGame extends EventListenerState
 		level.scaleUniverse(.3f);
 		
 		// create entity
-//		entity = new ExampleEntity(level);
 		Player player = new Player(level);
 
 		// changed to add objects at a random distance and angle
@@ -84,6 +145,7 @@ public class StartGame extends EventListenerState
 				level.removeEntity(sb);
 			}
 		}
+		
 		for(int i = 0; i < 5; i++)
 		{
 			PhysicsBox b = new PhysicsBox(level, player);
@@ -154,29 +216,79 @@ public class StartGame extends EventListenerState
 	}
 
 	@Override
-	public void Update() 
+	public void Update()
 	{
-		super.Update();
+		// don't call the event listeners unless the game is unpaused
+		//super.Update();
+		
 		game.SetWindowTitle(""+game.GetFrameRate());
 		
-		level.update();	
+		if (paused)
+		{
+			// update pause screen menus
+			currentMenu_.Update();
+		}
+		else
+		{
+			// check if ESC was pressed, if so pause
+			int[] keyEvents = game.GetKeyEvents();
+			
+			for (int i=0; i < keyEvents.length; i++)
+			{
+				if (keyEvents[i] == Keyboard.KEY_ESCAPE)
+				{
+					// pause the game
+					paused = true;
+					
+					menuStack_.clear();
+					
+					// create the pause menu
+					currentMenu_ = new PauseMenuScreen();
+					
+					try {
+						currentMenu_.Init(this);
+					} catch (Exception e) {
+						game.LogMessage("StartGame::Update: Couldn't initialize PauseMenuScreen: "+e.getMessage());
+						paused = false;
+						currentMenu_ = null;
+					}
+					
+				}
+			}
+			
+			// if still not paused, then update
+			if (!paused)
+			{
+				super.Update();
+				level.update();
+			}
+		}
 	}
 
 	@Override
 	public void Draw(float delta) 
 	{
-		level.draw(delta);
+		if (paused)
+		{
+			level.draw(0.0f);
+			
+			// "grey-out" the game
+			gfx.SetDrawColor(0.0f, 0.0f, 0.0f, 0.5f);
+			gfx.DrawRectangle(-1.0f, -1.0f, 1.0f, 1.0f);
+			
+			// draw menu on top of game
+			currentMenu_.Draw(delta);
+		}
+		else
+		{
+			level.draw(delta);
+		}
 	}
 	
 	public boolean GetPaused()
 	{
 		return paused;
 	}
-	
-	//
-	// IMenuController interface functions
-	//
-	
 	
 	
 	
@@ -186,5 +298,9 @@ public class StartGame extends EventListenerState
 	
 	ExampleEntity entity;
 	ExampleLevel level;	
-	boolean paused;
+	
+	// pause stuff
+	protected boolean paused;
+	protected Stack<IMenuScreen>	menuStack_;
+	protected IMenuScreen			currentMenu_;
 }

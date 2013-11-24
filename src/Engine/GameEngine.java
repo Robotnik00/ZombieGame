@@ -214,8 +214,9 @@ public class GameEngine implements IGameEngine
 	}
 	
 	public void	EndGameLoop()
-	{
+	{		
 		LogMessage("EndGameLoop");
+		//DumpStackTrace(Thread.currentThread().getStackTrace(), null);
 		runGame_ = false;
 	}
 	

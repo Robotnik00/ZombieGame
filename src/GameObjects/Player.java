@@ -2,6 +2,9 @@ package GameObjects;
 
 import java.util.ArrayList;
 
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+
 import Actions.Action;
 import Actions.MouseTracker;
 import Actions.PCControl;
@@ -64,36 +67,42 @@ public class Player extends Entity
 		addGun(gun);
 		setGun(0);
 		
-		
-		
-		
-		
-		
 		UpdateHUD hud = new UpdateHUD(this);
 		
 		rootNode.addAction(hud);
-		
-		
-		
-		
 		
 		universe.addEntity(this);
 		universe.setFocus(this);
 		
 		
+		deathSound = new ISound[4];
+		playerHurt = new ISound[3];
+		
+		deathSound[0]=null;
+		deathSound[1]=null;
+		deathSound[2]=null;
+		deathSound[3]=null;
+		
+		playerHurt[0]=null;
+		playerHurt[1]=null;
+		playerHurt[2]=null;
+		
 		try 
 		{
 			//splayerHurt = universe.getAudioEngine().LoadSound("snd/player/PlayerHurt.wav");
-			String filename = "player_dies" + (int)(Math.random()*4+1) + ".wav";
-			deathSound = universe.getAudioEngine().LoadSound("snd/player/" + filename);
+			//String filename = "player_dies" + (int)(Math.random()*4+1) + ".wav";
+			//deathSound = universe.getAudioEngine().LoadSound("snd/player/" + filename);
+			
+			for (int i=0; i < 4; i++)
+				deathSound[i] = universe.getAudioEngine().LoadSound("snd/Player/player_dies"+(i+1)+".wav");
+			for (int i=0; i < 3; i++)
+				playerHurt[i] = universe.getAudioEngine().LoadSound("snd/Player/player_hurt"+(i+1)+".wav");
 		}
 		catch (Exception e) 
 		{
 			playerHurt = null;
 			deathSound = null;
-			universe.getGameEngine().LogMessage(
-					"HandGun: Couldn't load 'snd/player/PlayerHurt.wav', 'snd/player/DeathSound.wav'");
-			//e.printStackTrace();
+			universe.getGameEngine().LogMessage("Couldn't load player sounds.");
 		}
 	}
 	
@@ -132,8 +141,11 @@ public class Player extends Entity
 	public void damage(float dp)
 	{
 		super.damage(dp);
-		if(playerHurt != null)
-			playerHurt.Play();
+		
+		// FIXME: stop player sound from playing more than once
+		int s = (int)(Math.random()*3.0);
+		//if(playerHurt[s] != null)
+		//	playerHurt[s].Play();
 	}
 	
 	@Override
@@ -141,11 +153,14 @@ public class Player extends Entity
 	{
 		universe.getHandle().removeChild(rootNode);
 		destroyed = true;
-		if(deathSound != null)
-			deathSound.Play();
+		
+		int s = (int)(Math.random()*3.0);
+		if(deathSound[s] != null)
+			deathSound[s].Play();
 		
 		GameObject deadBody = new GameObject();
-		SimpleDraw drawbody = new SimpleDraw(universe.getTextureEngine().LoadTexture("gfx/Characters/player_dead1.png", 0));
+		SimpleDraw drawbody = new SimpleDraw(universe.getTextureEngine().LoadTexture("gfx/Characters/player_dead1.png", 0x00FFFFFF));
+		drawbody.setScale(0.75f, 0.75f);	// make the dead body sprite a little smaller
 		deadBody.setDrawingInterface(drawbody);
 		universe.getBackgroundNode().addChild(deadBody);
 		deadBody.setLocalX(rootNode.getLocalX());
@@ -154,12 +169,8 @@ public class Player extends Entity
 		for(int i = 0; i < 10; i++)
 		{
 			BloodSplatter b = new BloodSplatter(universe);
-			b.setStartingLoc((float)(rootNode.getLocalX()+Math.random()*.5f), (float)(rootNode.getLocalY()+Math.random()*.5f));
-			
+			b.setStartingLoc((float)(rootNode.getLocalX()+Math.random()*.5f), (float)(rootNode.getLocalY()+Math.random()*.5f));	
 		}
-		
-		
-		
 	}
 	
 	public void addToScore(int points)
@@ -207,7 +218,8 @@ public class Player extends Entity
 	 */
 	ArrayList<Powerup> powerups;
 	
-	ISound deathSound;
-	ISound playerHurt;
+	ISound[] deathSound;
+	ISound[] playerHurt;
+	
 	SimpleDraw drawChar;
 }
