@@ -88,8 +88,22 @@ public abstract class Gun extends Entity
 	{
 		return ammo;
 	}
-	public abstract void select();
+	public void setDamageMultiplier(float dp)
+	{
+		damageMultiplier = dp;
+	}
+	// used to display the selected gun.
+	public void setPowerup(Powerup p)
+	{
+		itsPowerup = p;
+	}
+	public Powerup getPowerup()
+	{
+		return itsPowerup;
+	}
 	
+	public abstract void select();
+
 	
 	Player player;
 	
@@ -101,12 +115,14 @@ public abstract class Gun extends Entity
 	long reloadTime = 1000; // time it takes to reload
 	long startReloadTime;
 	long startFiringTime;
-	
 	long	lastTriggerTime=0;
+	float damageMultiplier = 1;
+	float damage = .2f;
 	boolean reloading = false;
 	boolean firing = false;
 	ITexture icon;
 	ITexture texture;
 	ISound fireSound;
 	ISound outOfAmmoSound;
+	Powerup itsPowerup = null;
 }

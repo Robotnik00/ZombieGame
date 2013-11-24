@@ -11,6 +11,7 @@ public class ShotgunPowerup extends GunPowerup
 	{
 		super(universe, player);
 		gun = new Shotgun(universe, player);
+		gun.setPowerup(this);
 	}
 
 	@Override
@@ -18,10 +19,9 @@ public class ShotgunPowerup extends GunPowerup
 	{
 		super.createObject(universe);
 		ITexture pshotgunTex = universe.getTextureEngine().LoadTexture("gfx/Powerups/shotgun_shell.png", 0);
-		SimpleDraw drawPowerup = new SimpleDraw(pshotgunTex);
+		drawPowerup = new SimpleDraw(pshotgunTex);
 		
 		rootNode.setDrawingInterface(drawPowerup);
-		rootNode.scale(.5f, .5f);
 		
 	}	
 	

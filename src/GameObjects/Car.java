@@ -59,8 +59,7 @@ public class Car extends Entity
 		carNode.addChild(tire2);
 		carNode.addChild(tire3);
 		carNode.addChild(tire4);
-		
-		
+		drawcar.setBlend(1);		
 		
 	}
 	

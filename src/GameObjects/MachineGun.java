@@ -72,6 +72,7 @@ public class MachineGun extends Gun
 		bullet.setStartingLoc(rootNode.getXWrt(universe.getHandle()), rootNode.getYWrt(universe.getHandle()));
 		bullet.setVelocity(velocity);
 		bullet.setTimeToLive(800);
+		bullet.setDP(damage*damageMultiplier);
 		universe.addEntity(bullet);
 	}
 

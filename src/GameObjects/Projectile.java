@@ -54,7 +54,7 @@ public abstract class Projectile extends Entity
 	public void setTimeToLive(long ttl)
 	{
 		
-		TimeToLive timetolive = new TimeToLive(this, universe);
+		timetolive = new TimeToLive(this, universe);
 		timetolive.setTimeToLive(ttl);
 		rootNode.addAction(timetolive);
 		timetolive.start();
@@ -64,6 +64,10 @@ public abstract class Projectile extends Entity
 		rootNode.setTranslationalVelocity(velocity);
 	}
 	
+	public void setDP(float dp)
+	{
+		this.dp = dp;
+	}
 	public float getDP()
 	{
 		return dp;
@@ -73,4 +77,5 @@ public abstract class Projectile extends Entity
 	float randomizeScore = 1;
 	float dp = .2f;
 	long timeToLive = 1000;
+	TimeToLive timetolive;
 }

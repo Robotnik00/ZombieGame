@@ -17,10 +17,12 @@ import Engine.GameEngine;
 import Engine.IGameEngine;
 import GameObjects.Box;
 import GameObjects.Car;
+import GameObjects.DamageMultiplier;
 import GameObjects.ExampleEntity;
 import GameObjects.ExampleLevel;
 import GameObjects.GameObject;
 import GameObjects.HandGunProjectile;
+import GameObjects.Invulnerable;
 import GameObjects.MachineGunPowerup;
 import GameObjects.PhysicsBox;
 import GameObjects.Player;
@@ -207,6 +209,18 @@ public class StartGame extends EventListenerState implements IMenuController
 		
 		TreeLeaves tree = new TreeLeaves(level);
 		tree.setStartingLoc(-3, 0);
+		
+		DamageMultiplier d = new DamageMultiplier(level, player);
+		level.addEntity(d);
+		d.setStartingLoc(1, -3);
+		DamageMultiplier d2 = new DamageMultiplier(level, player);
+		level.addEntity(d2);
+		d2.setStartingLoc(2, -3);
+		
+		Invulnerable i = new Invulnerable(level, player);
+		i.setStartingLoc(.5f, 0);
+		level.addEntity(i);
+		
 	}
 	
 	@Override

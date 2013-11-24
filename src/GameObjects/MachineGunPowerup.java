@@ -9,16 +9,16 @@ public class MachineGunPowerup extends GunPowerup
 	public MachineGunPowerup(Universe universe, Player player) {
 		super(universe, player);
 		gun = new MachineGun(universe, player);
+		gun.setPowerup(this);
 	}
 	@Override
 	public void createObject(Universe universe) 
 	{
 		super.createObject(universe);
-		ITexture pshotgunTex = universe.getTextureEngine().LoadTexture("gfx/Powerups/machinegun_shells.png", 0);
-		SimpleDraw drawPowerup = new SimpleDraw(pshotgunTex);
+		ITexture machinegun = universe.getTextureEngine().LoadTexture("gfx/Powerups/machinegun_shells.png", 0);
+		drawPowerup = new SimpleDraw(machinegun);
 		
 		rootNode.setDrawingInterface(drawPowerup);
-		rootNode.scale(.5f, .5f);
 		
 	}
 	@Override

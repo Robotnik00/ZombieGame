@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import Actions.Action;
 import Actions.MouseTracker;
@@ -122,9 +123,22 @@ public class Player extends Entity
 	public void setGun(int i)
 	{
 		if(currentGun != null)
+		{
 			gunNode.removeChild(currentGun.getRootNode());
+			if(currentGun.getPowerup() != null)
+			{
+				currentGun.getPowerup().getDrawInterface().setColor(new Vector4f(0,0,0,.5f));
+			}
+		}
 		
 		currentGun = guns.get(i);
+		
+		if(currentGun.getPowerup() != null)
+		{
+			currentGun.getPowerup().getDrawInterface().setColor(new Vector4f(0,1,0,1));
+			currentGun.getPowerup().getDrawInterface().setBlend(.3f);
+		}
+		
 		gunNode.addChild(currentGun.getRootNode());
 		currentGun.select();
 	}
@@ -137,15 +151,22 @@ public class Player extends Entity
 	{
 		return guns.size();
 	}
+	public ArrayList<Gun> getGuns()
+	{
+		return guns;
+	}
 	@Override
 	public void damage(float dp)
 	{
-		super.damage(dp);
-		
-		// FIXME: stop player sound from playing more than once
-		int s = (int)(Math.random()*3.0);
-		//if(playerHurt[s] != null)
-		//	playerHurt[s].Play();
+		if(!invulnerable)
+		{
+			super.damage(dp);
+			
+			// FIXME: stop player sound from playing more than once
+			int s = (int)(Math.random()*3.0);
+			if(playerHurt[s] != null && Math.random() > .9f)
+				playerHurt[s].Play();
+		}
 	}
 	
 	@Override
@@ -159,7 +180,7 @@ public class Player extends Entity
 			deathSound[s].Play();
 		
 		GameObject deadBody = new GameObject();
-		SimpleDraw drawbody = new SimpleDraw(universe.getTextureEngine().LoadTexture("gfx/Characters/player_dead1.png", 0x00FFFFFF));
+		SimpleDraw drawbody = new SimpleDraw(universe.getTextureEngine().LoadTexture("gfx/Characters/player_dead1.png", 0x00ffffff));
 		drawbody.setScale(0.75f, 0.75f);	// make the dead body sprite a little smaller
 		deadBody.setDrawingInterface(drawbody);
 		universe.getBackgroundNode().addChild(deadBody);
@@ -201,7 +222,14 @@ public class Player extends Entity
 	{
 		return drawChar;
 	}
-	
+	public void setInvulnerable(boolean inv)
+	{
+		invulnerable = inv;
+	}
+	public boolean getInvulnerable()
+	{
+		return invulnerable;
+	}
 	
 	int score;
 	
@@ -222,4 +250,6 @@ public class Player extends Entity
 	ISound[] playerHurt;
 	
 	SimpleDraw drawChar;
+	
+	boolean invulnerable = false;
 }
