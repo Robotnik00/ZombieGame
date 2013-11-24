@@ -70,7 +70,7 @@ public class Tutorial3MenuScreen extends BaseMenuScreen
 			"Health restore acts instantly and\n" +
 			"resets your health to 100%!\n" +
 			"\n" +
-			"Other powerups last for 15 seconds and\n" +
+			"Other powerups last for 10 seconds and\n" +
 			"only one of them can be active at a time.\n" +
 			"\n\n\n\n\n\n" +
 			"Health     Invulnerability    Quad\n" +

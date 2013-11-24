@@ -38,9 +38,10 @@ public class ConfigData
 		String stringValue;
 		String line;
 		
-		BufferedReader fin;
-		fin = new BufferedReader(new FileReader(filename));
+		BufferedReader fin=null;
 		
+		fin = new BufferedReader(new FileReader(filename));
+			
 		// save file name for saving later (if we were able to open the file)
 		filename_ = filename;
 		

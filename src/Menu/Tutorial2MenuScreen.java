@@ -68,7 +68,7 @@ public class Tutorial2MenuScreen extends BaseMenuScreen
 			"Many different weapons can be found\n" +
 			"during the game. You'll need them!\n" +
 			"\n" +
-			"Weapons replace your starting pistol\n" +
+			"Weapons replace your starting rifle\n" +
 			"and have only limited ammo. Use the \n" +
 			"Action button (default = E) to switch\n" +
 			"between weapons.\n" +

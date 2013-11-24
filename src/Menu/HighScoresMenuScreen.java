@@ -8,7 +8,7 @@ import TextureEngine.ITexture;
 // imports
 import TextureEngine.ITextureEngine;
 import Utility.BitmapFont;
-
+import Utility.HighScoresManager;
 
 
 public class HighScoresMenuScreen extends BaseMenuScreen
@@ -32,6 +32,7 @@ public class HighScoresMenuScreen extends BaseMenuScreen
 		
 		// get resources
 		gfx_ = menuController_.GetGraphicsController();
+		HighScoresManager hs = menuController_.GetGameController().GetHighScores();
 		
 		// load menu graphics
 		ITexture background		= gfx_.LoadTexture("gfx/menu/menu-background4-center.png", 0x00202020);
@@ -59,22 +60,22 @@ public class HighScoresMenuScreen extends BaseMenuScreen
 		
 		// 10 labels for high score name and the score
 		// FIXME: magic number for # of high score entries
-		for (int i=0; i < 10; i++)
+		for (int i=0; i < hs.GetMaxScores(); i++)
 		{
 			StringConfigMenuWidget scoreName = new StringConfigMenuWidget(
-					font, "score"+i+"_name", -0.5f, 0.2f-(i*0.05f), 0.05f, 0.05f);
+					font, hs.GetNameVariable(i), -0.5f, -0.3f+(i*0.05f), 0.05f, 0.05f);
 			AddWidget(scoreName);
 			
 			IntConfigMenuWidget scorePoints = new IntConfigMenuWidget(
-					font, "score"+i+"_points", 0.25f, 0.2f-(i*0.05f), 0.05f, 0.05f);
+					font, hs.GetScoreVariable(i), 0.25f, -0.3f+(i*0.05f), 0.05f, 0.05f);
 			AddWidget(scorePoints);
 		}
 		
 		// temporary: text field
-		TextWidget labelTextField = new TextWidget("Enter your name below:", font, -0.5f, -0.35f, 0.05f, 0.05f);
-		AddWidget(labelTextField);
-		TextFieldWidget textField = new TextFieldWidget(font, "score0_name", -0.5f, -0.4f, 0.05f, 0.05f);
-		AddWidget(textField);
+		//TextWidget labelTextField = new TextWidget("Enter your name below:", font, -0.5f, -0.35f, 0.05f, 0.05f);
+		//AddWidget(labelTextField);
+		//TextFieldWidget textField = new TextFieldWidget(font, "score0_name", -0.5f, -0.4f, 0.05f, 0.05f);
+		//AddWidget(textField);
 		
 		// back button
 		ImageWidget backButton = new ImageWidget(backImage, -0.10f, -0.5f, 0.2f, 0.2f);
