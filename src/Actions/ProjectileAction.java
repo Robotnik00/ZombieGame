@@ -2,6 +2,7 @@ package Actions;
 
 import GameObjects.GameObject;
 import GameObjects.Projectile;
+import Utility.Collision;
 import Utility.CollisionDetection;
 
 public class ProjectileAction implements Action
@@ -15,11 +16,11 @@ public class ProjectileAction implements Action
 	@Override
 	public void performAction() 
 	{
-		GameObject[] collisions = CollisionDetection.getCollisions(projectile.getRootNode(), universe);
+		Collision[] collisions = CollisionDetection.getCollisions(projectile.getRootNode(), universe);
 		
 		if(collisions.length > 0)
 		{
-			projectile.inflictDamage(collisions[0].getEntity());
+			projectile.inflictDamage(collisions[0].collidingObject.getEntity());
 			projectile.damage(projectile.getDP());
 		}
 	}

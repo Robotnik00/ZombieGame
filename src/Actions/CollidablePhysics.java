@@ -2,6 +2,7 @@ package Actions;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import Utility.Collision;
 import Utility.CollisionDetection;
 
 import Engine.IGameEngine;
@@ -27,14 +28,14 @@ public class CollidablePhysics extends Physics
 	{
 		
 		super.performAction();
-		GameObject[] collisions = CollisionDetection.getCollisions(obj, universe);
+		Collision[] collisions = CollisionDetection.getCollisions(obj, universe);
 		Vector2f moveTotal = new Vector2f(0.0f, 0.0f);
 		Vector2f move;
 		
 		for (int i=0; i < collisions.length; i++)
 		{
-			move = obj.getBoundingBox().solveCollision(collisions[i].getBoundingBox());
-			if(!collisions[i].getStatic())
+			move = collisions[i].escapeVector;//obj.getBoundingBox().solveCollision(collisions[i].colgetBoundingBox());
+			if(!collisions[i].collidingObject.getStatic())
 			{
 				// lower values make it "less" jittery,
 				// and allows the zombies to "compress" more.
