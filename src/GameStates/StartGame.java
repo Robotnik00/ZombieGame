@@ -91,6 +91,7 @@ public class StartGame extends EventListenerState implements IMenuController
 			currentMenu_ = null;
 			player.setControls(game.GetGameConfig());
 			player.resetState();
+			snd.SetVolume(game.GetGameConfig().GetFloatValue("sound_volume"));
 			return;	// don't mess with the menu stack after this
 		}
 		
@@ -138,6 +139,8 @@ public class StartGame extends EventListenerState implements IMenuController
 		Entity wave = new WaveManager(level, player);
 		level.addEntity(wave);
 	
+		// update this
+		snd.SetVolume(game.GetGameConfig().GetFloatValue("sound_volume"));
 	}
 	
 	@Override

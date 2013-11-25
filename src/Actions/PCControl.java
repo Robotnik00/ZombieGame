@@ -191,6 +191,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 		MOVE_RIGHT = data.GetIntValue("move_right");
 		MOVE_UP = data.GetIntValue("move_up");
 		MOVE_DOWN = data.GetIntValue("move_down");
+		ACTION_KEY = data.GetIntValue("action");
 	}
 	public void resetKeystates()
 	{
