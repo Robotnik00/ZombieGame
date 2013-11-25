@@ -1,5 +1,7 @@
 package GameObjects;
 
+import java.util.ArrayList;
+
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -16,12 +18,12 @@ public class Zombie extends Entity
 	public Zombie(Universe universe)
 	{
 		super(universe);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void createObject(Universe universe) 
 	{
+		zombies.add(this);
 		destroyable = true;
 		String textureName = "gfx/Characters/zombie" + ((int)(Math.random()*1+1)) + ".png";
 		//System.out.printf("%s\n", textureName);
@@ -79,10 +81,41 @@ public class Zombie extends Entity
 	{
 		return gimble;
 	}
-	public void setTarget(Entity target)
+	public void setTarget(Player target)
 	{
 		this.target = target;
 		ai.setTarget(target);
+
+		float i = (float)Math.random();
+		if(i > .99f)
+		{
+			powerup = new ShotgunPowerup(universe, target);
+		}
+		else if(i > .985f && i < .99f)
+		{
+			powerup = new MachineGunPowerup(universe, target);
+		}
+		else if(i > .98 && i < .985)
+		{
+			powerup = new FlameThrowerPowerup(universe, target);
+		}
+		else if(i > .975 && i < .98)
+		{
+			powerup = new DamageMultiplier(universe, target);
+		}
+		else if(i > .97 && i < .975)
+		{
+			powerup = new Invulnerable(universe, target);
+		}
+		else if(i > .965 && i < .97)
+		{
+			powerup = new RestoreHealth(universe, target);
+		}
+		else
+		{
+			powerup = null;
+		}
+		
 	}
 	@Override
 	public void damage(float dp)
@@ -102,6 +135,7 @@ public class Zombie extends Entity
 	@Override
 	public void destroy() 
 	{
+		zombies.remove(this);
 		universe.removeEntity(this);
 		if(sndDeath[0] != null)
 			sndDeath[0].Play();
@@ -122,9 +156,22 @@ public class Zombie extends Entity
 		universe.addEntity(text);
 		ttl.start();
 		dead = true;
+		
+		if(powerup != null)
+		{
+			powerup.setStartingLoc(rootNode.getLocalX(), rootNode.getLocalY());
+			universe.addEntity(powerup);
+		}
 	}
+	public void setSpeed(float speed)
+	{
+		ai.setSpeed(speed);
+	}
+	Powerup powerup = null;
+	
+	
 	AIControl ai;
-	Entity target = null;
+	Player target = null;
 	GameObject gimble;
 	
 	ISound[] sndIdle;
@@ -134,4 +181,7 @@ public class Zombie extends Entity
 	long lastSound = 0;
 	
 	boolean dead = false;
+	
+	
+	public static ArrayList<Zombie> zombies = new ArrayList<Zombie>(); // used to keep track of number of zombies
 }

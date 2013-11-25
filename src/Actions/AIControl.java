@@ -64,6 +64,12 @@ public class AIControl extends PhysicsObjectController
 	{
 		this.target = target;
 	}
+	public void setSpeed(float speed)
+	{
+		forceScale *= speed;
+	}
+	
+	
 	float forceScale = 1;
 	Vector2f forward;
 	

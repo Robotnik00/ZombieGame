@@ -39,7 +39,7 @@ public class Player extends Entity
 		rootNode.addAction(pcc);
 		// set mass so the object accelerates fast
 		rootNode.setMass(.1f);
-		rootNode.setBoundingBox(new AABB(.3f,.3f));
+		rootNode.setBoundingBox(new AABB(.2f,.2f));
 		rootNode.translate(startingX, startingY);
 		rootNode.setCollidable(true);
 		
@@ -233,6 +233,14 @@ public class Player extends Entity
 	{
 		return invulnerable;
 	}
+	public void setWave(Wave w)
+	{
+		currentWave = w;
+	}
+	public Wave getWave()
+	{
+		return currentWave;
+	}
 	
 	int score;
 	
@@ -257,4 +265,5 @@ public class Player extends Entity
 	boolean invulnerable = false;
 	
 	long lastSound = 0;
+	Wave currentWave;
 }

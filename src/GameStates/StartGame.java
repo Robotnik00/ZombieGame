@@ -18,11 +18,13 @@ import Engine.IGameEngine;
 import GameObjects.Box;
 import GameObjects.Car;
 import GameObjects.DamageMultiplier;
+import GameObjects.Entity;
 import GameObjects.ExampleEntity;
 import GameObjects.ExampleLevel;
 import GameObjects.GameObject;
 import GameObjects.HandGunProjectile;
 import GameObjects.Invulnerable;
+import GameObjects.Level;
 import GameObjects.MachineGunPowerup;
 import GameObjects.PhysicsBox;
 import GameObjects.Player;
@@ -30,7 +32,10 @@ import GameObjects.Powerup;
 import GameObjects.ShotgunPowerup;
 import GameObjects.Spawner;
 import GameObjects.TreeLeaves;
+import GameObjects.Universe;
 import GameObjects.Wall;
+import GameObjects.Wave;
+import GameObjects.WaveManager;
 //import GameObjects.StaticBox;
 import GameObjects.Zombie;
 import Geometry.AABB;
@@ -120,113 +125,16 @@ public class StartGame extends EventListenerState implements IMenuController
 	{
 		super.Init(gfx, snd, game);
 		// initialize level
-		level = new ExampleLevel(gfx, snd, game, this);
+		level = new Level(gfx, snd, game, this);
 		// scale it down
 		level.scaleUniverse(.3f);
 		
 		// create entity
 		Player player = new Player(level);
 
-		// changed to add objects at a random distance and angle
-		float dist, angle;
-		float minDistance = 2.0f;
 		
-		for(int i = 0; i < 50; i++)
-		{
-			Box sb = new Box(level, player);
-			
-			dist = (float)Math.random() * 50.0f + minDistance;
-			angle = (float)Math.random() * 2.0f * (float)Math.PI;
-			
-			sb.setStartingLoc(
-				(float)(Math.cos(angle)*dist), 
-				(float)(Math.sin(angle)*dist)
-			);
-			
-			if(Utility.CollisionDetection.getCollisions(sb.getRootNode(), level.getHandle()).length > 0)
-			{
-				level.removeEntity(sb);
-			}
-		}
-		
-		for(int i = 0; i < 5; i++)
-		{
-			PhysicsBox b = new PhysicsBox(level, player);
-			//b.setStartingLoc((float)(Math.random()-.5)*5, (float)(Math.random()-.5)*5);
-			
-			dist = (float)Math.random() * 5.0f + minDistance;
-			angle = (float)Math.random() * 2.0f * (float)Math.PI;
-			
-			b.setStartingLoc(
-				(float)(Math.cos(angle)*dist), 
-				(float)(Math.sin(angle)*dist)
-			);
-			
-			
-			if(Utility.CollisionDetection.getCollisions(b.getRootNode(), level.getHandle()).length > 0)
-			{
-				level.removeEntity(b);
-			}
-		}
-
-		for(int i = 0; i < 0; i++)
-		{
-			Zombie z1 = new Zombie(level);
-			
-			dist = (float)Math.random() * 100.0f + minDistance;
-			angle = (float)Math.random() * 100.0f * (float)Math.PI;
-			
-			z1.setStartingLoc(
-				(float)(Math.cos(angle)*dist), 
-				(float)(Math.sin(angle)*dist)
-			);
-			
-			//z1.setStartingLoc((float)(Math.random()-.5)*20, (float)(Math.random()-.5)*20);
-			z1.setTarget(player);			
-			if(Utility.CollisionDetection.getCollisions(z1.getRootNode(), level.getHandle()).length > 0)
-			{
-				level.removeEntity(z1);
-			}
-		}
-		
-		Powerup p1 = new ShotgunPowerup(level, player);
-		p1.setStartingLoc(2f, 2f);
-		level.addEntity(p1);
-		
-		Powerup p2 = new MachineGunPowerup(level, player);
-		p2.setStartingLoc(-2, 2);
-		level.addEntity(p2);
-		
-		
-		Car car = new Car(level);
-		car.setStartingLoc(-2, -2);
-		car.setColor(new Vector4f(1,.2f	,.1f,1));
-		level.addEntity(car);
-		
-		for(int i = 0; i < 5; i++)
-		{
-			Spawner s = new Spawner(level, player);
-			s.setStartingLoc((float)(Math.random()-.5)*20, (float)(Math.random()-.5)*20);
-			s.setNumZombies(10);
-			s.startSpawning();
-		}
-		//TreeLeaves tree = new TreeLeaves(level);
-		//tree.setStartingLoc(-3, 0);
-		
-		DamageMultiplier d = new DamageMultiplier(level, player);
-		level.addEntity(d);
-		d.setStartingLoc(1, -3);
-		DamageMultiplier d2 = new DamageMultiplier(level, player);
-		level.addEntity(d2);
-		d2.setStartingLoc(2, -3);
-		
-		Invulnerable i = new Invulnerable(level, player);
-		i.setStartingLoc(.5f, 0);
-		level.addEntity(i);
-		
-		Wall w = new Wall(level);
-		w.setStartingLoc(3, 3);
-		level.addEntity(w);
+		Entity wave = new WaveManager(level, player);
+		level.addEntity(wave);
 	
 	}
 	
@@ -318,7 +226,7 @@ public class StartGame extends EventListenerState implements IMenuController
 	//
 	
 	ExampleEntity entity;
-	ExampleLevel level;	
+	Universe level;	
 	
 	// pause stuff
 	protected boolean paused;

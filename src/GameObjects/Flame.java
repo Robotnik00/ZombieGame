@@ -34,7 +34,7 @@ public class Flame extends Projectile
 	{
 		if(entity.isDestroyable())
 		{
-			if(hits > 10 && !(entity instanceof Player))
+			if(hits > 15 && !(entity instanceof Player))
 			{
 				
 				InGameText text = new InGameText(universe);
@@ -52,17 +52,11 @@ public class Flame extends Projectile
 				ttl.start();
 				player.addToScore(dscore);
 				hits = 0;
-				if(entity instanceof Zombie)
-				{
-					BloodSplatter splatter = new BloodSplatter(universe);
-					
-					splatter.setStartingLoc(entity.getRootNode().getLocalX(), entity.getRootNode().getLocalY());
-				}
 				hits = 0;
 				
 			}
 			
-			if(Math.random() > .95)
+			if(Math.random() > .98)
 			{
 
 				Fire fire = new Fire(universe, entity);
@@ -71,6 +65,12 @@ public class Flame extends Projectile
 				fire.setStartingLoc((float)(Math.random()-.5)*.4f, (float)(Math.random()-.5)*.4f);
 				fire.getRootNode().addAction(ttlfire);
 				ttlfire.start();
+				if(entity instanceof Zombie)
+				{
+					BloodSplatter splatter = new BloodSplatter(universe);
+					
+					splatter.setStartingLoc(entity.getRootNode().getLocalX(), entity.getRootNode().getLocalY());
+				}
 			}
 			
 			hits++;

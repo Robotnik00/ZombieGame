@@ -69,12 +69,16 @@ public class Spawner extends Entity
 				
 				if(elapsedTime > timeperspawn)
 				{
-					Zombie z = new Zombie(universe);
-					z.setTarget(target);
-					z.setStartingLoc(rootNode.getLocalX(), rootNode.getLocalY());
 					
-					if(Utility.CollisionDetection.getCollisions(rootNode, universe.getHandle()).length == 0)
+					if(Utility.CollisionDetection.getCollisions(rootNode, universe.getHandle()).length == 0 && Zombie.zombies.size() < maxZombiesInGame)
 					{
+						Zombie z = new Zombie(universe);
+						z.setTarget(target);
+						z.setStartingLoc(rootNode.getLocalX(), rootNode.getLocalY());
+						z.setHP(zombieHealth);
+						z.setMaxHp(zombieHealth);
+						z.setSpeed(zombieSpeed);
+						
 						universe.addEntity(z);
 						spawnedZombies++;
 						
@@ -111,12 +115,29 @@ public class Spawner extends Entity
 		timtolive.start();
 	}
 	
+	public void setZombieHealth(float hp)
+	{
+		zombieHealth = hp;
+	}
+	public void setZombieSpeed(float speed)
+	{
+		zombieSpeed = speed;
+	}
+	public void setTimePerSpawn(long time)
+	{
+		timeperspawn = time;
+	}
+	
 	@Override
 	public void destroy() 
 	{
 		universe.getBackgroundNode().removeChild(rootNode);
 		
 	}
+	float zombieHealth = 1;
+	float zombieSpeed = 1;
+	
+	
 	TimeToLive timtolive;
 	long timeperspawn = 1000; // time in mS
 	long time = 0;
@@ -126,4 +147,6 @@ public class Spawner extends Entity
 	Player target;
 	ITexture spawnertex;
 	DrawText drawNumZombies;
+	
+	static int maxZombiesInGame = 100;
 }
