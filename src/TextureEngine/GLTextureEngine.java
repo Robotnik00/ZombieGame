@@ -449,7 +449,7 @@ public class GLTextureEngine implements ITextureEngine
 		// search loaded textures, see if we have already loaded this.
 		for (int i=0; i < textures_.size(); i++)
 		{
-			if (textures_.get(i).GetTextureName() == filename)
+			if (textures_.get(i).GetTextureName().compareTo(filename) == 0)
 			{
 				//system_.LogMessage("GLTextureEngine::LoadTexture: Filename matched loaded texture: "+filename);
 				return textures_.get(i);
