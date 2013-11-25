@@ -89,6 +89,8 @@ public class StartGame extends EventListenerState implements IMenuController
 			// unpause
 			paused = false;
 			currentMenu_ = null;
+			player.setControls(game.GetGameConfig());
+			player.resetState();
 			return;	// don't mess with the menu stack after this
 		}
 		
@@ -130,8 +132,8 @@ public class StartGame extends EventListenerState implements IMenuController
 		level.scaleUniverse(.3f);
 		
 		// create entity
-		Player player = new Player(level);
-
+		player = new Player(level);
+		player.setControls(game.GetGameConfig());
 		
 		Entity wave = new WaveManager(level, player);
 		level.addEntity(wave);
@@ -224,8 +226,7 @@ public class StartGame extends EventListenerState implements IMenuController
 	//
 	//
 	//
-	
-	ExampleEntity entity;
+	Player player;
 	Universe level;	
 	
 	// pause stuff

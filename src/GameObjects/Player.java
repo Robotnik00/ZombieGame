@@ -16,6 +16,7 @@ import Drawing.DrawText;
 import Drawing.SimpleDraw;
 import Geometry.AABB;
 import TextureEngine.ITexture;
+import Utility.ConfigData;
 
 public class Player extends Entity
 {
@@ -32,7 +33,7 @@ public class Player extends Entity
 		destroyable = true;
 		ITexture playerTexture = universe.getTextureEngine().LoadTexture("gfx/Characters/player1.png", 0);
 		// add pc control to the root node of this object
-		PCControl pcc = new PCControl(this, universe.getGameEngine());
+		pcc = new PCControl(this, universe.getGameEngine());
 		universe.getState().addKeyEventListener(pcc);
 		universe.getState().addMouseEventListener(pcc);
 		// add action to the rootNode
@@ -241,7 +242,14 @@ public class Player extends Entity
 	{
 		return currentWave;
 	}
-	
+	public void setControls(ConfigData data)
+	{
+		pcc.setControls(data);
+	}
+	public void resetState()
+	{
+		pcc.resetKeystates();
+	}
 	int score;
 	
 	Gun currentGun;
@@ -266,4 +274,5 @@ public class Player extends Entity
 	
 	long lastSound = 0;
 	Wave currentWave;
+	PCControl pcc;
 }

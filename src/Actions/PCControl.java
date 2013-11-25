@@ -13,6 +13,7 @@ import GameObjects.Universe;
 import InputCallbacks.KeyEventListener;
 import InputCallbacks.MouseEvent;
 import InputCallbacks.MouseEventListener;
+import Utility.ConfigData;
 
 /**
 *
@@ -183,6 +184,20 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	{
 		return forceScale;
 	}	
+	
+	public void setControls(ConfigData data)
+	{
+		MOVE_LEFT = data.GetIntValue("move_left");
+		MOVE_RIGHT = data.GetIntValue("move_right");
+		MOVE_UP = data.GetIntValue("move_up");
+		MOVE_DOWN = data.GetIntValue("move_down");
+	}
+	public void resetKeystates()
+	{
+		appliedForce.scale(0);
+		keyBoardDirection.scale(0);
+	}
+	
 	
 	Vector2f keyBoardDirection = new Vector2f();
 	Vector2f mouseDirection = new Vector2f();

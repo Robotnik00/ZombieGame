@@ -64,8 +64,25 @@ public class Level extends Universe
 			
 			
 		}
-		
+		KillPlayer k1 = new KillPlayer(this);
+		k1.setBounds(new AABB(1,20));
+		k1.setStartingLoc(-10 - into, 0);
+		addEntity(k1);
+		KillPlayer k2 = new KillPlayer(this);
+		k2.setBounds(new AABB(1,20));
+		k2.setStartingLoc(10 + into, 0);
+		addEntity(k2);
+		KillPlayer k3 = new KillPlayer(this);
+		k3.setBounds(new AABB(20,1));
+		k3.setStartingLoc(0, 10 + into);
+		addEntity(k3);
+		KillPlayer k4 = new KillPlayer(this);
+		k4.setBounds(new AABB(20, 1));
+		k4.setStartingLoc(0, -10 - into);
+		addEntity(k4);
 		
 	}
+	
+	float into = .3f;
 
 }

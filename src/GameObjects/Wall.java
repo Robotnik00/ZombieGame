@@ -30,7 +30,6 @@ public class Wall extends Entity
 	@Override
 	public void destroy() 
 	{
-		universe.removeEntity(this);
 	}
 
 }
