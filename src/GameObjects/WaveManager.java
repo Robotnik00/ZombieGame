@@ -84,7 +84,7 @@ public class WaveManager extends Entity
 	float maxZombieSpeed = 2.1f;
 	float maxZombieHealth = 5.0f;
 	long wavelength = 30000; // first wave 30 seconds
-	int numSpawners = 5;
+	int numSpawners = 1;
 	float zombieHealth = .5f; 
 	float zombieSpeed = .8f;
 }
