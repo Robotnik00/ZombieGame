@@ -194,8 +194,10 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	}
 	public void resetKeystates()
 	{
+		moveButtonDown = false;
 		appliedForce.scale(0);
 		keyBoardDirection.scale(0);
+		mouseDirection.scale(0);
 	}
 	
 	
