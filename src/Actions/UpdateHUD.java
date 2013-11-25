@@ -70,12 +70,24 @@ public class UpdateHUD implements Action
 		powerupNode.setLocalY(.7f);
 		
 		
+		GameObject waveNumber = new GameObject();
+		drawWaveNumber = new DrawText(player.getUniverse().getTextureEngine(), "font.png");
+		waveNumber.setDrawingInterface(drawWaveNumber);
+		drawWaveNumber.setScale(.05f, .05f);
+		waveNumber.setLocalX(-1f);
+		
+		player.getUniverse().getHUD().addChild(waveNumber);
+		
+		
 		player.getUniverse().getHUD().addChild(powerupNode);
 		prevPowerups = new GameObject[0];
 	}
 	@Override
 	public void performAction() 
 	{
+		if(player.getWave() != null)
+			drawWaveNumber.setText("wave " + player.getWave().getWaveNumber() + ": " + player.getWave().getTimeLeft()/1000);
+	
 		String score = "score: " + player.getScore();
 		scoretext.setText(score);
 		
@@ -122,7 +134,7 @@ public class UpdateHUD implements Action
 	GameObject hpBar;
 	GameObject powerupNode;
 	DrawText scoretext;
-	
+	DrawText drawWaveNumber;
 	float prevHpBarScale = 1;
 	float hpBarScale = 1;
 }

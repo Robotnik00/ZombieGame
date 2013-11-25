@@ -18,7 +18,7 @@ public class Shotgun extends Gun
 		{
 			blast.add(new HandGunProjectile(universe, player));
 		}
-		
+		velocity = new Vector2f();
 	}
 
 	@Override
@@ -32,8 +32,8 @@ public class Shotgun extends Gun
 		{
 			float orientation = rootNode.getOrientationWrt(universe.getHandle());
 			
-			Vector2f velocity = new Vector2f((float)Math.cos(orientation) + (float)(Math.random()-.5)*1f, 
-											(float)Math.sin(orientation) + (float)(Math.random()-.5)*1f);
+			velocity.x = (float)Math.cos(orientation) + (float)(Math.random()-.5)*1f;
+			velocity.y = (float)Math.sin(orientation) + (float)(Math.random()-.5)*1f;
 			
 			velocity.scale(projectileSpeed);
 			//HandGunProjectile bullet = new HandGunProjectile(universe, player);
@@ -72,7 +72,7 @@ public class Shotgun extends Gun
 	{
 		
 	}
-
+	Vector2f velocity;
 	int numProjectiles = 20;
 	ArrayList<HandGunProjectile> blast;
 	@Override
