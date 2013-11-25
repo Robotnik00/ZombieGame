@@ -85,8 +85,8 @@ public class UpdateHUD implements Action
 	@Override
 	public void performAction() 
 	{
-		if(player.getWave() != null)
-			drawWaveNumber.setText("wave " + player.getWave().getWaveNumber() + ": " + player.getWave().getTimeLeft()/1000);
+		//if(player.getWave() != null)
+		//	drawWaveNumber.setText("wave " + player.getWave().getWaveNumber() + ": " + player.getWave().getTimeLeft()/1000);
 	
 		String score = "score: " + player.getScore();
 		scoretext.setText(score);

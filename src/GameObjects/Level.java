@@ -81,9 +81,9 @@ public class Level extends Universe
 		k4.setStartingLoc(0, -10.25f);
 		addEntity(k4);
 		
-		GraveYard g = new GraveYard(this);
-		addEntity(g);
-		g.setStartingLoc(5, 5);
+		//GraveYard g = new GraveYard(this);
+		//addEntity(g);
+		//g.setStartingLoc(5, 5);
 	}
 	
 }

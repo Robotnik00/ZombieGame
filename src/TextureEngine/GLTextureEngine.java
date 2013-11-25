@@ -451,12 +451,12 @@ public class GLTextureEngine implements ITextureEngine
 		{
 			if (textures_.get(i).GetTextureName().compareTo(filename) == 0)
 			{
-				system_.LogMessage("GLTextureEngine::LoadTexture: Filename matched loaded texture: "+filename);
+				//system_.LogMessage("GLTextureEngine::LoadTexture: Filename matched loaded texture: "+filename);
 				return textures_.get(i);
 			}
 		}
 		
-		system_.LogMessage("GLTextureEngine::LoadTexture: Loading texture: "+filename);
+		//system_.LogMessage("GLTextureEngine::LoadTexture: Loading texture: "+filename);
 		
 		// the texture hasn't been loaded yet, so load the texture file
 		BufferedImage img = null;
@@ -580,12 +580,12 @@ public class GLTextureEngine implements ITextureEngine
 		{
 			if (textures_.get(i).GetTextureName() == filename)
 			{
-				system_.LogMessage("GLTextureEngine::LoadGrayscaleFont: Filename matched loaded texture: "+filename);
+				//system_.LogMessage("GLTextureEngine::LoadGrayscaleFont: Filename matched loaded texture: "+filename);
 				return textures_.get(i);
 			}
 		}
 		
-		system_.LogMessage("GLTextureEngine::LoadGrayscaleFont: Loading texture: "+filename);
+		//system_.LogMessage("GLTextureEngine::LoadGrayscaleFont: Loading texture: "+filename);
 		
 		// the texture hasn't been loaded yet, so load the texture file
 		BufferedImage img = null;

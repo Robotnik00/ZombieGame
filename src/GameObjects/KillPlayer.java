@@ -1,6 +1,6 @@
 package GameObjects;
 
-import Utility.Collision;
+//import Utility.Collision;
 import Utility.CollisionDetection;
 import Actions.Action;
 import Drawing.DrawBoundingBox;
@@ -23,10 +23,12 @@ public class KillPlayer extends Entity
 			@Override
 			public void performAction() 
 			{
-				Collision[] collisions = CollisionDetection.getCollisions(rootNode, universe.getHandle());
+				//Collision[] collisions = CollisionDetection.getCollisions(rootNode, universe.getHandle());
+				GameObject[] collisions = CollisionDetection.getCollisions(rootNode, universe.getHandle());
 				for(int i = 0; i < collisions.length; i++)
 				{
-					collisions[i].collidingObject.getEntity().destroy();
+					collisions[i].getEntity().destroy();
+					//collisions[i].collidingObject.getEntity().destroy();
 				}
 				
 				
