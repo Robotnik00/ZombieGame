@@ -65,14 +65,15 @@ public class Tutorial3MenuScreen extends BaseMenuScreen
 		//AddWidget(stickyNote);
 		
 		TextWidget tutorialText = new TextWidget(
-			"Powerups can greatly enhance your arsenal!\n" +
-			"\n" +
+			"Powerups can be found in crates, and\n" +
+			"even the occasional zombie!\n" +
+			"\n"+
 			"Health restore acts instantly and\n" +
 			"resets your health to 100%!\n" +
 			"\n" +
-			"Other powerups last for 10 seconds and\n" +
-			"only one of them can be active at a time.\n" +
-			"\n\n\n\n\n\n" +
+			"Powerups normally last for 10 seconds,\n" +
+			"but their duration and effects stack!\n" +
+			"\n\n\n\n\n" +
 			"Health     Invulnerability    Quad\n" +
 			"Restore                       Damage",
 			font,
