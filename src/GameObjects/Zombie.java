@@ -182,6 +182,6 @@ public class Zombie extends Entity
 	
 	boolean dead = false;
 	
-	
+	// GLOBAL VARIABLES!!!
 	public static ArrayList<Zombie> zombies = new ArrayList<Zombie>(); // used to keep track of number of zombies
 }

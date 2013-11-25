@@ -100,21 +100,28 @@ public class Wave extends Entity
 		
 		player.setWave(this);
 		
+		// clear list of zombies. GLOBAL VARIABLES BAD!
+		Zombie.zombies.clear();
+		
 		System.out.printf("%d\n", numSpawners);
 		for(int i = 0; i < numSpawners; i++)
 		{
 			Spawner s = new Spawner(universe, player);
-			s.setStartingLoc((float)(Math.random()-.5)*10, (float)(Math.random()-.5)*10);
+			
+			// when was the last time you've used a do while loop?
+			do
+			{
+				s.setStartingLoc((float)(Math.random()-.5)*10, (float)(Math.random()-.5)*10);
+				//System.out.println("Wave.startWave: couldn't place spawner, trying again.");
+				//s.destroy(); // don't create them on top of eachother
+			}
+			while (CollisionDetection.getCollisions(s.getRootNode(), universe.getHandle()).length > 0);
+			
 			s.setNumZombies(zombiesPerSpawner);
 			s.setZombieSpeed(zombieSpeed);
 			s.setZombieHealth(zombieHealth);
-			s.startSpawning();
 			s.setTimeToLive(waveLength);
-			
-			if(CollisionDetection.getCollisions(s.getRootNode(), universe.getHandle()).length > 0)
-			{
-				s.destroy(); // don't create them on top of eachother
-			}
+			s.startSpawning();
 		}
 		
 		
@@ -157,8 +164,6 @@ public class Wave extends Entity
 	{
 		destroyed = true;
 		universe.removeEntity(this);
-		
-		
 	}
 	
 	int numSpawners = 1;

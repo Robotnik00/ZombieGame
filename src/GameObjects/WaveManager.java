@@ -39,7 +39,7 @@ public class WaveManager extends Entity
 	{
 		if(currentWave != null)
 		{
-		currentWave = new Wave(universe, player, currentWave.getWaveNumber()+1);
+			currentWave = new Wave(universe, player, currentWave.getWaveNumber()+1);
 		}
 		else 
 		{
@@ -74,7 +74,8 @@ public class WaveManager extends Entity
 	
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
+		// clean this up so we can start fresh for each new game.
+		currentWave = null;
 		
 	}
 	Wave currentWave = null;
