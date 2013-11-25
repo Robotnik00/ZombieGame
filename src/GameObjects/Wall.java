@@ -22,8 +22,8 @@ public class Wall extends Entity
 		rootNode.setDrawingInterface(drawwall);
 		
 		rootNode.setCollidable(true);
-		rootNode.setBoundingBox(new AABB(1.1f,1.1f));
-		rootNode.setProxemityBounds(new AABB(1.1f,1.1f));
+		rootNode.setBoundingBox(new AABB(1.2f,1.2f));
+		rootNode.setProxemityBounds(new AABB(1.3f,1.3f));
 		
 	}
 

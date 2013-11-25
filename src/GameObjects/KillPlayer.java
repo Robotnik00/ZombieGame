@@ -33,7 +33,6 @@ public class KillPlayer extends Entity
 			
 		};
 		rootNode.addAction(killEntity);
-		rootNode.setDrawingInterface(new DrawBoundingBox(rootNode, universe.getTextureEngine()));
 	}
 	public void setBounds(AABB bounds)
 	{
