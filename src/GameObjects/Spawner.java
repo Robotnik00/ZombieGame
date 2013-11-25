@@ -148,5 +148,5 @@ public class Spawner extends Entity
 	ITexture spawnertex;
 	DrawText drawNumZombies;
 	
-	static int maxZombiesInGame = 100;
+	static int maxZombiesInGame = 50;
 }
