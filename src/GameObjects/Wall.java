@@ -17,8 +17,10 @@ public class Wall extends Entity
 	@Override
 	public void createObject(Universe universe) 
 	{
-		ITexture wall = universe.getTextureEngine().LoadTexture("gfx/Environment/blockwall.png", 1);
+		ITexture wall = universe.getTextureEngine().LoadTexture("gfx/Environment/blockwall_cracked.png", 1);
 		SimpleDraw drawwall = new SimpleDraw(wall);
+		drawwall.setColor(new Vector4f(.2f,.2f,.2f,1));
+		drawwall.setBlend(.5f);
 		rootNode.setDrawingInterface(drawwall);
 		
 		rootNode.setCollidable(true);
@@ -30,6 +32,7 @@ public class Wall extends Entity
 	@Override
 	public void destroy() 
 	{
+		universe.removeEntity(this);
 	}
 
 }

@@ -1,6 +1,7 @@
 package GameObjects;
 
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector4f;
 
 import TextureEngine.ITexture;
 import Actions.CollidablePhysics;
@@ -54,13 +55,16 @@ public class Box extends Entity
 	{
 		destroyable = true;
 		ITexture boxTexture = universe.getTextureEngine().LoadTexture("gfx/Environment/box_normal.png", 0);
-		rootNode.setDrawingInterface(new SimpleDraw(boxTexture));
+		drawbox = new SimpleDraw(boxTexture);
+		rootNode.setDrawingInterface(drawbox);
 		rootNode.setBoundingBox(new AABB(1f,1f));
 		rootNode.setProxemityBounds(new AABB(1,1));
 		rootNode.setCollidable(true);
 		universe.addEntity(this);
 		rootNode.setStatic(true);
-
+		rootNode.scale(.5f, .5f);
+		drawbox.setColor(new Vector4f(.2f,.2f,.2f, 1));
+		drawbox.setBlend(.5f);
 	}
 
 	@Override
@@ -82,9 +86,10 @@ public class Box extends Entity
 		if(hp/maxHp < .5f)
 		{
 			ITexture damaged = universe.getTextureEngine().LoadTexture("gfx/Environment/box_damaged.png", 0);
-			rootNode.setDrawingInterface(new SimpleDraw(damaged));
+			drawbox.setTexture(damaged);
 		}
 		
 	}
 	Entity entity;
+	SimpleDraw drawbox;
 }

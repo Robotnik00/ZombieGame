@@ -520,6 +520,11 @@ public class GameObject
 		deltaScale.x *= x;
 		deltaScale.y *= y;
 	}
+	public void setScale(float x, float y)
+	{
+		transform.scale(new Vector3f(x,y,1));
+		prevTransform.scale(new Vector3f(x,y,1));
+	}
 	/**
 	 *
 	 * sets the interface that is used to draw this object

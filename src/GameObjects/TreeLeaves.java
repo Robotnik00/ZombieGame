@@ -18,9 +18,22 @@ public class TreeLeaves extends Entity
 	public void createObject(Universe universe) 
 	{
 		destroyable = false;
-		String texname = "gfx/Environment/TreeLeaves" + (int)(Math.random()*1+1) + ".png";
+		
+		String texname;
+		if(Math.random() < .8f)
+		{
+			texname = "gfx/Environment/TreeLeaves1.png";
+			
+		}
+		else 
+		{
+			texname = "gfx/Environment/TreeNoLeaves1.png";
+		}
+		
+		
 		ITexture treetex = universe.getTextureEngine().LoadTexture(texname, 0);
 		SimpleDraw drawtree = new SimpleDraw(treetex);
+		drawtree.setOrientation((float)(Math.random()*2*Math.PI));
 		drawtree.setScale(3, 3);
 		rootNode.setDrawingInterface(drawtree);
 		universe.getForgroundNode().addChild(rootNode);
@@ -35,8 +48,8 @@ public class TreeLeaves extends Entity
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-		
+		universe.getHandle().removeChild(rootNode);
+		universe.getForgroundNode().removeChild(rootNode);
 	}
 
 }

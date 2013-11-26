@@ -17,36 +17,39 @@ public abstract class Projectile extends Entity
 
 	public void inflictDamage(Entity entity)
 	{
-		if(entity.isDestroyable())
+		if(entity != null)
 		{
-			InGameText text = new InGameText(universe);
-				
-			text.scaleText(.2f);
-			int dscore = (int)Math.round((dp + randomizeScore*Math.random())*100);
-			text.setText("" + dscore);
-			text.setColor(new Vector4f(0,1,0,1));
-			TimeToLive ttl = new TimeToLive(text, universe);
-			ttl.setTimeToLive(500);
-			text.getRootNode().setTranslationalVelocity(new Vector2f(0,.5f));
-			text.setStartingLoc(entity.getRootNode().getLocalX(), entity.getRootNode().getLocalY());
-			text.getRootNode().addAction(ttl);
-			universe.addEntity(text);
-			ttl.start();
-			player.addToScore(dscore);
-			
-			
-			
-			
-			if(entity instanceof Zombie)
+			if(entity.isDestroyable())
 			{
-				BloodSplatter splatter = new BloodSplatter(universe);
+				InGameText text = new InGameText(universe);
+					
+				text.scaleText(.2f);
+				int dscore = (int)Math.round((dp + randomizeScore*Math.random())*100);
+				text.setText("" + dscore);
+				text.setColor(new Vector4f(0,1,0,1));
+				TimeToLive ttl = new TimeToLive(text, universe);
+				ttl.setTimeToLive(500);
+				text.getRootNode().setTranslationalVelocity(new Vector2f(0,.5f));
+				text.setStartingLoc(entity.getRootNode().getLocalX(), entity.getRootNode().getLocalY());
+				text.getRootNode().addAction(ttl);
+				universe.addEntity(text);
+				ttl.start();
+				player.addToScore(dscore);
 				
-				splatter.setStartingLoc(entity.getRootNode().getLocalX(), entity.getRootNode().getLocalY());
+				
+				
+				
+				if(entity instanceof Zombie)
+				{
+					BloodSplatter splatter = new BloodSplatter(universe);
+					
+					splatter.setStartingLoc(entity.getRootNode().getLocalX(), entity.getRootNode().getLocalY());
+				}
+				
+		
+				entity.damage(dp + (float)(Math.random()*randomizeDamage));
+				
 			}
-			
-	
-			entity.damage(dp + (float)(Math.random()*randomizeDamage));
-			
 		}
 	}
 

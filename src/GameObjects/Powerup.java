@@ -39,7 +39,7 @@ public abstract class Powerup extends Entity
 	{
 		rootNode.setBoundingBox(new AABB(1,1));
 
-		rootNode.scale(.5f, .5f);
+		rootNode.setScale(.5f, .5f);
 	}
 	
 	public SimpleDraw getDrawInterface()

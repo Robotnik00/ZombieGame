@@ -70,6 +70,10 @@ public class Wave extends Entity
 					universe.getHUD().removeChild(drawTimeToStartNode);
 					startWave();
 				}
+				if(time == 5000)
+				{
+					Entity.garbageCollect();
+				}
 				if(time < 14000)
 				{
 					

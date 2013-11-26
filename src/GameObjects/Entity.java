@@ -1,5 +1,7 @@
 package GameObjects;
 
+import java.util.ArrayList;
+
 /**
  * an Entity is anything in the game that gets drawn/update by the game engine.
  * 
@@ -13,6 +15,7 @@ public abstract class Entity
 		rootNode = new GameObject();
 		rootNode.setEntity(this);
 		createObject(universe);
+		entities.add(this);
 	}
 	/**
 	 *  initializes the enitiy
@@ -78,6 +81,11 @@ public abstract class Entity
 	{
 		return destroyed;
 	}
+	public static void garbageCollect()
+	{
+		entities = new ArrayList<Entity>();
+		System.gc();
+	}
 	/**
 	 * free up resources used by entity
 	 */
@@ -93,4 +101,6 @@ public abstract class Entity
 	
 	float hp = 1;
 	float maxHp = 1;
+	
+	public static ArrayList<Entity> entities = new ArrayList<Entity>();
 }

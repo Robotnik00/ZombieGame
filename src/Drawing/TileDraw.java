@@ -19,6 +19,8 @@ public class TileDraw implements DrawObject
 	{
 		this.tex = tex;
 		nextRow = new Vector2f(-cols, 1);
+		scale = new Vector3f();
+		translation = new Vector2f();
 	}
 	
 	
@@ -33,6 +35,7 @@ public class TileDraw implements DrawObject
 			for(int j = 0; j < cols; j++)
 			{
 				tex.Draw(interpolator);
+				
 				interpolator.translate(xaxis);
 			}
 			interpolator.translate(nextRow);
@@ -49,7 +52,22 @@ public class TileDraw implements DrawObject
 		this.cols = cols;
 		nextRow = new Vector2f(-cols, 1);
 	}
+	public void setScale(float scalex, float scaley)
+	{
+		this.scalex = scalex;
+		this.scaley = scaley;
+	}
+	public void setOffset(float x, float y)
+	{
+		this.x = x;
+		this.y = y;
+	}
 	
+	
+	float x, y;
+	float scalex = 1, scaley = 1;
+	Vector3f scale;
+	Vector2f translation;
 	ITexture tex;
 	int rows = 4;
 	int cols = 4;
