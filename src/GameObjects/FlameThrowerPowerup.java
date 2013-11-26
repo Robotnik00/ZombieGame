@@ -16,7 +16,7 @@ public class FlameThrowerPowerup extends GunPowerup
 	public void createObject(Universe universe) 
 	{
 		super.createObject(universe);
-		ITexture fire = universe.getTextureEngine().LoadTexture("gfx/Powerups/flamethrower_can.png", 0);
+		ITexture fire = universe.getTextureEngine().LoadTexture("gfx/Powerups/flamethrower_can.png", 1);
 		drawPowerup = new SimpleDraw(fire);
 		
 		rootNode.setDrawingInterface(drawPowerup);

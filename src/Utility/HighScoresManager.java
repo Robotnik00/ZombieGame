@@ -28,7 +28,7 @@ public class HighScoresManager
 	public int	CheckScorePlace(int score)
 	{
 		int i = 0;
-		while (i < maxScores_ && score < scoreValues_[i])
+		while (i < maxScores_ && score > scoreValues_[i])
 			i++;
 		
 		return i-1;

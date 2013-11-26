@@ -9,27 +9,30 @@ import org.lwjgl.input.Keyboard;
 import TextureEngine.ITexture;
 import Utility.BitmapFont;
 
+import Utility.HighScoresManager;
+
 
 
 /**
  * This widget waits for a key press and records that value in an int config variable.
  */
-public class TextFieldWidget extends BaseMenuWidget
+public class NameEntryFieldWidget extends BaseMenuWidget
 {
 	//
 	// public methods
 	//
 	
-	public TextFieldWidget(
+	public NameEntryFieldWidget(
 			BitmapFont font, 
-			String variable,
+			HighScoresManager hsm, int score,
 			float x, float y,
 			float xscale, float yscale)
 	{
 		super();
 		
 		font_ = font;
-		variable_ = variable;
+		hsm_ = hsm;
+		score_ = score;
 		x_ = x;
 		y_ = y;
 		xs_ = xscale;
@@ -37,6 +40,8 @@ public class TextFieldWidget extends BaseMenuWidget
 		
 		cursorCounter_ = 0;
 		drawCursor_ = true;
+		
+		scoreSaved_ = false;
 		
 		hasFocus_ = false;
 		clickArea_ = new float[4];
@@ -58,6 +63,9 @@ public class TextFieldWidget extends BaseMenuWidget
 	public void	Init(IMenuController menuController, IMenuScreen menu) throws Exception
 	{
 		super.Init(menuController,  menu);
+		
+		currentString_ = "Player";
+		CalculateClickArea(currentString_);
 	}
 	
 	public void	Quit()
@@ -79,12 +87,10 @@ public class TextFieldWidget extends BaseMenuWidget
 		
 		// if the user has clicked on this widget, request focus and wait for a key press
 		if (!hasFocus_)
-		{
-			// if not editing, get the value of this string
-			currentString_ = game_.GetGameConfig().GetStringValue(variable_);
-			
-			CalculateClickArea(currentString_);
-			
+		{ 
+			if (scoreSaved_)
+				return;
+				
 			// wait until clicked on
 			if (CheckArea(clickArea_, game_.GetMouseX(), game_.GetMouseY()) 
 			&&	CheckMouseButtonDown(game_.GetMouseEvents(), 1))
@@ -149,10 +155,23 @@ public class TextFieldWidget extends BaseMenuWidget
 					hasFocus_ = false;
 					
 					// update config value
-					game_.GetGameConfig().SetStringValue(variable_, currentString_);
+					//game_.GetGameConfig().SetStringValue(variable_, currentString_);
+					hsm_.AddScore(currentString_, score_);
+					hsm_.SaveScores(game_.GetGameConfig());
 					
 					// recalculate clickable area
-					CalculateClickArea(currentString_);
+					//CalculateClickArea(currentString_);
+					
+					// don't enter the name more than once
+					scoreSaved_ = true;
+					
+					// FIXME: hide the clickable area so the user can only enter their name once,
+					// because high score has already been saved at this point, and we dont
+					// want them to be able to submit the same score again.
+					clickArea_[0] = 0.0f;
+					clickArea_[1] = 0.0f;
+					clickArea_[2] = 0.0f;
+					clickArea_[3] = 0.0f;
 					
 					return;
 				}
@@ -194,7 +213,10 @@ public class TextFieldWidget extends BaseMenuWidget
 	// protected members
 	//
 	
-	protected String			variable_;
+	protected HighScoresManager	hsm_;
+	protected int				score_;
+	protected boolean			scoreSaved_;
+	
 	protected BitmapFont		font_;
 	protected float				x_, y_, xs_, ys_;
 	

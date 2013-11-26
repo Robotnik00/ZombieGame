@@ -1,5 +1,6 @@
 package GameObjects;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -9,6 +10,7 @@ import org.lwjgl.util.vector.Vector4f;
 import Actions.Action;
 import Actions.MouseTracker;
 import Actions.PCControl;
+import Actions.TimeToLive;
 import Actions.UpdateHUD;
 import AudioEngine.ISound;
 import Drawing.DrawBoundingBox;
@@ -196,6 +198,14 @@ public class Player extends Entity
 			BloodSplatter b = new BloodSplatter(universe);
 			b.setStartingLoc((float)(rootNode.getLocalX()+Math.random()*.5f), (float)(rootNode.getLocalY()+Math.random()*.5f));	
 		}
+		
+		GameOver gameover = new GameOver(universe, this);
+		TimeToLive ttl = new TimeToLive(gameover, universe);
+		ttl.setTimeToLive(5000);
+		ttl.start();
+		gameover.getRootNode().addAction(ttl);
+		
+		
 	}
 	
 	public void addToScore(int points)

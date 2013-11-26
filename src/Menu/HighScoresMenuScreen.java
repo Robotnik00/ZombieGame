@@ -62,8 +62,11 @@ public class HighScoresMenuScreen extends BaseMenuScreen
 		// FIXME: magic number for # of high score entries
 		for (int i=0; i < hs.GetMaxScores(); i++)
 		{
+			TextWidget rank = new TextWidget(""+(hs.GetMaxScores()-i)+".", font, -0.5f, -0.3f+(i*0.05f), 0.05f, 0.05f);
+			AddWidget(rank);
+			
 			StringConfigMenuWidget scoreName = new StringConfigMenuWidget(
-					font, hs.GetNameVariable(i), -0.5f, -0.3f+(i*0.05f), 0.05f, 0.05f);
+					font, hs.GetNameVariable(i), -0.4f, -0.3f+(i*0.05f), 0.05f, 0.05f);
 			AddWidget(scoreName);
 			
 			IntConfigMenuWidget scorePoints = new IntConfigMenuWidget(

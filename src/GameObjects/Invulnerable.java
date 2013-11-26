@@ -86,7 +86,7 @@ public class Invulnerable extends Powerup
 		textNode.setLocalY(-.4f);
 		
 		
-		ITexture damagetex = universe.getTextureEngine().LoadTexture("gfx/Powerups/invulnerability.png", 0x00ffffff);
+		ITexture damagetex = universe.getTextureEngine().LoadTexture("gfx/Powerups/invulnerability.png", 1);
 		drawPowerup = new SimpleDraw(damagetex);
 		rootNode.setDrawingInterface(drawPowerup);
 		

@@ -15,7 +15,7 @@ public class MachineGunPowerup extends GunPowerup
 	public void createObject(Universe universe) 
 	{
 		super.createObject(universe);
-		ITexture machinegun = universe.getTextureEngine().LoadTexture("gfx/Powerups/machinegun_shells.png", 0);
+		ITexture machinegun = universe.getTextureEngine().LoadTexture("gfx/Powerups/machinegun_shells.png", 1);
 		drawPowerup = new SimpleDraw(machinegun);
 		
 		rootNode.setDrawingInterface(drawPowerup);

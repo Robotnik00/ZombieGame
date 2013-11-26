@@ -18,7 +18,7 @@ public class ShotgunPowerup extends GunPowerup
 	public void createObject(Universe universe) 
 	{
 		super.createObject(universe);
-		ITexture pshotgunTex = universe.getTextureEngine().LoadTexture("gfx/Powerups/shotgun_shell.png", 0);
+		ITexture pshotgunTex = universe.getTextureEngine().LoadTexture("gfx/Powerups/shotgun_shell.png", 1);
 		drawPowerup = new SimpleDraw(pshotgunTex);
 		
 		rootNode.setDrawingInterface(drawPowerup);

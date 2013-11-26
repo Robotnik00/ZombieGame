@@ -17,8 +17,9 @@ import Menu.IMenuController;
 import Menu.IMenuScreen;
 import Menu.IMenuWidget;
 import Menu.MainMenuScreen;
-
 import Engine.GameEngine;
+
+
 
 
 
@@ -130,20 +131,23 @@ public class MenuState implements IGameState, IMenuController
 	
 	public void	Update()
 	{
-		/*
+		
 		int[] keys = game_.GetKeyEvents();
 		
 		for (int i=0; i < keys.length; i++)
 		{
-			// quit if escape is pressed, but not if there are any widgets currently in focus.
-			// *cough*TextFieldWidget*cough*
-			if (keys[i] == Keyboard.KEY_ESCAPE)
+			if (keys[i] == Keyboard.KEY_SPACE)
 			{
-				if (currentMenu_.IsFocused() == false)
-					game_.EndGameLoop();
+				int randomScore = (int)(Math.random()*10000.0f);
+				try {
+					game_.ChangeGameState(new HighScoreState(randomScore));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
-		*/
+		
 		
 		//refresh_ = true;
 		
