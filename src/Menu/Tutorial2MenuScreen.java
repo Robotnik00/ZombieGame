@@ -36,7 +36,7 @@ public class Tutorial2MenuScreen extends BaseMenuScreen
 		// load menu graphics
 		ITexture background		= gfx_.LoadTexture("gfx/menu/menu-background4-center.png", 0x00202020);
 		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/tutorial-title.png", 1);
-		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 1);
+		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 0x00FFFFFF);
 		ITexture nextImage 		= gfx_.LoadTexture("gfx/menu/next.png", 1);
 		
 		ITexture wpnShotgun		= gfx_.LoadTexture("gfx/powerups/shotgun_shell.png", 1);

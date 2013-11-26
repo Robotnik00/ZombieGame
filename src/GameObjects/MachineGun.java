@@ -16,8 +16,8 @@ public class MachineGun extends Gun
 		// TODO Auto-generated constructor stub
 		clips = 1;
 		rateOfFire = 20;
-		ammo = 50;
-		maxAmmo = 50;
+		ammo = 80;
+		maxAmmo = 80;
 	}
 
 	@Override

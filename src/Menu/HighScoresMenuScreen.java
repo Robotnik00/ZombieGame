@@ -37,7 +37,7 @@ public class HighScoresMenuScreen extends BaseMenuScreen
 		// load menu graphics
 		ITexture background		= gfx_.LoadTexture("gfx/menu/menu-background4-center.png", 0x00202020);
 		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/highscores-title.png", 1);
-		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 1);
+		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 0x00FFFFFF);
 		
 		//ITexture fontImage 		= gfx_.LoadTexture("gfx/font.png", 0x00FFFFFF);
 		ITexture fontImage = gfx_.LoadGrayscaleFont("gfx/font.png", true);

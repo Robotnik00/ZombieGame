@@ -37,7 +37,7 @@ public class TutorialMenuScreen extends BaseMenuScreen
 		ITexture background		= gfx_.LoadTexture("gfx/menu/menu-background4-center.png", 0x00202020);
 		ITexture sticky			= gfx_.LoadTexture("gfx/tutorial/tutorial_all.png", 0x00FFFFFF);
 		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/tutorial-title.png", 1);
-		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 1);
+		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 0x00FFFFFF);
 		ITexture nextImage 		= gfx_.LoadTexture("gfx/menu/next.png", 1);
 		
 		ITexture fontImage = gfx_.LoadGrayscaleFont("gfx/font.png", true);

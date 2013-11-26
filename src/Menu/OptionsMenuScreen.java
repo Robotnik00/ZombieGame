@@ -36,7 +36,7 @@ public class OptionsMenuScreen extends BaseMenuScreen
 		// load menu graphics
 		ITexture background		= gfx_.LoadTexture("gfx/menu/menu-background4-center.png", 0x00202020);
 		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/options-title.png", 1);
-		ITexture backImage		= gfx_.LoadTexture("gfx/menu/back.png", 1);
+		ITexture backImage		= gfx_.LoadTexture("gfx/menu/back.png", 0x00FFFFFF);
 		ITexture incVolume		= gfx_.LoadTexture("gfx/menu/rightarrow.png", 0);
 		ITexture decVolume		= gfx_.LoadTexture("gfx/menu/leftarrow.png", 0);
 		

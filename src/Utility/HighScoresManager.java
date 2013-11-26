@@ -45,7 +45,7 @@ public class HighScoresManager
 		if (place == -1)
 			return;
 		
-		for (int i=0; i+1 < place; i++)
+		for (int i=0; i < place; i++)
 		{
 			scoreValues_[i] = scoreValues_[i+1];
 			scoreNames_[i] = scoreNames_[i+1];

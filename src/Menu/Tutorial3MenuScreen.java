@@ -36,7 +36,7 @@ public class Tutorial3MenuScreen extends BaseMenuScreen
 		// load menu graphics
 		ITexture background		= gfx_.LoadTexture("gfx/menu/menu-background4-center.png", 0x00202020);
 		ITexture titleImage		= gfx_.LoadTexture("gfx/menu/tutorial-title.png", 1);
-		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 1);
+		ITexture backImage 		= gfx_.LoadTexture("gfx/menu/back.png", 0x00FFFFFF);
 		ITexture nextImage 		= gfx_.LoadTexture("gfx/menu/next.png", 1);
 		
 		ITexture wpnHealth			= gfx_.LoadTexture("gfx/Powerups/RestoreHealth.png", 1);
@@ -71,7 +71,7 @@ public class Tutorial3MenuScreen extends BaseMenuScreen
 			"Health restore acts instantly and\n" +
 			"resets your health to 100%!\n" +
 			"\n" +
-			"Powerups normally last for 10 seconds,\n" +
+			"Powerups normally last for 15 seconds,\n" +
 			"but their duration and effects stack!\n" +
 			"\n\n\n\n\n" +
 			"Health     Invulnerability    Quad\n" +

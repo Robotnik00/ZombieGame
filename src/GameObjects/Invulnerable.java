@@ -92,7 +92,7 @@ public class Invulnerable extends Powerup
 		
 	
 		ttl = new TimeToLive(this, universe);
-		ttl.setTimeToLive(10000);
+		ttl.setTimeToLive(15000);
 		rootNode.addAction(ttl);
 	}	
 	public TimeToLive getTTL()
@@ -101,7 +101,7 @@ public class Invulnerable extends Powerup
 	}
 	float multiplier = 4;
 	TimeToLive ttl;
-	long timeToLive = 10000; // time to live in ms
+	long timeToLive = 15000; // time to live in ms
 	Action updateTimer;
 	DrawText text;
 }

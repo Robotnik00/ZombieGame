@@ -28,7 +28,7 @@ public class FlameThrower extends Gun
 		
 		try 
 		{
-			fireSound = universe.getAudioEngine().LoadSound("snd/guns/flamethrower.wav");
+			fireSound = universe.getAudioEngine().LoadSound("snd/guns/flamethrower2.wav");
 			outOfAmmoSound = universe.getAudioEngine().LoadSound("snd/guns/click2.wav");
 		}
 		catch (Exception e) 
