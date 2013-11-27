@@ -10,6 +10,7 @@ import java.util.*;
 import org.lwjgl.input.Keyboard;
 
 import AudioEngine.IAudioEngine;
+import AudioEngine.ISound;
 import Engine.IGameEngine;
 import TextureEngine.ITextureEngine;
 import TextureEngine.ITexture;
@@ -119,6 +120,9 @@ public class MenuState implements IGameState, IMenuController
 		
 		menuBackground_ = gfx_.LoadTexture("gfx/menu/menu-background4-lines.png", 1);//0x00FFFFFF);
 		
+		music_ = sfx_.LoadSound("snd/misc/menu_music.wav");
+		music_.Loop();
+		
 		// create initial menu here
 		currentMenu_ = new MainMenuScreen();
 		currentMenu_.Init(this);
@@ -126,7 +130,7 @@ public class MenuState implements IGameState, IMenuController
 	
 	public void Quit()
 	{
-		//
+		music_.Stop();
 	}
 	
 	public void	Update()
@@ -186,6 +190,7 @@ public class MenuState implements IGameState, IMenuController
 	protected IAudioEngine		sfx_;
 	
 	protected ITexture			menuBackground_;
+	protected ISound			music_;
 
 	protected boolean			refresh_;
 	

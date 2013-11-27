@@ -16,7 +16,7 @@ public class UpdateHUD implements Action
 	public UpdateHUD(Player player)
 	{
 		this.player = player;
-		/*
+		
 		GameObject background = new GameObject();
 		SimpleDraw drawBackground = new SimpleDraw(player.getUniverse().getTextureEngine().LoadTexture("gfx/white.png", 1));
 		background.setDrawingInterface(drawBackground);
@@ -24,7 +24,7 @@ public class UpdateHUD implements Action
 		background.scale(2, .2f);
 		background.setLocalY(.75f);
 		drawBackground.setColor(new Vector4f(0,0,0,.5f));
-		*/
+		
 		
 		GameObject HP = new GameObject();
 		GameObject hpText = new GameObject();

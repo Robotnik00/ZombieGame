@@ -55,17 +55,13 @@ public class WaveManager extends Entity
 		{
 			numSpawners++;
 		}
-		else if(maxZombieSpeed > zombieSpeed)
-		{
-			zombieSpeed += .1f;
-		}
-		else if(maxZombieHealth > zombieHealth)
-		{
-			zombieHealth += .2f;
-		}
-		else if(maxZombieSpeed > zombieSpeed)
+		if(maxZombieSpeed > zombieSpeed)
 		{
 			zombieSpeed += .2f;
+		}
+		if(maxZombieHealth > zombieHealth)
+		{
+			zombieHealth += .2f;
 		}
 		wavelength += 500;
 		
@@ -81,11 +77,11 @@ public class WaveManager extends Entity
 	Wave currentWave = null;
 	Player player;
 	
-	int maxNumberOfSpawners = 5;
+	int maxNumberOfSpawners = 6;
 	float maxZombieSpeed = 2.1f;
 	float maxZombieHealth = 5.0f;
 	long wavelength = 30000; // first wave 30 seconds
-	int numSpawners = 1;
+	int numSpawners = 3;
 	float zombieHealth = .5f; 
 	float zombieSpeed = .8f;
 }

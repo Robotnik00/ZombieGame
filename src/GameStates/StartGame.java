@@ -9,6 +9,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import Actions.CollidablePhysics;
 import AudioEngine.IAudioEngine;
+import AudioEngine.ISound;
 import Drawing.CameraView;
 import Drawing.DrawText;
 import Drawing.SimpleDraw;
@@ -89,6 +90,7 @@ public class StartGame extends EventListenerState implements IMenuController
 			// unpause
 			paused = false;
 			currentMenu_ = null;
+			music_.Play();
 			player.setControls(game.GetGameConfig());
 			player.resetState();
 			snd.SetVolume(game.GetGameConfig().GetFloatValue("sound_volume"));
@@ -141,12 +143,16 @@ public class StartGame extends EventListenerState implements IMenuController
 	
 		// update this
 		snd.SetVolume(game.GetGameConfig().GetFloatValue("sound_volume"));
+		
+		music_ = snd.LoadSound("snd/misc/ingame_music3.wav");
+		music_.Loop();
 	}
 	
 	@Override
 	public void Quit() 
 	{
 		level.destroy();
+		music_.Stop();
 	}
 
 	@Override
@@ -175,6 +181,8 @@ public class StartGame extends EventListenerState implements IMenuController
 					paused = true;
 					
 					menuStack_.clear();
+					
+					music_.Pause();
 					
 					// create the pause menu
 					currentMenu_ = new PauseMenuScreen();
@@ -236,4 +244,5 @@ public class StartGame extends EventListenerState implements IMenuController
 	protected boolean paused;
 	protected Stack<IMenuScreen>	menuStack_;
 	protected IMenuScreen			currentMenu_;
+	protected ISound				music_;
 }

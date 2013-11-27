@@ -101,19 +101,32 @@ public class OptionsMenuScreen extends BaseMenuScreen
 		// Sound volume adjuster images
 		ImageWidget incVolumeButton = new ImageWidget(incVolume, 0.4f, -0.3f, 0.05f, 0.05f);
 		imageArea = incVolumeButton.GetAreaOnScreen();
+		
 		AdjustFloatConfigWidgetAction incVolumeControl = 
 				new AdjustFloatConfigWidgetAction("sound_volume", 0.1f, 1.0f, 0.0f);
 		incVolumeControl.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		incVolumeButton.AddAction(incVolumeControl);
+		
+		UpdateVolumeWidgetAction incVolumeAction = new UpdateVolumeWidgetAction();
+		incVolumeAction.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		incVolumeButton.AddAction(incVolumeAction);
+		
 		AddWidget(incVolumeButton);
 		
 		ImageWidget decVolumeButton = new ImageWidget(decVolume, 0.25f, -0.3f, 0.05f, 0.05f);
 		imageArea = decVolumeButton.GetAreaOnScreen();
+		
 		AdjustFloatConfigWidgetAction decVolumeControl = 
 				new AdjustFloatConfigWidgetAction("sound_volume", -0.1f, 1.0f, 0.0f);
 		decVolumeControl.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
 		decVolumeButton.AddAction(decVolumeControl);
+		
+		UpdateVolumeWidgetAction decVolumeAction = new UpdateVolumeWidgetAction();
+		decVolumeAction.SetArea(imageArea[0], imageArea[1], imageArea[2], imageArea[3]);
+		decVolumeButton.AddAction(decVolumeAction);
+		
 		AddWidget(decVolumeButton);
+		
 		
 		// back button
 		ImageWidget backButton = new ImageWidget(backImage, -0.10f, -0.5f, 0.2f, 0.2f);

@@ -221,7 +221,7 @@ public class PCControl extends PhysicsObjectController implements KeyEventListen
 	boolean fileButtonDown = false;
 	
 	
-	float forceScale = 2; // amount of force to apply
+	float forceScale = 3; // amount of force to apply
 	
 	Player player;
 	int i = 1;
