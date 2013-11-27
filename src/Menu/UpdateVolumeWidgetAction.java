@@ -19,7 +19,9 @@ public class UpdateVolumeWidgetAction extends BaseWidgetAction
 	public void	OnClick()
 	{
 		ConfigData cfg = menuController_.GetGameController().GetGameConfig();
+		
 		float f = cfg.GetFloatValue("sound_volume");
+		
 		menuController_.GetAudioController().SetVolume(f);
 	}
 	
